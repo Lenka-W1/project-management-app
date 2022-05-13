@@ -3,7 +3,7 @@ import { useFormik } from 'formik';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { AppStatusType } from '../../BLL/reducers/app-reducer';
+import { AppStatusType, setAppStatus } from '../../BLL/reducers/app-reducer';
 import { signIn } from '../../BLL/reducers/auth-reducer';
 import { AppDispatchType, AppStateType } from '../../BLL/store';
 import Preloader from '../../components/Preloader/Preloader';
@@ -45,6 +45,7 @@ function SignInPage() {
   useEffect(() => {
     if (isLoggedIn) {
       navigate(PATH.MAIN);
+      dispatch(setAppStatus({ status: 'idle' }));
     }
   }, [isLoggedIn, navigate]);
 

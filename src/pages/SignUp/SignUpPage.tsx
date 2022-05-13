@@ -4,7 +4,7 @@ import { useFormik } from 'formik';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { AppStatusType } from '../../BLL/reducers/app-reducer';
+import { AppStatusType, setAppStatus } from '../../BLL/reducers/app-reducer';
 import { signUp } from '../../BLL/reducers/auth-reducer';
 import { AppDispatchType, AppStateType } from '../../BLL/store';
 import Preloader from '../../components/Preloader/Preloader';
@@ -60,6 +60,12 @@ function SignUpPage() {
       navigate(PATH.MAIN);
     }
   }, [isLoggedIn, navigate]);
+  useEffect(() => {
+    if (appStatus === 'succeeded') {
+      navigate(PATH.SIGN_IN);
+      dispatch(setAppStatus({ status: 'idle' }));
+    }
+  }, [appStatus, dispatch, navigate]);
 
   return (
     <SignUPContainer elevation={8}>
