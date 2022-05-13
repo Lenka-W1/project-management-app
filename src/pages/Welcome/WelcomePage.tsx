@@ -38,10 +38,10 @@ function WelcomePage() {
             <strong>A project management system</strong> is an application that helps an individual
             in a team or group of developers achieve their goals.
           </Description>
-          <WelcomeImage></WelcomeImage>
+          <WelcomeImage />
         </Section>
         <Section>
-          <BoardImage></BoardImage>
+          <BoardImage />
           <DescriptionBoard>
             <strong>Board</strong> use columns and cards to create tasks, track and organize them.
             And also assign tasks to team members. Manage projects.

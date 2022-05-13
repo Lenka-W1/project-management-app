@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { authAPI } from '../../API/API';
 import { setAppError, setAppStatus } from './app-reducer';
+import { toast } from 'react-toastify';
 
 type InitialStateType = {
   isLoggedIn: boolean;
@@ -15,10 +16,9 @@ export const signUp = createAsyncThunk(
     try {
       await authAPI.signUp(param);
       dispatch(setAppStatus({ status: 'succeeded' }));
+      toast.success('User account successfully created!');
     } catch (error) {
       dispatch(setAppError({ error: error.response.data.message }));
-    } finally {
-      dispatch(setAppStatus({ status: 'idle' }));
     }
   }
 );
@@ -28,8 +28,10 @@ export const signIn = createAsyncThunk(
     dispatch(setAppError({ error: null }));
     dispatch(setAppStatus({ status: 'loading' }));
     try {
-      await authAPI.signIn(param);
+      const res = await authAPI.signIn(param);
+      localStorage.setItem('token', res.data.token);
       dispatch(setAppStatus({ status: 'succeeded' }));
+      toast.success('Welcome!');
       return { isLoggedIn: true, login: param.login };
     } catch (error) {
       dispatch(setAppError({ error: error.response.data.message }));
