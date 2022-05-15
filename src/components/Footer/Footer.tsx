@@ -1,6 +1,6 @@
 import React from 'react';
 import GitHubIcon from '@mui/icons-material/GitHub';
-import { IconButton } from '@mui/material';
+import { Container, IconButton } from '@mui/material';
 import styled from 'styled-components';
 
 function Footer() {
@@ -8,22 +8,31 @@ function Footer() {
     window.open(`https://github.com/${gitName}`);
   };
   return (
-    <RootFooterContainer>
-      <img
-        src="https://rs.school/images/rs_school_js.svg"
-        alt="rs-logo"
-        onClick={() => window.open('https://rs.school/')}
-      />
-      <h2>©All rights reserved, 2022</h2>
-      <GitHubLinks>
-        <IconButton onClick={() => openLink('aleksandrdemidovich')}>
-          <GitHubIcon style={{ color: 'white' }} /> <h3>aleksandrdemidovich</h3>
-        </IconButton>
-        <IconButton onClick={() => openLink('Lenka-W1')}>
-          <GitHubIcon style={{ color: 'white' }} /> <h3>Lenka-W1</h3>
-        </IconButton>
-      </GitHubLinks>
-    </RootFooterContainer>
+    <Container
+      style={{
+        position: 'absolute',
+        bottom: '0',
+        maxWidth: '100vw',
+        backgroundColor: '#1976d2',
+      }}
+    >
+      <RootFooterContainer>
+        <img
+          src="https://rs.school/images/rs_school_js.svg"
+          alt="rs-logo"
+          onClick={() => window.open('https://rs.school/')}
+        />
+        <h2>©All rights reserved, 2022</h2>
+        <GitHubLinks>
+          <IconButton onClick={() => openLink('aleksandrdemidovich')}>
+            <GitHubIcon style={{ color: 'white' }} /> <h3>aleksandrdemidovich</h3>
+          </IconButton>
+          <IconButton onClick={() => openLink('Lenka-W1')}>
+            <GitHubIcon style={{ color: 'white' }} /> <h3>Lenka-W1</h3>
+          </IconButton>
+        </GitHubLinks>
+      </RootFooterContainer>
+    </Container>
   );
 }
 
@@ -31,14 +40,13 @@ export default Footer;
 
 const RootFooterContainer = styled.div`
   display: flex;
+  margin: 0 auto;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  position: absolute;
-  bottom: 0;
+  max-width: 1920px;
   background-color: #1976d2;
-  width: 100%;
-  padding: 0 20px 0 20px;
+  padding: 0 26px;
   img {
     width: 70px;
     height: 70px;
