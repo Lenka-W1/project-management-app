@@ -5,12 +5,14 @@ import SignInPage from './SignIn/SignInPage';
 import SignUpPage from './SignUp/SignUpPage';
 import BoardPage from './Board/BoardPage';
 import Error404 from './Error404/Error404';
+import EditProfile from './EditProfile/EditProfile';
 
 export const PATH = {
-  WELCOME: '/welcome',
+  WELCOME: '/',
+  EDIT_PROFILE: '/edit-profile',
   SIGN_IN: '/sign-in',
   SIGN_UP: '/sign-up',
-  MAIN: '/',
+  MAIN: '/main',
   BOARD: '/board',
   ERROR: '/404',
 };
@@ -19,6 +21,7 @@ function AppRoutes() {
   return (
     <Routes>
       <Route path={PATH.WELCOME} element={<WelcomePage />} />
+      <Route path={PATH.EDIT_PROFILE} element={<EditProfile />} />
       <Route path={PATH.SIGN_IN} element={<SignInPage />} />
       <Route path={PATH.SIGN_UP} element={<SignUpPage />} />
       <Route path={PATH.MAIN} element={<MainPage />} />
