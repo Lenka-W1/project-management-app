@@ -2,8 +2,13 @@ import React from 'react';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import { Container, IconButton } from '@mui/material';
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
+import { AppStateType } from '../../BLL/store';
 
 function Footer() {
+  const isDarkMode = useSelector<AppStateType, 'dark' | 'light'>(
+    (state) => state.app.settings.mode
+  );
   const openLink = (gitName: string) => {
     window.open(`https://github.com/${gitName}`);
   };
@@ -13,7 +18,7 @@ function Footer() {
         position: 'absolute',
         bottom: '0',
         maxWidth: '100vw',
-        backgroundColor: '#1976d2',
+        backgroundColor: isDarkMode === 'light' ? '#42a5f5' : '#272727',
       }}
     >
       <RootFooterContainer>
@@ -40,12 +45,10 @@ export default Footer;
 
 const RootFooterContainer = styled.div`
   display: flex;
-  margin: 0 auto;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   max-width: 1920px;
-  background-color: #1976d2;
   padding: 0 26px;
   img {
     width: 70px;
@@ -59,6 +62,9 @@ const RootFooterContainer = styled.div`
 `;
 
 const GitHubLinks = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
   h3 {
     font-size: 18px;
     color: white;

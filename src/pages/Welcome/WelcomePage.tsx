@@ -1,11 +1,23 @@
 import { Button, Stack } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
+import { AppStateType } from '../../BLL/store';
 
 function WelcomePage() {
+  const isDarkMode = useSelector<AppStateType, 'dark' | 'light'>(
+    (state) => state.app.settings.mode
+  );
   const link = useNavigate();
   return (
-    <RootWelcomeContainer>
+    <RootWelcomeContainer
+      style={{
+        background:
+          isDarkMode === 'light'
+            ? 'linear-gradient(180deg, rgba(129, 200, 240, 1) 0%, rgba(234, 239, 245, 1) 69%)'
+            : '#2F2F2F',
+      }}
+    >
       <WelcomePageWrapper>
         <TitleBlock>
           <Title>Project managment app</Title>
@@ -47,9 +59,18 @@ function WelcomePage() {
             And also assign tasks to team members. Manage projects.
           </DescriptionBoard>
         </Section>
-        <TeamBlock>
+        <TeamBlock
+          style={{ borderTop: isDarkMode === 'light' ? '1px solid #1976d2' : '1px solid #ffffff' }}
+        >
           <TitleTeamBlock>Application development team</TitleTeamBlock>
-          <TeamMembers>
+          <TeamMembers
+            style={{
+              boxShadow:
+                isDarkMode === 'light'
+                  ? '0px 5px 10px 2px rgba(25, 118, 210, 0.2)'
+                  : '0px 5px 10px 2px white',
+            }}
+          >
             <div className="developer-info">
               <img src="photo_2022-02-19_13-11-57.jpg" className="photo two" alt="Elena" />
               <h2>Elena Khovavko</h2>
@@ -89,7 +110,7 @@ const TitleBlock = styled.div`
 `;
 
 const Title = styled.h1`
-  color: #091e42;
+  //color: #091e42;
   font-size: 24px;
   text-transform: uppercase;
 `;
@@ -106,7 +127,7 @@ const Description = styled.p`
   font-size: 40px;
   width: 700px;
   align-self: center;
-  color: #091e42;
+  //color: #091e42;
   font-family: Open Sans;
   font-weight: 500;
   display: flex;
@@ -117,7 +138,7 @@ const DescriptionBoard = styled.p`
   font-size: 40px;
   width: 700px;
   align-self: center;
-  color: #091e42;
+  //color: #091e42;
   font-family: Open Sans;
   font-weight: 500;
   display: flex;
@@ -153,7 +174,6 @@ const TeamBlock = styled.div`
 `;
 
 const TitleTeamBlock = styled.h2`
-  color: #1976d2;
   font-size: 28px;
   text-transform: uppercase;
   margin-bottom: 20px;
@@ -166,5 +186,4 @@ const TeamMembers = styled.div`
   justify-content: space-around;
   display: flex;
   flex-wrap: wrap;
-  box-shadow: 0px 5px 10px 2px rgba(25, 118, 210, 0.2);
 `;

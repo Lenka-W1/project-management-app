@@ -3,22 +3,35 @@ import {
   Box,
   Button,
   Container,
-  CssBaseline,
   Stack,
   styled,
   Switch,
   Toolbar,
+  Tooltip,
   Typography,
 } from '@mui/material';
 import { NavLink } from 'react-router-dom';
 import { PATH } from '../../pages/AppRoutes';
+import NightlightOutlinedIcon from '@mui/icons-material/NightlightOutlined';
+import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatchType, AppStateType } from '../../BLL/store';
+import { setAppMode } from '../../BLL/reducers/app-reducer';
 
 const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
 function Header() {
+  const isDarkMode = useSelector<AppStateType, 'dark' | 'light'>(
+    (state) => state.app.settings.mode
+  );
+  const dispatch = useDispatch<AppDispatchType>();
+
+  const toggleAppMode = () => {
+    dispatch(setAppMode({ mode: isDarkMode === 'dark' ? 'light' : 'dark' }));
+  };
+
   return (
     <>
-      <CssBaseline />
       <StyledHeader position="sticky">
         <Container style={{ maxWidth: '1920px' }}>
           <Toolbar
@@ -41,6 +54,18 @@ function Header() {
               </NavLink>
             </Box>
             <Box sx={{ display: 'flex' }}>
+              <Tooltip
+                title={isDarkMode == 'light' ? 'Switch to dark theme' : 'Switch to light theme'}
+                placement="bottom"
+              >
+                <ModeButton variant="outlined" onClick={toggleAppMode}>
+                  {isDarkMode === 'light' ? (
+                    <NightlightOutlinedIcon fontSize={'small'} style={{ color: 'grey' }} />
+                  ) : (
+                    <LightModeOutlinedIcon fontSize={'small'} style={{ color: '#f57c00' }} />
+                  )}
+                </ModeButton>
+              </Tooltip>
               <Stack direction="row" spacing={1} alignItems="center">
                 <Typography>RU</Typography>
                 <Switch {...label} defaultChecked color="default" />
@@ -69,8 +94,17 @@ const StyledHeader = styled(AppBar)`
 const SignOutButton = styled(Button)({
   color: '#ffffff',
   marginLeft: '20px',
+  border: '1px solid #ffffff',
   '&:hover': {
-    border: '1px solid #ffffff',
     backgroundColor: '#2591cf79',
+  },
+});
+const ModeButton = styled(Button)({
+  color: '#ffffff',
+  marginRight: '20px',
+  width: '20px',
+  border: '1px solid #ffffff',
+  '&:hover': {
+    borderColor: '#ffffff',
   },
 });

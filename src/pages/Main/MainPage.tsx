@@ -11,6 +11,7 @@ import { fetchAllBoards } from '../../BLL/reducers/board-reducer';
 import { useNavigate } from 'react-router-dom';
 import { PATH } from '../AppRoutes';
 import ConfirmationModal from '../../components/ModalWindows/confirmationModal';
+import AddIcon from '@mui/icons-material/Add';
 
 function MainPage() {
   const boards = useSelector<AppStateType, Array<BoardResponseType>>(
@@ -19,6 +20,7 @@ function MainPage() {
   const isLoggedIn = useSelector<AppStateType, boolean>((state) => state.auth.isLoggedIn);
   const [openFormModal, setOpenFormModal] = useState(false);
   const [openConfirmModal, setOpenConfirmModal] = React.useState<BoardResponseType | null>(null);
+  const [searchBoardName, setSearchBoardName] = useState('');
   const dispatch = useDispatch<AppDispatchType>();
   const navigate = useNavigate();
   useEffect(() => {
@@ -30,8 +32,11 @@ function MainPage() {
   const handleOpenModal = (isOpen: boolean) => {
     setOpenFormModal(isOpen);
   };
-  const boardElements = boards.map((b) => {
-    return (
+  const searchBoardHandler = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+    setSearchBoardName(e.currentTarget.value);
+  };
+  const boardElements = boards
+    .map((b) => (
       <BoardCard
         key={b.id}
         id={b.id}
@@ -39,19 +44,30 @@ function MainPage() {
         description={b.description}
         setOpenConfirmModal={setOpenConfirmModal}
       />
-    );
-  });
+    ))
+    .filter((b) => b.props.title.toLowerCase().includes(searchBoardName.toLowerCase()));
 
   return (
     <RootContainer>
       <MainHeader>
-        <h3>Boards shown: 2 of 2</h3>
+        <h3>
+          Boards shown:{' '}
+          {
+            boards.filter((b) => b.title.toLowerCase().includes(searchBoardName.toLowerCase()))
+              .length
+          }{' '}
+          of {boards.length}
+        </h3>
         <div>
           <TextField
             id="input-with-icon-textfield"
             label="Search"
             size={'small'}
             placeholder={'Search board'}
+            value={searchBoardName}
+            onChange={(e) => {
+              searchBoardHandler(e);
+            }}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -63,7 +79,11 @@ function MainPage() {
         </div>
       </MainHeader>
       <BoardsContainer>
-        <CreateBoardsButton variant={'outlined'} onClick={() => handleOpenModal(true)}>
+        <CreateBoardsButton
+          variant={'outlined'}
+          startIcon={<AddIcon />}
+          onClick={() => handleOpenModal(true)}
+        >
           Create a new Board
         </CreateBoardsButton>
         {boardElements}
@@ -94,7 +114,7 @@ const MainHeader = styled.div`
 const RootContainer = styled.div`
   width: 80vw;
   margin: 0 auto;
-  padding: 15px 0 15px 0;
+  padding: 15px 0 80px 0;
 `;
 const BoardsContainer = styled.div`
   display: flex;
