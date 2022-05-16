@@ -6,8 +6,11 @@ import Footer from './components/Footer/Footer';
 import { Slide, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Header from './components/Header/Header';
-import { Box, Fab, useScrollTrigger, Zoom } from '@mui/material';
+import { Box, CssBaseline, Fab, ThemeProvider, useScrollTrigger, Zoom } from '@mui/material';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import { useSelector } from 'react-redux';
+import { AppStateType } from './BLL/store';
+import { darkTheme, lightTheme } from './config/AppMode';
 
 interface Props {
   window?: () => Window;
@@ -50,29 +53,39 @@ function ScrollTop(props: Props) {
 }
 
 function App(props: Props) {
+  const isDarkMode = useSelector<AppStateType, 'dark' | 'light'>(
+    (state) => state.app.settings.mode
+  );
   return (
-    <div className="App">
-      <Header />
-      <AppRoutes />
-      <Footer />
-      <ScrollTop {...props}>
-        <Fab color="info" size="small" aria-label="scroll back to top">
-          <KeyboardArrowUpIcon />
-        </Fab>
-      </ScrollTop>
-      <ToastContainer
-        position="bottom-left"
-        autoClose={2000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        transition={Slide}
-      />
-    </div>
+    <ThemeProvider theme={isDarkMode === 'dark' ? darkTheme : lightTheme}>
+      <CssBaseline />
+      <div className="App">
+        <Header />
+        <AppRoutes />
+        <Footer />
+        <ScrollTop {...props}>
+          <Fab
+            color={isDarkMode === 'light' ? 'info' : 'default'}
+            size="small"
+            aria-label="scroll back to top"
+          >
+            <KeyboardArrowUpIcon style={{ color: isDarkMode === 'light' ? 'white' : 'black' }} />
+          </Fab>
+        </ScrollTop>
+        <ToastContainer
+          position="bottom-left"
+          autoClose={2000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          transition={Slide}
+        />
+      </div>
+    </ThemeProvider>
   );
 }
 

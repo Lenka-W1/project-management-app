@@ -13,7 +13,7 @@ export const PATH = {
   SIGN_IN: '/sign-in',
   SIGN_UP: '/sign-up',
   MAIN: '/main',
-  BOARD: '/board',
+  BOARD: '/board/:id',
   ERROR: '/404',
 };
 

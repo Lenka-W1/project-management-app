@@ -63,7 +63,7 @@ function ConfirmationModal(props: AlertDialogForDeletePackPropsType) {
             )}
           </DialogContentText>
         </DialogContent>
-        <DialogActions>
+        <DialogActions style={{ margin: '0 10px 10px 0' }}>
           <Button onClick={handleClose} variant={'outlined'}>
             Cancel
           </Button>

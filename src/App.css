@@ -20,7 +20,7 @@
   align-items: center;
   flex-wrap: wrap;
   justify-content: space-around;
-  color: #091e42;
+  /*color: #091e42;*/
   max-width: 300px;
   text-align: center;
 }

@@ -32,10 +32,11 @@ export const boardsAPI = {
   deleteBoard(boardId: string) {
     return instance.delete(`boards/${boardId}`);
   },
-  updateBoard(boardId: string) {
-    return instance.put<UpdateBoardParamsType, AxiosResponse<BoardResponseType>>(
-      `boards/${boardId}`
-    );
+  updateBoard(id: string, title: string, description: string) {
+    return instance.put<UpdateBoardParamsType, AxiosResponse<BoardResponseType>>(`boards/${id}`, {
+      title,
+      description,
+    });
   },
 };
 
@@ -90,7 +91,4 @@ export type BoardType = {
     }
   ];
 };
-export type UpdateBoardParamsType = {
-  title: string;
-  description: string;
-};
+export type UpdateBoardParamsType = BoardResponseType;

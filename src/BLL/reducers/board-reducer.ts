@@ -1,9 +1,13 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { BoardResponseType, boardsAPI, CreateBoardParamsType } from '../../API/API';
+import {
+  BoardResponseType,
+  boardsAPI,
+  CreateBoardParamsType,
+  UpdateBoardParamsType,
+} from '../../API/API';
 import { setAppError, setAppStatus } from './app-reducer';
 import { toast } from 'react-toastify';
 import { AppStateType } from '../store';
-import { AxiosResponse } from 'axios';
 
 type InitialStateType = {
   boards: Array<BoardResponseType>;
@@ -70,6 +74,35 @@ export const removeBoard = createAsyncThunk<
   }
 });
 
+export const updateBoard = createAsyncThunk<
+  { board: BoardResponseType },
+  { id: string; title: string; description: string },
+  { rejectValue: { error: string } }
+>(
+  'boards/updateBoard',
+  async (
+    param: { id: string; title: string; description: string },
+    { dispatch, rejectWithValue, getState }
+  ) => {
+    const updBoard = (getState() as AppStateType).boards.boards.find((b) => b.id === param.id);
+    dispatch(setAppError({ error: null }));
+    dispatch(setAppStatus({ status: 'loading' }));
+    try {
+      const res = await boardsAPI.updateBoard(param.id, param.title, param.description);
+      dispatch(setAppStatus({ status: 'succeeded' }));
+      if (updBoard) {
+        toast.success(`Board ${param.title.toUpperCase()} successfully updated!`);
+      }
+      return { board: { ...res.data } };
+    } catch (error) {
+      dispatch(setAppError({ error: error.response.data.message }));
+      return rejectWithValue({ error: error.response.data.message });
+    } finally {
+      dispatch(setAppStatus({ status: 'idle' }));
+    }
+  }
+);
+
 export const slice = createSlice({
   name: 'boards',
   initialState: {
@@ -87,6 +120,13 @@ export const slice = createSlice({
       const index = state.boards.findIndex((b) => b.id === action.payload.boardId);
       if (index > -1) {
         state.boards.splice(index, 1);
+      }
+    });
+    builder.addCase(updateBoard.fulfilled, (state, action) => {
+      const board = state.boards.find((b) => b.id === action.payload.board.id);
+      if (board) {
+        board.title = action.payload.board.title;
+        board.description = action.payload.board.description;
       }
     });
   },
