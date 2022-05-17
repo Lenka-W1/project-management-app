@@ -40,6 +40,33 @@ export const boardsAPI = {
   },
 };
 
+export const columnsAPI = {
+  fetchAllColumns(boardId: string) {
+    return instance.get<Array<ColumnResponseType>>(`boards/${boardId}/columns`);
+  },
+  createColumn(boardId: string, column: CreateColumnParamsType) {
+    return instance.post<CreateColumnParamsType, AxiosResponse<ColumnResponseType>>(
+      `boards/${boardId}/columns`,
+      column
+    );
+  },
+  fetchColumn(boardId: string, columnId: string) {
+    return instance.get<AxiosResponse<ColumnType>>(`boards/${boardId}/columns/${columnId}`);
+  },
+  deleteColumn(boardId: string, columnId: string) {
+    return instance.delete(`boards/${boardId}/columns/${columnId}`);
+  },
+  updateColumn(boardId: string, columnId: string, title: string, order: number) {
+    return instance.put<{ title: string; order: number }, AxiosResponse<BoardResponseType>>(
+      `boards/${boardId}/columns/${columnId}`,
+      {
+        title,
+        order,
+      }
+    );
+  },
+};
+
 export type SignInParamsType = {
   login: string;
   password: string;
@@ -67,28 +94,35 @@ export type BoardType = {
   id: string;
   title: string;
   description: string;
-  columns: [
+  columns: Array<ColumnType>;
+};
+export type UpdateBoardParamsType = BoardResponseType;
+export type ColumnResponseType = {
+  id: string;
+  title: string;
+  order: number;
+};
+export type CreateColumnParamsType = {
+  title: string;
+  order: number;
+};
+export type ColumnType = {
+  id: string;
+  title: string;
+  order: number;
+  tasks: Array<TaskType>;
+};
+export type TaskType = {
+  id: string;
+  title: string;
+  order: number;
+  done: boolean;
+  description: string;
+  userId: string;
+  files: [
     {
-      id: string;
-      title: string;
-      order: number;
-      tasks: [
-        {
-          id: string;
-          title: string;
-          order: 1;
-          done: false;
-          description: string;
-          userId: string;
-          files: [
-            {
-              filename: string;
-              fileSize: number;
-            }
-          ];
-        }
-      ];
+      filename: string;
+      fileSize: number;
     }
   ];
 };
-export type UpdateBoardParamsType = BoardResponseType;
