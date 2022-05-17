@@ -1,22 +1,25 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { authAPI } from '../../API/API';
+import { authAPI, SignUpParamsType } from '../../API/API';
 import { setAppError, setAppStatus } from './app-reducer';
 import { toast } from 'react-toastify';
 
 type InitialStateType = {
   isLoggedIn: boolean;
+  userId: string;
+  name: string;
   login: string;
 };
 
 export const signUp = createAsyncThunk(
   'auth/signUp',
-  async (param: { name: string; login: string; password: string }, { dispatch }) => {
+  async (param: SignUpParamsType, { dispatch }) => {
     dispatch(setAppError({ error: null }));
     dispatch(setAppStatus({ status: 'loading' }));
     try {
-      await authAPI.signUp(param);
+      const res = await authAPI.signUp(param);
       dispatch(setAppStatus({ status: 'succeeded' }));
       toast.success('User account successfully created!');
+      return { ...res.data };
     } catch (error) {
       dispatch(setAppError({ error: error.response.data.message }));
     }
@@ -46,6 +49,8 @@ export const slice = createSlice({
   name: 'auth',
   initialState: {
     isLoggedIn: false,
+    userId: '',
+    name: '',
     login: '',
   } as InitialStateType,
   reducers: {},
@@ -54,8 +59,14 @@ export const slice = createSlice({
       state.isLoggedIn = action.payload.isLoggedIn;
       if (action.payload.login) state.login = action.payload.login;
     });
+    builder.addCase(signUp.fulfilled, (state, action) => {
+      if (action.payload) {
+        state.userId = action.payload.id;
+        state.login = action.payload.login;
+        state.name = action.payload.name;
+      }
+    });
   },
 });
 
 export const authReducer = slice.reducer;
-// export const { setIsLoggedIn } = slice.actions;
