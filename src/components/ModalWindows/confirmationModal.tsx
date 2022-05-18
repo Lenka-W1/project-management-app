@@ -19,7 +19,7 @@ type AlertDialogForDeletePackPropsType = {
   open: boolean;
   setOpenConfirmModal: (deleteValue: BoardResponseType | ColumnResponseType | null) => void;
   alertTitle: string;
-  type: 'board' | 'column' | 'task';
+  type: 'board' | 'column' | 'task' | 'user';
 };
 
 function ConfirmationModal(props: AlertDialogForDeletePackPropsType) {
@@ -36,8 +36,11 @@ function ConfirmationModal(props: AlertDialogForDeletePackPropsType) {
     } else if (props.type === 'column') {
       if (id) dispatch(removeColumn({ columnId: props.deleteValueId, boardId: id }));
       props.setOpenConfirmModal(null);
-    } else {
+    } else if (props.type === 'task') {
       //dispatch delete task
+      props.setOpenConfirmModal(null);
+    } else {
+      // dispatch delete user
       props.setOpenConfirmModal(null);
     }
   };
@@ -53,14 +56,22 @@ function ConfirmationModal(props: AlertDialogForDeletePackPropsType) {
         <DialogTitle id="alert-dialog-title">{props.alertTitle}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            {props.type === 'board' ? (
+            {props.type === 'board' && (
               <span>
                 Do you really want to remove <strong>{props.deleteValueName} </strong>
                 {props.type}?
               </span>
-            ) : (
+            )}
+            {props.type === 'column' && (
               <span>
-                Do you really want to remove <strong>{props.deleteValueName}</strong>?
+                Do you really want to remove <strong>{props.deleteValueName} </strong>
+                {props.type}?
+              </span>
+            )}
+            {props.type === 'user' && (
+              <span>
+                Do you really want delete <strong>{props.deleteValueName} </strong>
+                {props.type}?
               </span>
             )}
           </DialogContentText>
