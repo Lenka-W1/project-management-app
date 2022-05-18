@@ -23,8 +23,8 @@ export const userAPI = {
   fetchAllUsers() {
     return instance.get<Array<UserResponseType>>('users');
   },
-  updateUser(id: string, name: string, login: string, password: string) {
-    return instance.put<AxiosResponse<UserParamsType, UserResponseType>>(`users/${id}`, {
+  updateUser(id: string, name: string, login: string, password?: string) {
+    return instance.put<UserParamsType, AxiosResponse<UserResponseType>>(`users/${id}`, {
       name,
       login,
       password,

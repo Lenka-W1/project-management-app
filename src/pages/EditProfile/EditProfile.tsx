@@ -1,17 +1,20 @@
 import { Box, Button, Paper, styled, TextField } from '@mui/material';
 import { useFormik } from 'formik';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { signUp } from '../../BLL/reducers/auth-reducer';
-import { AppDispatchType } from '../../BLL/store';
+import { updateUser } from '../../BLL/reducers/user-reducer';
+import { AppDispatchType, AppStateType } from '../../BLL/store';
 import { FormikErrorType } from '../SignUp/SignUpPage';
 
 function EditProfile() {
   const dispatch = useDispatch<AppDispatchType>();
+  const name = useSelector<AppStateType, string>((state) => state.auth.name);
+  const login = useSelector<AppStateType, string>((state) => state.auth.login);
 
   const formik = useFormik({
     initialValues: {
-      name: '',
-      login: '',
+      name: name,
+      login: login,
       password: '',
     },
     validate: (values) => {
@@ -29,7 +32,7 @@ function EditProfile() {
     },
     onSubmit: async (values) => {
       dispatch(
-        signUp({
+        updateUser({
           name: values.name,
           login: values.login,
           password: values.password,
@@ -77,7 +80,7 @@ function EditProfile() {
         />
       </EditForm>
       <Box>
-        <SaveButton variant={'contained'} color={'success'}>
+        <SaveButton variant={'contained'} color={'success'} onClick={() => formik.handleSubmit}>
           Save changes
         </SaveButton>
         <DeleteButton variant={'contained'} color={'error'}>
