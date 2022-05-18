@@ -101,6 +101,7 @@ export default Column;
 const RootColumnContainer = styled(Paper)`
   padding: 10px;
   min-width: 300px;
+  max-width: 300px;
   margin-right: 17px;
 
   h2 {
