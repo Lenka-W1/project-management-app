@@ -1,6 +1,6 @@
 import { Alert, Button, Divider, Link, Paper, styled, TextField, Typography } from '@mui/material';
 import { useFormik } from 'formik';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { AppStatusType, setAppStatus } from '../../BLL/reducers/app-reducer';

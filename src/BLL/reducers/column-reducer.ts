@@ -18,7 +18,7 @@ export const fetchAllColumns = createAsyncThunk<
   dispatch(setAppStatus({ status: 'loading' }));
   try {
     const res = await columnsAPI.fetchAllColumns(boardId);
-    dispatch(setAppStatus({ status: 'succeeded' }));
+    dispatch(setAppStatus({ status: 'successed' }));
     return { columns: res.data };
   } catch (error) {
     dispatch(setAppError({ error: error.response.data.message }));
@@ -41,7 +41,7 @@ export const createColumn = createAsyncThunk<
         title: param.title,
         order: param.order,
       });
-      dispatch(setAppStatus({ status: 'succeeded' }));
+      dispatch(setAppStatus({ status: 'successed' }));
       toast.success(`Column ${param.title.toUpperCase()} successfully created!`);
       return { column: res.data };
     } catch (error) {
@@ -63,7 +63,7 @@ export const removeColumn = createAsyncThunk<
   dispatch(setAppStatus({ status: 'loading' }));
   try {
     await columnsAPI.deleteColumn(param.boardId, param.columnId);
-    dispatch(setAppStatus({ status: 'succeeded' }));
+    dispatch(setAppStatus({ status: 'successed' }));
     if (column) {
       toast.success(`Column ${column.title.toUpperCase()} successfully deleted!`);
     }
@@ -93,7 +93,7 @@ export const updateColumn = createAsyncThunk<
       param.title,
       param.order
     );
-    dispatch(setAppStatus({ status: 'succeeded' }));
+    dispatch(setAppStatus({ status: 'successed' }));
     if (updColumn) {
       toast.success(`Column ${param.title.toUpperCase()} successfully updated!`);
     }
