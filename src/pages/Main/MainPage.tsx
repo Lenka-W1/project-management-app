@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { BoardResponseType } from '../../API/API';
+import { BoardResponseType, ColumnResponseType } from '../../API/API';
 import { Button, InputAdornment, TextField } from '@mui/material';
 import styled from 'styled-components';
 import SearchIcon from '@mui/icons-material/Search';
@@ -19,7 +19,9 @@ function MainPage() {
   );
   const isLoggedIn = useSelector<AppStateType, boolean>((state) => state.auth.isLoggedIn);
   const [openFormModal, setOpenFormModal] = useState(false);
-  const [openConfirmModal, setOpenConfirmModal] = React.useState<BoardResponseType | null>(null);
+  const [openConfirmModal, setOpenConfirmModal] = React.useState<
+    BoardResponseType | ColumnResponseType | null
+  >(null);
   const [searchBoardName, setSearchBoardName] = useState('');
   const dispatch = useDispatch<AppDispatchType>();
   const navigate = useNavigate();
@@ -81,6 +83,7 @@ function MainPage() {
       <BoardsContainer>
         <CreateBoardsButton
           variant={'outlined'}
+          color={'success'}
           startIcon={<AddIcon />}
           onClick={() => handleOpenModal(true)}
         >
@@ -88,7 +91,7 @@ function MainPage() {
         </CreateBoardsButton>
         {boardElements}
       </BoardsContainer>
-      {openFormModal && <FormModal open={openFormModal} setOpen={handleOpenModal} />}
+      {openFormModal && <FormModal open={openFormModal} setOpen={handleOpenModal} type={'board'} />}
       {openConfirmModal && (
         <ConfirmationModal
           open={!!openConfirmModal}

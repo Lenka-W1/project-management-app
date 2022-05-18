@@ -27,7 +27,7 @@ export const boardsAPI = {
     return instance.post<CreateBoardParamsType, AxiosResponse<BoardResponseType>>('boards', board);
   },
   fetchBoard(boardId: string) {
-    return instance.get<AxiosResponse<BoardType>>(`boards/${boardId}`);
+    return instance.get<BoardType>(`boards/${boardId}`);
   },
   deleteBoard(boardId: string) {
     return instance.delete(`boards/${boardId}`);
@@ -57,7 +57,7 @@ export const columnsAPI = {
     return instance.delete(`boards/${boardId}/columns/${columnId}`);
   },
   updateColumn(boardId: string, columnId: string, title: string, order: number) {
-    return instance.put<{ title: string; order: number }, AxiosResponse<BoardResponseType>>(
+    return instance.put<{ title: string; order: number }, AxiosResponse<ColumnResponseType>>(
       `boards/${boardId}/columns/${columnId}`,
       {
         title,
