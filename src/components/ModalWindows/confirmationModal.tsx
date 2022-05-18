@@ -8,20 +8,23 @@ import {
   DialogTitle,
 } from '@mui/material';
 import { useDispatch } from 'react-redux';
-import { BoardResponseType } from '../../API/API';
+import { BoardResponseType, ColumnResponseType } from '../../API/API';
 import { AppDispatchType } from '../../BLL/store';
 import { removeBoard } from '../../BLL/reducers/board-reducer';
+import { removeColumn } from '../../BLL/reducers/column-reducer';
+import { useParams } from 'react-router-dom';
 
 type AlertDialogForDeletePackPropsType = {
   deleteValueName: string;
   deleteValueId: string;
   open: boolean;
-  setOpenConfirmModal: (deleteValue: BoardResponseType | null) => void;
+  setOpenConfirmModal: (deleteValue: BoardResponseType | ColumnResponseType | null) => void;
   alertTitle: string;
   type: 'board' | 'column' | 'task';
 };
 
 function ConfirmationModal(props: AlertDialogForDeletePackPropsType) {
+  const { id } = useParams();
   const dispatch = useDispatch<AppDispatchType>();
   const handleClose = () => {
     props.setOpenConfirmModal(null);
@@ -32,7 +35,7 @@ function ConfirmationModal(props: AlertDialogForDeletePackPropsType) {
       dispatch(removeBoard(props.deleteValueId));
       props.setOpenConfirmModal(null);
     } else if (props.type === 'column') {
-      //dispatch delete column
+      if (id) dispatch(removeColumn({ columnId: props.deleteValueId, boardId: id }));
       props.setOpenConfirmModal(null);
     } else {
       //dispatch delete task
@@ -58,7 +61,7 @@ function ConfirmationModal(props: AlertDialogForDeletePackPropsType) {
               </span>
             ) : (
               <span>
-                Do you really want to remove - <strong>Column - {props.deleteValueName}</strong>?
+                Do you really want to remove <strong>{props.deleteValueName}</strong>?
               </span>
             )}
           </DialogContentText>

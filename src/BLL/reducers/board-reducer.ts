@@ -1,15 +1,11 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import {
-  BoardResponseType,
-  boardsAPI,
-  CreateBoardParamsType,
-  UpdateBoardParamsType,
-} from '../../API/API';
+import { BoardResponseType, boardsAPI, BoardType, CreateBoardParamsType } from '../../API/API';
 import { setAppError, setAppStatus } from './app-reducer';
 import { toast } from 'react-toastify';
 import { AppStateType } from '../store';
 
 type InitialStateType = {
+  currentBoard: BoardType;
   boards: Array<BoardResponseType>;
 };
 
@@ -24,6 +20,24 @@ export const fetchAllBoards = createAsyncThunk<
     const res = await boardsAPI.fetchAllBoards();
     dispatch(setAppStatus({ status: 'succeeded' }));
     return { boards: res.data };
+  } catch (error) {
+    dispatch(setAppError({ error: error.response.data.message }));
+    return rejectWithValue({ error: error.response.data.message });
+  } finally {
+    dispatch(setAppStatus({ status: 'idle' }));
+  }
+});
+export const fetchBoard = createAsyncThunk<
+  { board: BoardType },
+  string,
+  { rejectValue: { error: string } }
+>('boards/fetchBoard', async (boardId, { dispatch, rejectWithValue }) => {
+  dispatch(setAppError({ error: null }));
+  dispatch(setAppStatus({ status: 'loading' }));
+  try {
+    const res = await boardsAPI.fetchBoard(boardId);
+    dispatch(setAppStatus({ status: 'succeeded' }));
+    return { board: res.data };
   } catch (error) {
     dispatch(setAppError({ error: error.response.data.message }));
     return rejectWithValue({ error: error.response.data.message });
@@ -106,12 +120,16 @@ export const updateBoard = createAsyncThunk<
 export const slice = createSlice({
   name: 'boards',
   initialState: {
+    currentBoard: {} as BoardType,
     boards: [],
   } as InitialStateType,
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(fetchAllBoards.fulfilled, (state, action) => {
       state.boards = action.payload.boards;
+    });
+    builder.addCase(fetchBoard.fulfilled, (state, action) => {
+      state.currentBoard = action.payload.board;
     });
     builder.addCase(createBoard.fulfilled, (state, action) => {
       state.boards.unshift(action.payload.board);
