@@ -10,7 +10,7 @@ import { AppDispatchType, AppStateType } from '../../BLL/store';
 import Preloader from '../../components/Preloader/Preloader';
 import { PATH } from '../AppRoutes';
 
-type FormikErrorType = {
+export type FormikErrorType = {
   name?: string;
   login?: string;
   password?: string;

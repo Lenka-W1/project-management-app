@@ -19,6 +19,24 @@ export const authAPI = {
   },
 };
 
+export const userAPI = {
+  fetchAllUsers() {
+    return instance.get<Array<UserResponseType>>('users');
+  },
+  updateUser(id: string, name: string, login: string, password: string) {
+    return instance.put<AxiosResponse<UserParamsType, UserResponseType>>(`users/${id}`, {
+      name,
+      login,
+      password,
+    });
+  },
+  deleteUser(userId: string) {
+    return instance.delete(`users/${userId}`);
+  },
+};
+
+console.log(userAPI.fetchAllUsers());
+
 export const boardsAPI = {
   fetchAllBoards() {
     return instance.get<Array<BoardResponseType>>('boards');
@@ -125,4 +143,14 @@ export type TaskType = {
       fileSize: number;
     }
   ];
+};
+export type UserParamsType = {
+  name: string;
+  login: string;
+  password: string;
+};
+export type UserResponseType = {
+  id: string;
+  name: string;
+  login: string;
 };

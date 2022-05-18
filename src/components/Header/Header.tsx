@@ -71,7 +71,11 @@ function Header() {
                 <Switch {...label} defaultChecked color="default" />
                 <Typography>EN</Typography>
               </Stack>
-              <SignOutButton variant={'outlined'} size={'small'}>
+              <SignOutButton
+                variant={'outlined'}
+                size={'small'}
+                style={{ border: isDarkMode === 'light' ? '1px solid #ffffff' : '' }}
+              >
                 Sign Out
               </SignOutButton>
             </Box>
@@ -94,15 +98,18 @@ const StyledHeader = styled(AppBar)`
 const SignOutButton = styled(Button)({
   color: '#ffffff',
   marginLeft: '20px',
-  border: '1px solid #ffffff',
   '&:hover': {
     backgroundColor: '#2591cf79',
   },
 });
+
 const ModeButton = styled(Button)({
   color: '#ffffff',
   marginRight: '20px',
-  width: '20px',
+  minWidth: '20px',
+  height: '30px',
+  padding: '0 5px',
+  alignSelf: 'center',
   border: '1px solid #ffffff',
   '&:hover': {
     borderColor: '#ffffff',
