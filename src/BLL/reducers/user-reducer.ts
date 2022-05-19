@@ -3,6 +3,7 @@ import { toast } from 'react-toastify';
 import { userAPI } from '../../API/API';
 import { setAppError, setAppStatus } from './app-reducer';
 import { signUp } from './auth-reducer';
+import { fetchBoard } from './board-reducer';
 
 type InitialStateType = {
   userId: string;
@@ -72,6 +73,10 @@ export const slice = createSlice({
         state.login = action.payload.login;
         state.name = action.payload.name;
       }
+    });
+    builder.addCase(fetchBoard.fulfilled, (state, action) => {
+      const userId = action.payload.board.columns[0].tasks[0].userId;
+      if (userId) state.userId = userId;
     });
   },
 });
