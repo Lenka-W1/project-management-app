@@ -40,8 +40,6 @@ export const deleteUser = createAsyncThunk(
       toast.success(`User successfully deleted`);
     } catch (error) {
       dispatch(setAppError({ error: error.response.data.message }));
-    } finally {
-      dispatch(setAppStatus({ status: 'idle' }));
     }
   }
 );

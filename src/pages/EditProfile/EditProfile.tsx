@@ -1,16 +1,28 @@
 import { Box, Button, Paper, styled, TextField } from '@mui/material';
 import { useFormik } from 'formik';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateUser, deleteUser } from '../../BLL/reducers/user-reducer';
+import { useNavigate } from 'react-router-dom';
+import { BoardResponseType, ColumnResponseType, UserResponseType } from '../../API/API';
+import { AppStatusType, setAppStatus } from '../../BLL/reducers/app-reducer';
+import { updateUser } from '../../BLL/reducers/user-reducer';
 import { AppDispatchType, AppStateType } from '../../BLL/store';
+import ConfirmationModal from '../../components/ModalWindows/confirmationModal';
+import { PATH } from '../AppRoutes';
 import { FormikErrorType } from '../SignUp/SignUpPage';
 
 function EditProfile() {
+  const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatchType>();
+  const appStatus = useSelector<AppStateType, AppStatusType>((state) => state.app.status);
   const user = useSelector<
     AppStateType,
     { userId: string; name: string; login: string; password: string }
   >((state) => state.user);
+
+  const [openConfirmModal, setOpenConfirmModal] = React.useState<
+    ColumnResponseType | BoardResponseType | UserResponseType | null
+  >(null);
 
   const formik = useFormik({
     initialValues: {
@@ -43,8 +55,15 @@ function EditProfile() {
     },
   });
 
+  useEffect(() => {
+    if (appStatus === 'successed') {
+      navigate(PATH.WELCOME);
+      dispatch(setAppStatus({ status: 'idle' }));
+    }
+  }, [appStatus, dispatch, navigate]);
+
   const removeUser = () => {
-    dispatch(deleteUser(user.userId));
+    setOpenConfirmModal({ id: user.userId, name: user.name, login: user.login });
   };
 
   return (
@@ -92,6 +111,16 @@ function EditProfile() {
           </DeleteButton>
         </Box>
       </EditForm>
+      {openConfirmModal && (
+        <ConfirmationModal
+          open={!!openConfirmModal}
+          type={'user'}
+          deleteValueId={openConfirmModal.id}
+          deleteValueName={(openConfirmModal as UserResponseType).name}
+          alertTitle={'Delete User?'}
+          setOpenConfirmModal={setOpenConfirmModal}
+        />
+      )}
     </EditContainer>
   );
 }

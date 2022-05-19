@@ -67,7 +67,7 @@ export const slice = createSlice({
         state.name = action.payload.name;
       }
     });
-    builder.addCase(deleteUser.fulfilled, (state, action) => {
+    builder.addCase(deleteUser.fulfilled, (state) => {
       state.isLoggedIn = false;
       state.login = '';
       state.name = '';
