@@ -18,7 +18,7 @@ export const fetchAllBoards = createAsyncThunk<
   dispatch(setAppStatus({ status: 'loading' }));
   try {
     const res = await boardsAPI.fetchAllBoards();
-    dispatch(setAppStatus({ status: 'succeeded' }));
+    dispatch(setAppStatus({ status: 'successed' }));
     return { boards: res.data };
   } catch (error) {
     dispatch(setAppError({ error: error.response.data.message }));
@@ -36,7 +36,7 @@ export const fetchBoard = createAsyncThunk<
   dispatch(setAppStatus({ status: 'loading' }));
   try {
     const res = await boardsAPI.fetchBoard(boardId);
-    dispatch(setAppStatus({ status: 'succeeded' }));
+    dispatch(setAppStatus({ status: 'successed' }));
     return { board: res.data };
   } catch (error) {
     dispatch(setAppError({ error: error.response.data.message }));
@@ -54,7 +54,7 @@ export const createBoard = createAsyncThunk<
   dispatch(setAppStatus({ status: 'loading' }));
   try {
     const res = await boardsAPI.createBoard(param);
-    dispatch(setAppStatus({ status: 'succeeded' }));
+    dispatch(setAppStatus({ status: 'successed' }));
     toast.success(`Board ${param.title.toUpperCase()} successfully created!`);
     return { board: res.data };
   } catch (error) {
@@ -75,7 +75,7 @@ export const removeBoard = createAsyncThunk<
   dispatch(setAppStatus({ status: 'loading' }));
   try {
     await boardsAPI.deleteBoard(boardId);
-    dispatch(setAppStatus({ status: 'succeeded' }));
+    dispatch(setAppStatus({ status: 'successed' }));
     if (removedBoard) {
       toast.success(`Board ${removedBoard.title.toUpperCase()} successfully deleted!`);
     }
@@ -103,7 +103,7 @@ export const updateBoard = createAsyncThunk<
     dispatch(setAppStatus({ status: 'loading' }));
     try {
       const res = await boardsAPI.updateBoard(param.id, param.title, param.description);
-      dispatch(setAppStatus({ status: 'succeeded' }));
+      dispatch(setAppStatus({ status: 'successed' }));
       if (updBoard) {
         toast.success(`Board ${param.title.toUpperCase()} successfully updated!`);
       }

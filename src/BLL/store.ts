@@ -4,11 +4,13 @@ import thunkMiddleware from 'redux-thunk';
 import { appReducer } from './reducers/app-reducer';
 import { authReducer } from './reducers/auth-reducer';
 import { boardReducer } from './reducers/board-reducer';
+import { userReducer } from './reducers/user-reducer';
 import { columnReducer } from './reducers/column-reducer';
 
 export const rootReducer = combineReducers({
   app: appReducer,
   auth: authReducer,
+  user: userReducer,
   boards: boardReducer,
   columns: columnReducer,
 });

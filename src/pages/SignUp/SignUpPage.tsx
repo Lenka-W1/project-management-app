@@ -1,7 +1,7 @@
 import { ArrowBack } from '@mui/icons-material';
 import { Alert, Button, IconButton, Paper, styled, TextField, Tooltip } from '@mui/material';
 import { useFormik } from 'formik';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { AppStatusType, setAppStatus } from '../../BLL/reducers/app-reducer';
@@ -10,7 +10,7 @@ import { AppDispatchType, AppStateType } from '../../BLL/store';
 import Preloader from '../../components/Preloader/Preloader';
 import { PATH } from '../AppRoutes';
 
-type FormikErrorType = {
+export type FormikErrorType = {
   name?: string;
   login?: string;
   password?: string;
@@ -61,7 +61,7 @@ function SignUpPage() {
     }
   }, [isLoggedIn, navigate]);
   useEffect(() => {
-    if (appStatus === 'succeeded') {
+    if (appStatus === 'successed') {
       navigate(PATH.SIGN_IN);
       dispatch(setAppStatus({ status: 'idle' }));
     }

@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { authAPI, SignUpParamsType } from '../../API/API';
 import { setAppError, setAppStatus } from './app-reducer';
+import { deleteUser } from './user-reducer';
 import { toast } from 'react-toastify';
 
 type InitialStateType = {
@@ -17,7 +18,7 @@ export const signUp = createAsyncThunk(
     dispatch(setAppStatus({ status: 'loading' }));
     try {
       const res = await authAPI.signUp(param);
-      dispatch(setAppStatus({ status: 'succeeded' }));
+      dispatch(setAppStatus({ status: 'successed' }));
       toast.success('User account successfully created!');
       return { ...res.data };
     } catch (error) {
@@ -33,7 +34,7 @@ export const signIn = createAsyncThunk(
     try {
       const res = await authAPI.signIn(param);
       localStorage.setItem('token', res.data.token);
-      dispatch(setAppStatus({ status: 'succeeded' }));
+      dispatch(setAppStatus({ status: 'successed' }));
       toast.success('Welcome!');
       return { isLoggedIn: true, login: param.login };
     } catch (error) {
@@ -65,6 +66,12 @@ export const slice = createSlice({
         state.login = action.payload.login;
         state.name = action.payload.name;
       }
+    });
+    builder.addCase(deleteUser.fulfilled, (state) => {
+      state.isLoggedIn = false;
+      state.login = '';
+      state.name = '';
+      state.userId = '';
     });
   },
 });

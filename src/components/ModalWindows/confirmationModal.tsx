@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   Button,
   Dialog,
@@ -8,17 +7,20 @@ import {
   DialogTitle,
 } from '@mui/material';
 import { useDispatch } from 'react-redux';
-import { BoardResponseType, ColumnResponseType } from '../../API/API';
+import { BoardResponseType, ColumnResponseType, UserResponseType } from '../../API/API';
 import { AppDispatchType } from '../../BLL/store';
 import { removeBoard } from '../../BLL/reducers/board-reducer';
 import { removeColumn } from '../../BLL/reducers/column-reducer';
 import { useParams } from 'react-router-dom';
+import { deleteUser } from '../../BLL/reducers/user-reducer';
 
 type AlertDialogForDeletePackPropsType = {
   deleteValueName: string;
   deleteValueId: string;
   open: boolean;
-  setOpenConfirmModal: (deleteValue: BoardResponseType | ColumnResponseType | null) => void;
+  setOpenConfirmModal: (
+    deleteValue: BoardResponseType | ColumnResponseType | UserResponseType | null
+  ) => void;
   alertTitle: string;
   type: 'board' | 'column' | 'task' | 'user';
 };
@@ -40,8 +42,8 @@ function ConfirmationModal(props: AlertDialogForDeletePackPropsType) {
     } else if (props.type === 'task') {
       //dispatch delete task
       props.setOpenConfirmModal(null);
-    } else {
-      // dispatch delete user
+    } else if (props.type === 'user') {
+      dispatch(deleteUser(props.deleteValueId));
       props.setOpenConfirmModal(null);
     }
   };

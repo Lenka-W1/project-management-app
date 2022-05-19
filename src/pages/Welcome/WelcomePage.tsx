@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { AppStateType } from '../../BLL/store';
+import { PATH } from '../AppRoutes';
 
 function WelcomePage() {
   const isDarkMode = useSelector<AppStateType, 'dark' | 'light'>(
@@ -25,21 +26,21 @@ function WelcomePage() {
             <Button
               variant={'outlined'}
               style={{ fontWeight: '600' }}
-              onClick={() => link('/sign-in')}
+              onClick={() => link(PATH.SIGN_IN)}
             >
               Sign In
             </Button>
             <Button
               variant={'contained'}
               style={{ color: 'white' }}
-              onClick={() => link('/sign-up')}
+              onClick={() => link(PATH.SIGN_UP)}
             >
               Sign Up
             </Button>
             <Button
               variant={'contained'}
               style={{ color: 'white', display: 'none' }}
-              onClick={() => link('/')}
+              onClick={() => link(PATH.MAIN)}
             >
               Go to Main Page
             </Button>
@@ -47,20 +48,24 @@ function WelcomePage() {
         </TitleBlock>
         <Section>
           <Description>
-            <strong>A project management system</strong> is an application that helps an individual
-            in a team or group of developers achieve their goals.
+            <strong style={{ color: isDarkMode === 'light' ? '' : '#3f51b5' }}>
+              A project management system
+            </strong>{' '}
+            is an application that helps an individual in a team or group of developers achieve
+            their goals.
           </Description>
           <WelcomeImage />
         </Section>
         <Section>
           <BoardImage />
           <DescriptionBoard>
-            <strong>Board</strong> use columns and cards to create tasks, track and organize them.
-            And also assign tasks to team members. Manage projects.
+            <strong style={{ color: isDarkMode === 'light' ? '' : '#3f51b5' }}>Board</strong> use
+            columns and cards to create tasks, track and organize them. And also assign tasks to
+            team members. Manage projects.
           </DescriptionBoard>
         </Section>
         <TeamBlock
-          style={{ borderTop: isDarkMode === 'light' ? '1px solid #1976d2' : '1px solid #ffffff' }}
+          style={{ borderTop: isDarkMode === 'light' ? '1px solid #42a5f5' : '1px solid #ffffff' }}
         >
           <TitleTeamBlock>Application development team</TitleTeamBlock>
           <TeamMembers
@@ -68,7 +73,7 @@ function WelcomePage() {
               boxShadow:
                 isDarkMode === 'light'
                   ? '0px 5px 10px 2px rgba(25, 118, 210, 0.2)'
-                  : '0px 5px 10px 2px white',
+                  : '0px 5px 10px 2px rgba(255, 255, 255, 0.425)',
             }}
           >
             <div className="developer-info">
@@ -94,8 +99,6 @@ export default WelcomePage;
 
 const RootWelcomeContainer = styled.div`
   min-height: calc(100vh - 134px);
-  background: rgb(129, 200, 240);
-  background: linear-gradient(180deg, rgba(129, 200, 240, 1) 0%, rgba(234, 239, 245, 1) 69%);
 `;
 
 const WelcomePageWrapper = styled.div`
@@ -110,7 +113,6 @@ const TitleBlock = styled.div`
 `;
 
 const Title = styled.h1`
-  //color: #091e42;
   font-size: 24px;
   text-transform: uppercase;
 `;
@@ -127,7 +129,6 @@ const Description = styled.p`
   font-size: 40px;
   width: 700px;
   align-self: center;
-  //color: #091e42;
   font-family: Open Sans;
   font-weight: 500;
   display: flex;
@@ -138,7 +139,6 @@ const DescriptionBoard = styled.p`
   font-size: 40px;
   width: 700px;
   align-self: center;
-  //color: #091e42;
   font-family: Open Sans;
   font-weight: 500;
   display: flex;
@@ -168,7 +168,6 @@ const TeamBlock = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
-  border-top: 1px solid #1976d2;
   padding: 80px 0;
   margin-top: 100px;
 `;

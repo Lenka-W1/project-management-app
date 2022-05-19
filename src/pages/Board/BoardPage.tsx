@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { BoardResponseType, BoardType, ColumnResponseType, ColumnType } from '../../API/API';
+import {
+  BoardResponseType,
+  BoardType,
+  ColumnResponseType,
+  ColumnType,
+  UserResponseType,
+} from '../../API/API';
 import styled from 'styled-components';
 import { Button, IconButton } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
@@ -19,7 +25,7 @@ function BoardPage() {
   const dispatch = useDispatch<AppDispatchType>();
   const [openFormModal, setOpenFormModal] = useState(false);
   const [openConfirmModal, setOpenConfirmModal] = React.useState<
-    ColumnResponseType | BoardResponseType | null
+    ColumnResponseType | BoardResponseType | UserResponseType | null
   >(null);
   const board = useSelector<AppStateType, BoardType>((state) => state.boards.currentBoard);
   const columns = useSelector<AppStateType, Array<ColumnType>>((state) => state.columns.columns);
@@ -78,7 +84,7 @@ function BoardPage() {
           open={!!openConfirmModal}
           type={'column'}
           deleteValueId={openConfirmModal.id}
-          deleteValueName={openConfirmModal.title}
+          deleteValueName={(openConfirmModal as ColumnResponseType).title}
           alertTitle={'Delete Column?'}
           setOpenConfirmModal={setOpenConfirmModal}
         />

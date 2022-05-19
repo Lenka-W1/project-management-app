@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { BoardResponseType, ColumnResponseType } from '../../API/API';
+import { BoardResponseType, ColumnResponseType, UserResponseType } from '../../API/API';
 import { Button, InputAdornment, TextField } from '@mui/material';
 import styled from 'styled-components';
 import SearchIcon from '@mui/icons-material/Search';
@@ -20,7 +20,7 @@ function MainPage() {
   const isLoggedIn = useSelector<AppStateType, boolean>((state) => state.auth.isLoggedIn);
   const [openFormModal, setOpenFormModal] = useState(false);
   const [openConfirmModal, setOpenConfirmModal] = React.useState<
-    BoardResponseType | ColumnResponseType | null
+    BoardResponseType | ColumnResponseType | UserResponseType | null
   >(null);
   const [searchBoardName, setSearchBoardName] = useState('');
   const dispatch = useDispatch<AppDispatchType>();
@@ -97,7 +97,7 @@ function MainPage() {
           open={!!openConfirmModal}
           type={'board'}
           deleteValueId={openConfirmModal.id}
-          deleteValueName={openConfirmModal.title}
+          deleteValueName={(openConfirmModal as BoardResponseType).title}
           alertTitle={'Delete Board?'}
           setOpenConfirmModal={setOpenConfirmModal}
         />
