@@ -6,6 +6,7 @@ import { authReducer } from './reducers/auth-reducer';
 import { boardReducer } from './reducers/board-reducer';
 import { userReducer } from './reducers/user-reducer';
 import { columnReducer } from './reducers/column-reducer';
+import { tasksReducer } from './reducers/tasks-reducers';
 
 export const rootReducer = combineReducers({
   app: appReducer,
@@ -13,6 +14,7 @@ export const rootReducer = combineReducers({
   user: userReducer,
   boards: boardReducer,
   columns: columnReducer,
+  tasks: tasksReducer,
 });
 
 export const store = configureStore({

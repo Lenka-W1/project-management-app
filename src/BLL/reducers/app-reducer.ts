@@ -16,7 +16,7 @@ export const slice = createSlice({
     status: 'idle',
     error: '',
     settings: {
-      mode: 'light',
+      mode: 'dark',
       language: 'ru',
     },
   } as InitialStateType,

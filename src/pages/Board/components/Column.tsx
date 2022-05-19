@@ -1,30 +1,33 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Button, IconButton, InputAdornment, OutlinedInput, Paper, Tooltip } from '@mui/material';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import ClearIcon from '@mui/icons-material/Clear';
 import DoneIcon from '@mui/icons-material/Done';
 import Task from './Task';
-import { ColumnResponseType, TaskType } from '../../../API/API';
-import { useDispatch } from 'react-redux';
-import { AppDispatchType } from '../../../BLL/store';
+import { ColumnResponseType } from '../../../API/API';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatchType, AppStateType } from '../../../BLL/store';
 import { updateColumn } from '../../../BLL/reducers/column-reducer';
 import { useParams } from 'react-router-dom';
+import { fetchAllTasks, TasksInitialStateType } from '../../../BLL/reducers/tasks-reducers';
+import FormModal from '../../../components/ModalWindows/FormModal';
 
 type ColumnPropsType = {
   columnId: string;
   title: string;
   order: number;
-  tasks: Array<TaskType>;
   setOpenConfirmModal: (column: ColumnResponseType) => void;
 };
 
 function Column(props: ColumnPropsType) {
   const { id } = useParams();
-  const { columnId, title, order, tasks, setOpenConfirmModal } = props;
+  const { columnId, title, order, setOpenConfirmModal } = props;
+  const allTasks = useSelector<AppStateType, TasksInitialStateType>((state) => state.tasks);
   const dispatch = useDispatch<AppDispatchType>();
   const [editMode, setEditMode] = useState(false);
   const [columnName, setColumnName] = useState(title);
+  const [openFormModal, setOpenFormModal] = useState(false);
   const deleteColumn = () => {
     setOpenConfirmModal({ id: columnId, title: title, order: order });
   };
@@ -40,20 +43,31 @@ function Column(props: ColumnPropsType) {
   const columnNameHandler = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setColumnName(e.currentTarget.value);
   };
-  const taskElements = tasks.map((t) => {
-    return (
-      <Task
-        key={t.id}
-        id={t.id}
-        title={t.title}
-        description={t.description}
-        order={t.order}
-        done={t.done}
-        files={t.files}
-        userId={t.userId}
-      />
-    );
-  });
+
+  useEffect(() => {
+    if (id) dispatch(fetchAllTasks({ boardId: id, columnId: columnId }));
+  }, [dispatch, columnId, id]);
+
+  const addTask = () => {
+    setOpenFormModal(true);
+  };
+  const taskElements =
+    allTasks[columnId] &&
+    allTasks[columnId].map((t) => {
+      return (
+        <Task
+          key={t.id}
+          id={t.id}
+          title={t.title}
+          description={t.description}
+          order={t.order}
+          done={t.done}
+          files={t.files}
+          userId={t.userId}
+          columnId={columnId}
+        />
+      );
+    });
   return (
     <RootColumnContainer elevation={6}>
       <ColumnHeader>
@@ -89,10 +103,18 @@ function Column(props: ColumnPropsType) {
       </ColumnHeader>
       <TaskContainer>
         {taskElements}
-        <Button variant={'contained'} color={'success'}>
+        <Button variant={'contained'} color={'success'} onClick={addTask}>
           Add task
         </Button>
       </TaskContainer>
+      {openFormModal && (
+        <FormModal
+          open={openFormModal}
+          setOpen={setOpenFormModal}
+          type={'task'}
+          columnId={columnId}
+        />
+      )}
     </RootColumnContainer>
   );
 }
@@ -100,27 +122,27 @@ function Column(props: ColumnPropsType) {
 export default Column;
 const RootColumnContainer = styled(Paper)`
   padding: 10px;
+  height: fit-content;
   min-width: 300px;
   max-width: 300px;
   margin-right: 17px;
-
   h2 {
     padding-left: 10px;
     font-weight: 400;
   }
 
-  .MuiButton-contained {
+  .MuiIconButton-sizeSmall {
     visibility: visible;
   }
 
   div {
-    button {
+    .MuiIconButton-sizeSmall {
       visibility: hidden;
     }
   }
 
   :hover {
-    button {
+    .MuiIconButton-sizeSmall {
       visibility: visible;
     }
   }
@@ -135,6 +157,7 @@ const TaskContainer = styled.div`
   max-height: 50vh;
   overflow-y: auto;
   overflow-x: hidden;
+  padding-top: 10px;
 
   button {
     margin-right: 10px;

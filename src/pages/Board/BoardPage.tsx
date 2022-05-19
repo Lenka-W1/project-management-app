@@ -8,7 +8,7 @@ import {
   UserResponseType,
 } from '../../API/API';
 import styled from 'styled-components';
-import { Button, IconButton } from '@mui/material';
+import { Button } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import FormModal from '../../components/ModalWindows/FormModal';
 import { useDispatch, useSelector } from 'react-redux';
@@ -29,7 +29,6 @@ function BoardPage() {
   >(null);
   const board = useSelector<AppStateType, BoardType>((state) => state.boards.currentBoard);
   const columns = useSelector<AppStateType, Array<ColumnType>>((state) => state.columns.columns);
-  console.log(columns);
   useEffect(() => {
     if (id) dispatch(fetchBoard(id));
   }, [dispatch, id]);
@@ -43,7 +42,6 @@ function BoardPage() {
         columnId={c.id}
         title={c.title}
         order={c.order}
-        tasks={c.tasks}
         setOpenConfirmModal={setOpenConfirmModal}
       />
     );
@@ -96,6 +94,7 @@ function BoardPage() {
 export default BoardPage;
 const RootContainer = styled.div`
   width: 90vw;
+  height: 100%;
   margin: 0 auto;
   padding: 15px 0 80px 0;
   overflow-y: hidden;

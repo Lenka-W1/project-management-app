@@ -7,19 +7,21 @@ import {
   DialogTitle,
 } from '@mui/material';
 import { useDispatch } from 'react-redux';
-import { BoardResponseType, ColumnResponseType, UserResponseType } from '../../API/API';
+import { BoardResponseType, ColumnResponseType, TaskType, UserResponseType } from '../../API/API';
 import { AppDispatchType } from '../../BLL/store';
 import { removeBoard } from '../../BLL/reducers/board-reducer';
 import { removeColumn } from '../../BLL/reducers/column-reducer';
 import { useParams } from 'react-router-dom';
 import { deleteUser } from '../../BLL/reducers/user-reducer';
+import { removeTask } from '../../BLL/reducers/tasks-reducers';
 
 type AlertDialogForDeletePackPropsType = {
   deleteValueName: string;
   deleteValueId: string;
+  columnId?: string;
   open: boolean;
   setOpenConfirmModal: (
-    deleteValue: BoardResponseType | ColumnResponseType | UserResponseType | null
+    deleteValue: BoardResponseType | ColumnResponseType | UserResponseType | TaskType | null
   ) => void;
   alertTitle: string;
   type: 'board' | 'column' | 'task' | 'user';
@@ -40,7 +42,15 @@ function ConfirmationModal(props: AlertDialogForDeletePackPropsType) {
       if (id) dispatch(removeColumn({ columnId: props.deleteValueId, boardId: id }));
       props.setOpenConfirmModal(null);
     } else if (props.type === 'task') {
-      //dispatch delete task
+      if (id && props.columnId) {
+        dispatch(
+          removeTask({
+            boardId: id,
+            columnId: props.columnId,
+            taskId: props.deleteValueId,
+          })
+        );
+      }
       props.setOpenConfirmModal(null);
     } else if (props.type === 'user') {
       dispatch(deleteUser(props.deleteValueId));
@@ -72,6 +82,12 @@ function ConfirmationModal(props: AlertDialogForDeletePackPropsType) {
               </span>
             )}
             {props.type === 'user' && (
+              <span>
+                Do you really want delete <strong>{props.deleteValueName} </strong>
+                {props.type}?
+              </span>
+            )}
+            {props.type === 'task' && (
               <span>
                 Do you really want delete <strong>{props.deleteValueName} </strong>
                 {props.type}?

@@ -35,8 +35,6 @@ export const userAPI = {
   },
 };
 
-console.log(userAPI.fetchAllUsers());
-
 export const boardsAPI = {
   fetchAllBoards() {
     return instance.get<Array<BoardResponseType>>('boards');
@@ -85,6 +83,33 @@ export const columnsAPI = {
   },
 };
 
+export const tasksAPI = {
+  fetchAllTasks(boardId: string, columnId: string) {
+    return instance.get<Array<TaskResponseType>>(`boards/${boardId}/columns/${columnId}/tasks`);
+  },
+  createTask(boardId: string, columnId: string, task: CreateTaskParamsType) {
+    return instance.post<CreateTaskParamsType, AxiosResponse<TaskResponseType>>(
+      `boards/${boardId}/columns/${columnId}/tasks`,
+      task
+    );
+  },
+  fetchTask(boardId: string, columnId: string, taskId: string) {
+    return instance.get<AxiosResponse<TaskResponseType>>(
+      `boards/${boardId}/columns/${columnId}/tasks/${taskId}`
+    );
+  },
+  deleteTask(boardId: string, columnId: string, taskId: string) {
+    return instance.delete(`boards/${boardId}/columns/${columnId}/tasks/${taskId}`);
+  },
+  updateTask(boardId: string, columnId: string, taskId: string, params: UpdateTaskParamsType) {
+    return instance.put<{ title: string; order: number }, AxiosResponse<ColumnResponseType>>(
+      `boards/${boardId}/columns/${columnId}/tasks/${taskId}`,
+      params
+    );
+  },
+};
+
+//auth
 export type SignInParamsType = {
   login: string;
   password: string;
@@ -99,6 +124,7 @@ export type SignUpResponseType = {
   name: string;
   login: string;
 };
+//boards
 export type BoardResponseType = {
   id: string;
   title: string;
@@ -115,6 +141,7 @@ export type BoardType = {
   columns: Array<ColumnType>;
 };
 export type UpdateBoardParamsType = BoardResponseType;
+//columns
 export type ColumnResponseType = {
   id: string;
   title: string;
@@ -130,6 +157,34 @@ export type ColumnType = {
   order: number;
   tasks: Array<TaskType>;
 };
+//user
+export type UserParamsType = {
+  name: string;
+  login: string;
+  password: string;
+};
+export type UserResponseType = {
+  id: string;
+  name: string;
+  login: string;
+};
+//tasks
+export type TaskResponseType = {
+  id: string;
+  title: string;
+  done: boolean;
+  order: number;
+  description: string;
+  userId: string;
+  boardId: string;
+  columnId: string;
+  files: [
+    {
+      filename: string;
+      fileSize: number;
+    }
+  ];
+};
 export type TaskType = {
   id: string;
   title: string;
@@ -144,13 +199,19 @@ export type TaskType = {
     }
   ];
 };
-export type UserParamsType = {
-  name: string;
-  login: string;
-  password: string;
+export type CreateTaskParamsType = {
+  title: string;
+  done: boolean;
+  order: number;
+  description: string;
+  userId: string;
 };
-export type UserResponseType = {
-  id: string;
-  name: string;
-  login: string;
+export type UpdateTaskParamsType = {
+  title: string;
+  done: boolean;
+  order: number;
+  description: string;
+  userId: string;
+  boardId: string;
+  columnId: string;
 };
