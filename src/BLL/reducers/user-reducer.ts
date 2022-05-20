@@ -74,10 +74,10 @@ export const slice = createSlice({
         state.name = action.payload.name;
       }
     });
-    builder.addCase(fetchBoard.fulfilled, (state, action) => {
-      const userId = action.payload.board.columns[0].tasks[0].userId;
-      if (userId) state.userId = userId;
-    });
+    // builder.addCase(fetchBoard.fulfilled, (state, action) => {
+    //   const userId = action.payload.board.columns[0].tasks[0].userId;
+    //   if (userId) state.userId = userId;
+    // });
   },
 });
 

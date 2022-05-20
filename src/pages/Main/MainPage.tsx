@@ -10,7 +10,7 @@ import { AppDispatchType, AppStateType } from '../../BLL/store';
 import { fetchAllBoards } from '../../BLL/reducers/board-reducer';
 import { useNavigate } from 'react-router-dom';
 import { PATH } from '../AppRoutes';
-import ConfirmationModal from '../../components/ModalWindows/confirmationModal';
+import ConfirmationModal from '../../components/ModalWindows/ConfirmationModal';
 import AddIcon from '@mui/icons-material/Add';
 
 function MainPage() {

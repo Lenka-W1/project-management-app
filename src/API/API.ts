@@ -102,7 +102,7 @@ export const tasksAPI = {
     return instance.delete(`boards/${boardId}/columns/${columnId}/tasks/${taskId}`);
   },
   updateTask(boardId: string, columnId: string, taskId: string, params: UpdateTaskParamsType) {
-    return instance.put<{ title: string; order: number }, AxiosResponse<ColumnResponseType>>(
+    return instance.put<{ title: string; order: number }, AxiosResponse<TaskResponseType>>(
       `boards/${boardId}/columns/${columnId}/tasks/${taskId}`,
       params
     );

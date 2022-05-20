@@ -1,5 +1,10 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { CreateTaskParamsType, TaskResponseType, tasksAPI } from '../../API/API';
+import {
+  CreateTaskParamsType,
+  TaskResponseType,
+  tasksAPI,
+  UpdateTaskParamsType,
+} from '../../API/API';
 import { setAppError, setAppStatus } from './app-reducer';
 import { toast } from 'react-toastify';
 import { AppStateType } from '../store';
@@ -37,7 +42,7 @@ export const createTask = createAsyncThunk<
   try {
     const res = await tasksAPI.createTask(boardId, columnId, param);
     dispatch(setAppStatus({ status: 'successed' }));
-    toast.success(`Column ${param.title.toUpperCase()} successfully created!`);
+    toast.success(`Task ${param.title.toUpperCase()} successfully created!`);
     return { task: res.data };
   } catch (error) {
     dispatch(setAppError({ error: error.response.data.message }));
@@ -74,35 +79,35 @@ export const removeTask = createAsyncThunk<
   }
 );
 
-// export const updateColumn = createAsyncThunk<
-//   { column: ColumnResponseType },
-//   { boardId: string; columnId: string; title: string; order: number },
-//   { rejectValue: { error: string } }
-//   >('columns/updateColumn', async (param, { dispatch, rejectWithValue, getState }) => {
-//   const updColumn = (getState() as AppStateType).columns.columns.find(
-//     (c) => c.id === param.columnId
-//   );
-//   dispatch(setAppError({ error: null }));
-//   dispatch(setAppStatus({ status: 'loading' }));
-//   try {
-//     const res = await columnsAPI.updateColumn(
-//       param.boardId,
-//       param.columnId,
-//       param.title,
-//       param.order
-//     );
-//     dispatch(setAppStatus({ status: 'successed' }));
-//     if (updColumn) {
-//       toast.success(`Column ${param.title.toUpperCase()} successfully updated!`);
-//     }
-//     return { column: res.data };
-//   } catch (error) {
-//     dispatch(setAppError({ error: error.response.data.message }));
-//     return rejectWithValue({ error: error.response.data.message });
-//   } finally {
-//     dispatch(setAppStatus({ status: 'idle' }));
-//   }
-// });
+export const updateTask = createAsyncThunk<
+  { task: TaskResponseType },
+  { boardId: string; columnId: string; taskId: string; params: UpdateTaskParamsType },
+  { rejectValue: { error: string } }
+>('tasks/updateTask', async (param, { dispatch, rejectWithValue, getState }) => {
+  const task = (getState() as AppStateType).columns.columns
+    .find((c) => c.id === param.columnId)
+    ?.tasks.find((t) => t.id === param.taskId);
+  dispatch(setAppError({ error: null }));
+  dispatch(setAppStatus({ status: 'loading' }));
+  try {
+    const res = await tasksAPI.updateTask(
+      param.boardId,
+      param.columnId,
+      param.taskId,
+      param.params
+    );
+    dispatch(setAppStatus({ status: 'successed' }));
+    if (task) {
+      toast.success(`Column ${task.title.toUpperCase()} successfully updated!`);
+    }
+    return { task: res.data };
+  } catch (error) {
+    dispatch(setAppError({ error: error.response.data.message }));
+    return rejectWithValue({ error: error.response.data.message });
+  } finally {
+    dispatch(setAppStatus({ status: 'idle' }));
+  }
+});
 
 export const slice = createSlice({
   name: 'tasks',
@@ -122,13 +127,13 @@ export const slice = createSlice({
         tasks.splice(index, 1);
       }
     });
-    // builder.addCase(updateColumn.fulfilled, (state, action) => {
-    //   const column = state.columns.find((b) => b.id === action.payload.column.id);
-    //   if (column) {
-    //     column.title = action.payload.column.title;
-    //     column.order = action.payload.column.order;
-    //   }
-    // });
+    builder.addCase(updateTask.fulfilled, (state, action) => {
+      const tasks = state[action.payload.task.columnId];
+      const index = tasks.findIndex((t) => t.id === action.payload.task.id);
+      if (index > -1) {
+        tasks[index] = { ...tasks[index], ...action.payload.task };
+      }
+    });
   },
 });
 

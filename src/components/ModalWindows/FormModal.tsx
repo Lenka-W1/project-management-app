@@ -48,7 +48,7 @@ function FormModal(props: FormModalPropsType) {
     },
     validate: (values) => {
       const errors: FormikErrorType = {};
-      if (type === 'board' || type === 'task') {
+      if (type === 'board') {
         if (!values.title) {
           errors.title = 'Required';
         }
@@ -56,7 +56,21 @@ function FormModal(props: FormModalPropsType) {
           errors.description = 'Required';
         }
       }
-      if (type === 'column' || type === 'task') {
+      if (type === 'column') {
+        if (!values.order) {
+          errors.order = 'Required';
+        }
+        if (values.order <= 0) {
+          errors.order = 'Value of order should be more 0';
+        }
+      }
+      if (type === 'task') {
+        if (!values.title) {
+          errors.title = 'Required';
+        }
+        if (!values.description) {
+          errors.description = 'Required';
+        }
         if (!values.order) {
           errors.order = 'Required';
         }
@@ -108,19 +122,19 @@ function FormModal(props: FormModalPropsType) {
               'To create a new task, please enter your title, description, order and status (is done?) here.'}
           </DialogContentText>
           <StyledForm onSubmit={formik.handleSubmit}>
-            <TextField
-              margin="dense"
-              id="title"
-              label="Title"
-              fullWidth
-              variant="standard"
-              value={formik.values.title}
-              onChange={formik.handleChange}
-              error={!!formik.errors.title}
-              helperText={formik.errors.title}
-            />
-            {type === 'board' ||
-              (type === 'task' && (
+            {type === 'board' ? (
+              <>
+                <TextField
+                  margin="dense"
+                  id="title"
+                  label="Title"
+                  fullWidth
+                  variant="standard"
+                  value={formik.values.title}
+                  onChange={formik.handleChange}
+                  error={!!formik.errors.title}
+                  helperText={formik.errors.title}
+                />
                 <TextField
                   margin="dense"
                   id="description"
@@ -132,9 +146,31 @@ function FormModal(props: FormModalPropsType) {
                   error={!!formik.errors.description}
                   helperText={formik.errors.description}
                 />
-              ))}
-            {type === 'column' ||
-              (type === 'task' && (
+              </>
+            ) : (
+              <>
+                <TextField
+                  margin="dense"
+                  id="title"
+                  label="Title"
+                  fullWidth
+                  variant="standard"
+                  value={formik.values.title}
+                  onChange={formik.handleChange}
+                  error={!!formik.errors.title}
+                  helperText={formik.errors.title}
+                />
+                <TextField
+                  margin="dense"
+                  id="description"
+                  label="Description"
+                  fullWidth
+                  variant="standard"
+                  value={formik.values.description}
+                  onChange={formik.handleChange}
+                  error={!!formik.errors.description}
+                  helperText={formik.errors.description}
+                />
                 <TextField
                   type={'number'}
                   margin="dense"
@@ -147,7 +183,8 @@ function FormModal(props: FormModalPropsType) {
                   error={!!formik.errors.order}
                   helperText={formik.errors.order}
                 />
-              ))}
+              </>
+            )}
             {type === 'task' && (
               <FormGroup aria-label="position" row>
                 <FormControlLabel

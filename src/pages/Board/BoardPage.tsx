@@ -17,7 +17,7 @@ import { fetchBoard } from '../../BLL/reducers/board-reducer';
 import ArrowBackOutlinedIcon from '@mui/icons-material/ArrowBackOutlined';
 import Column from './components/Column';
 import { PATH } from '../AppRoutes';
-import ConfirmationModal from '../../components/ModalWindows/confirmationModal';
+import ConfirmationModal from '../../components/ModalWindows/ConfirmationModal';
 
 function BoardPage() {
   const { id } = useParams();
@@ -31,7 +31,7 @@ function BoardPage() {
   const columns = useSelector<AppStateType, Array<ColumnType>>((state) => state.columns.columns);
   useEffect(() => {
     if (id) dispatch(fetchBoard(id));
-  }, [dispatch, id]);
+  }, [id]);
   const handleOpenModal = (isOpen: boolean) => {
     setOpenFormModal(isOpen);
   };

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import {
   alpha,
@@ -22,25 +22,27 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { useSelector } from 'react-redux';
 import { AppStateType } from '../../../BLL/store';
-import ConfirmationModal from '../../../components/ModalWindows/confirmationModal';
-type TaskPropsType = TaskType & { columnId: string };
+import ConfirmationModal from '../../../components/ModalWindows/ConfirmationModal';
+import TaskViewModal from '../../../components/ModalWindows/TaskViewModal/TaskViewModal';
+type TaskPropsType = TaskType & { columnId: string; columnName: string };
 
 function Task(props: TaskPropsType) {
-  const { id, title, description, done, order, userId, files, columnId } = props;
+  const { id, title, description, done, order, userId, files, columnId, columnName } = props;
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [openConfirmModal, setOpenConfirmModal] = React.useState<
     ColumnResponseType | BoardResponseType | UserResponseType | TaskType | null
   >(null);
+  const [openTaskViewModal, setOpenTaskViewModal] = useState<TaskType | null>(null);
   const isDarkMode = useSelector<AppStateType, 'dark' | 'light'>(
     (state) => state.app.settings.mode
   );
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
-  const handleClose = () => {
+  const handleCloseTaskDropMenu = () => {
     setAnchorEl(null);
   };
-  const deleteColumn = () => {
+  const deleteTask = () => {
     setOpenConfirmModal({
       id: id,
       title: title,
@@ -50,6 +52,16 @@ function Task(props: TaskPropsType) {
       userId: userId,
       files: files,
     });
+    handleCloseTaskDropMenu();
+  };
+  const toggleTaskViewModal = () => {
+    if (openTaskViewModal) {
+      setOpenTaskViewModal(null);
+      handleCloseTaskDropMenu();
+    } else {
+      setOpenTaskViewModal({ ...props });
+      handleCloseTaskDropMenu();
+    }
   };
 
   return (
@@ -68,7 +80,7 @@ function Task(props: TaskPropsType) {
         invisible={!done}
         badgeContent={<CheckCircleIcon color={'success'} fontSize={'small'} />}
       >
-        <h4>{title}</h4>
+        <h4 onClick={toggleTaskViewModal}>{title}</h4>
       </StyledBadge>
       <IconButton
         onClick={handleClick}
@@ -84,13 +96,13 @@ function Task(props: TaskPropsType) {
         }}
         anchorEl={anchorEl}
         open={Boolean(anchorEl)}
-        onClose={handleClose}
+        onClose={handleCloseTaskDropMenu}
       >
-        <MenuItem onClick={handleClose} disableRipple>
+        <MenuItem onClick={toggleTaskViewModal} disableRipple>
           <Edit color={'primary'} />
           Edit
         </MenuItem>
-        <MenuItem onClick={deleteColumn} disableRipple>
+        <MenuItem onClick={deleteTask} disableRipple>
           <DeleteIcon color={'error'} />
           Delete
         </MenuItem>
@@ -106,6 +118,16 @@ function Task(props: TaskPropsType) {
           setOpenConfirmModal={setOpenConfirmModal}
         />
       )}
+      {openTaskViewModal && (
+        <TaskViewModal
+          task={props}
+          columnId={columnId}
+          columnName={columnName}
+          open={!!openTaskViewModal}
+          setOpenTaskViewModal={toggleTaskViewModal}
+          deleteTask={deleteTask}
+        />
+      )}
     </RootContainer>
   );
 }
@@ -118,11 +140,12 @@ const RootContainer = styled(Paper)`
   justify-content: space-between;
   align-items: center;
   padding: 10px;
-  margin: 0 15px 15px 0;
+  margin: 0 15px 15px 15px;
   cursor: pointer;
 
   h4 {
     font-weight: 400;
+    width: 170px;
   }
 
   .MuiIconButton-colorPrimary {
@@ -178,7 +201,7 @@ const StyledMenu = styled((props: MenuProps) => (
 }));
 const StyledBadge = styled(Badge)<BadgeProps>(({}) => ({
   '& .MuiBadge-badge': {
-    left: 238,
+    left: 220,
     top: -12,
   },
 }));
