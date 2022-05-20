@@ -7,7 +7,7 @@ import { BoardResponseType, ColumnResponseType, UserResponseType } from '../../A
 import { AppStatusType, setAppStatus } from '../../BLL/reducers/app-reducer';
 import { updateUser } from '../../BLL/reducers/user-reducer';
 import { AppDispatchType, AppStateType } from '../../BLL/store';
-import ConfirmationModal from '../../components/ModalWindows/confirmationModal';
+import ConfirmationModal from '../../components/ModalWindows/ConfirmationModal';
 import { PATH } from '../AppRoutes';
 import { FormikErrorType } from '../SignUp/SignUpPage';
 

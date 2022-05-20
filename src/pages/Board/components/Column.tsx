@@ -65,6 +65,7 @@ function Column(props: ColumnPropsType) {
           files={t.files}
           userId={t.userId}
           columnId={columnId}
+          columnName={title}
         />
       );
     });
@@ -160,7 +161,7 @@ const TaskContainer = styled.div`
   padding-top: 10px;
 
   button {
-    margin-right: 10px;
+    margin: 0 15px 15px;
     color: white;
   }
 

@@ -22,6 +22,7 @@ export const signUp = createAsyncThunk(
       toast.success('User account successfully created!');
       return { ...res.data };
     } catch (error) {
+      dispatch(setAppStatus({ status: 'idle' }));
       dispatch(setAppError({ error: error.response.data.message }));
     }
   }
@@ -39,6 +40,7 @@ export const signIn = createAsyncThunk(
       return { isLoggedIn: true, login: param.login };
     } catch (error) {
       dispatch(setAppError({ error: error.response.data.message }));
+      dispatch(setAppStatus({ status: 'idle' }));
       return { isLoggedIn: false, email: '' };
     } finally {
       dispatch(setAppStatus({ status: 'idle' }));
