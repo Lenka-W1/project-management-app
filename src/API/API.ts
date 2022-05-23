@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 
 export const instance = axios.create({
-  baseURL: 'https://serene-ridge-35280.herokuapp.com/',
+  baseURL: 'https://lit-falls-11411.herokuapp.com/',
 });
 
 instance.interceptors.request.use(function (config) {
@@ -149,7 +149,6 @@ export type ColumnResponseType = {
 };
 export type CreateColumnParamsType = {
   title: string;
-  order: number;
 };
 export type ColumnType = {
   id: string;
@@ -172,7 +171,6 @@ export type UserResponseType = {
 export type TaskResponseType = {
   id: string;
   title: string;
-  done: boolean;
   order: number;
   description: string;
   userId: string;
@@ -189,7 +187,6 @@ export type TaskType = {
   id: string;
   title: string;
   order: number;
-  done: boolean;
   description: string;
   userId: string;
   files: [
@@ -201,17 +198,20 @@ export type TaskType = {
 };
 export type CreateTaskParamsType = {
   title: string;
-  done: boolean;
-  order: number;
   description: string;
   userId: string;
 };
 export type UpdateTaskParamsType = {
   title: string;
-  done: boolean;
   order: number;
   description: string;
   userId: string;
   boardId: string;
   columnId: string;
+};
+//token
+export type TokenType = {
+  userId: string;
+  login: string;
+  iat: string;
 };

@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {
   CreateTaskParamsType,
   TaskResponseType,
@@ -8,6 +8,7 @@ import {
 import { setAppError, setAppStatus } from './app-reducer';
 import { toast } from 'react-toastify';
 import { AppStateType } from '../store';
+import update from 'immutability-helper';
 
 export type TasksInitialStateType = {
   [key: string]: Array<TaskResponseType>;
@@ -97,8 +98,8 @@ export const updateTask = createAsyncThunk<
       param.params
     );
     dispatch(setAppStatus({ status: 'successed' }));
-    if (task) {
-      toast.success(`Column ${task.title.toUpperCase()} successfully updated!`);
+    if (task && task.title !== param.params.title) {
+      toast.success(`Task ${task.title.toUpperCase()} successfully updated!`);
     }
     return { task: res.data };
   } catch (error) {
@@ -116,9 +117,10 @@ export const slice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(fetchAllTasks.fulfilled, (state, action) => {
       state[action.payload.columnId] = action.payload.tasks;
+      state[action.payload.columnId].sort((a, b) => a.order - b.order);
     });
     builder.addCase(createTask.fulfilled, (state, action) => {
-      state[action.payload.task.columnId].unshift(action.payload.task);
+      state[action.payload.task.columnId].push(action.payload.task);
     });
     builder.addCase(removeTask.fulfilled, (state, action) => {
       const tasks = state[action.payload.columnId];
@@ -133,6 +135,7 @@ export const slice = createSlice({
       if (index > -1) {
         tasks[index] = { ...tasks[index], ...action.payload.task };
       }
+      state[action.payload.task.columnId].sort((a, b) => a.order - b.order);
     });
   },
 });

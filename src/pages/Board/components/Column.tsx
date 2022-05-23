@@ -1,17 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Button, IconButton, InputAdornment, OutlinedInput, Paper, Tooltip } from '@mui/material';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import ClearIcon from '@mui/icons-material/Clear';
 import DoneIcon from '@mui/icons-material/Done';
 import Task from './Task';
-import { ColumnResponseType } from '../../../API/API';
+import { ColumnResponseType, TaskType } from '../../../API/API';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatchType, AppStateType } from '../../../BLL/store';
 import { updateColumn } from '../../../BLL/reducers/column-reducer';
 import { useParams } from 'react-router-dom';
-import { fetchAllTasks, TasksInitialStateType } from '../../../BLL/reducers/tasks-reducers';
+import {
+  fetchAllTasks,
+  TasksInitialStateType,
+  updateTask,
+} from '../../../BLL/reducers/tasks-reducers';
 import FormModal from '../../../components/ModalWindows/FormModal';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import update from 'immutability-helper';
 
 type ColumnPropsType = {
   columnId: string;
@@ -28,6 +35,7 @@ function Column(props: ColumnPropsType) {
   const [editMode, setEditMode] = useState(false);
   const [columnName, setColumnName] = useState(title);
   const [openFormModal, setOpenFormModal] = useState(false);
+  const [tasks, setTasks] = useState([] as TaskType[]);
   const deleteColumn = () => {
     setOpenConfirmModal({ id: columnId, title: title, order: order });
   };
@@ -45,15 +53,47 @@ function Column(props: ColumnPropsType) {
   };
 
   useEffect(() => {
+    setTasks(allTasks[columnId]);
+  }, [allTasks]);
+  useEffect(() => {
     if (id) dispatch(fetchAllTasks({ boardId: id, columnId: columnId }));
-  }, [dispatch, columnId, id]);
+  }, [dispatch, columnId, id, order]);
 
   const addTask = () => {
     setOpenFormModal(true);
   };
+  const moveTaskOnHover = (dragIndex: number, hoverIndex: number) => {
+    setTasks((prevTasks: TaskType[]) =>
+      update(prevTasks, {
+        $splice: [
+          [dragIndex, 1],
+          [hoverIndex, 0, prevTasks[dragIndex]],
+        ],
+      })
+    );
+  };
+  const moveTaskOnDrop = (dragIndex: number, hoverIndex: number, taskId: string) => {
+    const task = tasks.find((t) => t.id === taskId);
+    if (id && task)
+      dispatch(
+        updateTask({
+          boardId: id,
+          columnId: columnId,
+          taskId: task.id,
+          params: {
+            columnId: columnId,
+            boardId: id,
+            title: task.title,
+            order: hoverIndex === 0 ? 1 : hoverIndex + 1,
+            userId: task.userId,
+            description: task.description,
+          },
+        })
+      );
+  };
   const taskElements =
-    allTasks[columnId] &&
-    allTasks[columnId].map((t) => {
+    tasks &&
+    tasks.map((t, index) => {
       return (
         <Task
           key={t.id}
@@ -61,62 +101,67 @@ function Column(props: ColumnPropsType) {
           title={t.title}
           description={t.description}
           order={t.order}
-          done={t.done}
           files={t.files}
           userId={t.userId}
           columnId={columnId}
           columnName={title}
+          moveTaskOnHover={moveTaskOnHover}
+          moveTaskOnDrop={moveTaskOnDrop}
+          index={index}
+          boardId={id}
         />
       );
     });
   return (
-    <RootColumnContainer elevation={6}>
-      <ColumnHeader>
-        {!editMode ? (
-          <Tooltip title={'Click to change column name'} placement={'top-start'}>
-            <h2 onClick={toggleEditMode}>{title}</h2>
+    <DndProvider backend={HTML5Backend}>
+      <RootColumnContainer elevation={6}>
+        <ColumnHeader>
+          {!editMode ? (
+            <Tooltip title={'Click to change column name'} placement={'top-start'}>
+              <h2 onClick={toggleEditMode}>{title}</h2>
+            </Tooltip>
+          ) : (
+            <OutlinedInput
+              id="outlined-adornment-password"
+              size={'small'}
+              onChange={(e) => columnNameHandler(e)}
+              value={columnName}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton onClick={changeColumnTitle} color={'success'} edge="end">
+                    <DoneIcon />
+                  </IconButton>
+                  <IconButton onClick={toggleEditMode} color={'error'} edge="end">
+                    <ClearIcon />
+                  </IconButton>
+                </InputAdornment>
+              }
+              label="Password"
+            />
+          )}
+
+          <Tooltip title="Delete column" placement={'top-start'}>
+            <IconButton color={'error'} size={'small'} disabled={editMode} onClick={deleteColumn}>
+              <DeleteOutlineOutlinedIcon />
+            </IconButton>
           </Tooltip>
-        ) : (
-          <OutlinedInput
-            id="outlined-adornment-password"
-            size={'small'}
-            onChange={(e) => columnNameHandler(e)}
-            value={columnName}
-            endAdornment={
-              <InputAdornment position="end">
-                <IconButton onClick={changeColumnTitle} color={'success'} edge="end">
-                  <DoneIcon />
-                </IconButton>
-                <IconButton onClick={toggleEditMode} color={'error'} edge="end">
-                  <ClearIcon />
-                </IconButton>
-              </InputAdornment>
-            }
-            label="Password"
+        </ColumnHeader>
+        <TaskContainer>
+          {taskElements}
+          <Button variant={'contained'} color={'success'} onClick={addTask}>
+            Add task
+          </Button>
+        </TaskContainer>
+        {openFormModal && (
+          <FormModal
+            open={openFormModal}
+            setOpen={setOpenFormModal}
+            type={'task'}
+            columnId={columnId}
           />
         )}
-
-        <Tooltip title="Delete column" placement={'top-start'}>
-          <IconButton color={'error'} size={'small'} disabled={editMode} onClick={deleteColumn}>
-            <DeleteOutlineOutlinedIcon />
-          </IconButton>
-        </Tooltip>
-      </ColumnHeader>
-      <TaskContainer>
-        {taskElements}
-        <Button variant={'contained'} color={'success'} onClick={addTask}>
-          Add task
-        </Button>
-      </TaskContainer>
-      {openFormModal && (
-        <FormModal
-          open={openFormModal}
-          setOpen={setOpenFormModal}
-          type={'task'}
-          columnId={columnId}
-        />
-      )}
-    </RootColumnContainer>
+      </RootColumnContainer>
+    </DndProvider>
   );
 }
 

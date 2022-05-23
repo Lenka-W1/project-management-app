@@ -71,12 +71,6 @@ function FormModal(props: FormModalPropsType) {
         if (!values.description) {
           errors.description = 'Required';
         }
-        if (!values.order) {
-          errors.order = 'Required';
-        }
-        if (values.order <= 0) {
-          errors.order = 'Value of order should be more 0';
-        }
       }
       return errors;
     },
@@ -84,7 +78,7 @@ function FormModal(props: FormModalPropsType) {
       if (type === 'board') {
         dispatch(createBoard({ title: values.title, description: values.description }));
       } else if (type === 'column') {
-        if (id) dispatch(createColumn({ boardId: id, title: values.title, order: values.order }));
+        if (id) dispatch(createColumn({ boardId: id, title: values.title }));
       } else {
         if (id && columnId)
           dispatch(
@@ -92,8 +86,6 @@ function FormModal(props: FormModalPropsType) {
               boardId: id,
               columnId: columnId,
               param: {
-                order: values.order,
-                done: values.done,
                 title: values.title,
                 userId: userId,
                 description: values.description,
@@ -160,6 +152,10 @@ function FormModal(props: FormModalPropsType) {
                   error={!!formik.errors.title}
                   helperText={formik.errors.title}
                 />
+              </>
+            )}
+            {type === 'task' && (
+              <>
                 <TextField
                   margin="dense"
                   id="description"
@@ -171,36 +167,7 @@ function FormModal(props: FormModalPropsType) {
                   error={!!formik.errors.description}
                   helperText={formik.errors.description}
                 />
-                <TextField
-                  type={'number'}
-                  margin="dense"
-                  id="order"
-                  label="Order"
-                  fullWidth
-                  variant="standard"
-                  value={formik.values.order}
-                  onChange={formik.handleChange}
-                  error={!!formik.errors.order}
-                  helperText={formik.errors.order}
-                />
               </>
-            )}
-            {type === 'task' && (
-              <FormGroup aria-label="position" row>
-                <FormControlLabel
-                  style={{ marginLeft: '0px' }}
-                  control={
-                    <Checkbox
-                      id="done"
-                      value={formik.values.done}
-                      onChange={formik.handleChange}
-                      color={'success'}
-                    />
-                  }
-                  label="Task is done?"
-                  labelPlacement="start"
-                />
-              </FormGroup>
             )}
             <Button type="submit" color={'success'} variant={'contained'}>
               Create

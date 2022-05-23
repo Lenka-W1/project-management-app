@@ -35,17 +35,19 @@ function BoardPage() {
   const handleOpenModal = (isOpen: boolean) => {
     setOpenFormModal(isOpen);
   };
-  const columnElements = columns.map((c) => {
-    return (
-      <Column
-        key={c.id}
-        columnId={c.id}
-        title={c.title}
-        order={c.order}
-        setOpenConfirmModal={setOpenConfirmModal}
-      />
-    );
-  });
+  const columnElements = columns
+    .map((c) => {
+      return (
+        <Column
+          key={c.id}
+          columnId={c.id}
+          title={c.title}
+          order={c.order}
+          setOpenConfirmModal={setOpenConfirmModal}
+        />
+      );
+    })
+    .sort((a, b) => a.props.order - b.props.order);
   return (
     <RootContainer>
       <Button

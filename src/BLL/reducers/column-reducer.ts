@@ -39,7 +39,6 @@ export const createColumn = createAsyncThunk<
     try {
       const res = await columnsAPI.createColumn(param.boardId, {
         title: param.title,
-        order: param.order,
       });
       dispatch(setAppStatus({ status: 'successed' }));
       toast.success(`Column ${param.title.toUpperCase()} successfully created!`);
@@ -113,9 +112,6 @@ export const slice = createSlice({
   } as InitialStateType,
   reducers: {},
   extraReducers: (builder) => {
-    // builder.addCase(fetchAllColumns.fulfilled, (state, action) => {
-    //   state.columns = action.payload.columns;
-    // });
     builder.addCase(createColumn.fulfilled, (state, action) => {
       const { id, title, order } = action.payload.column;
       state.columns.push({ id: id, title: title, order: order, tasks: [] });
