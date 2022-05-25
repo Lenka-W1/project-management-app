@@ -24,12 +24,21 @@ import TaskViewModal from '../../../components/ModalWindows/TaskViewModal/TaskVi
 import { DragSourceMonitor, useDrag, useDrop } from 'react-dnd';
 import { ItemTypes } from './ItemTypes';
 import { Identifier, XYCoord } from 'dnd-core';
+import { useSelector } from 'react-redux';
+import { AppStateType } from '../../../BLL/store';
 
 type TaskPropsType = TaskType & {
   columnId: string;
   columnName: string;
-  moveTaskOnHover: (dragIndex: number, hoverIndex: number) => void;
+  reorderTaskOnHover: (dragIndex: number, hoverIndex: number) => void;
   moveTaskOnDrop: (dragIndex: number, hoverIndex: number, taskId: string) => void;
+  reorderTasksBetweenColumn: (
+    dragIndex: number,
+    hoverIndex: number,
+    sourceColumnId: string,
+    hoverColumnId: string,
+    taskId: string
+  ) => void;
   boardId: string | undefined;
   index: number;
 };
@@ -37,6 +46,7 @@ interface DragItem {
   index: number;
   id: string;
   type: string;
+  columnId: string;
 }
 
 function Task(props: TaskPropsType) {
@@ -50,14 +60,18 @@ function Task(props: TaskPropsType) {
     columnId,
     columnName,
     index,
-    moveTaskOnHover,
+    reorderTaskOnHover,
     moveTaskOnDrop,
+    reorderTasksBetweenColumn,
   } = props;
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [openConfirmModal, setOpenConfirmModal] = React.useState<
     ColumnResponseType | BoardResponseType | UserResponseType | TaskType | null
   >(null);
   const [openTaskViewModal, setOpenTaskViewModal] = useState<TaskType | null>(null);
+  const isDarkMode = useSelector<AppStateType, 'dark' | 'light'>(
+    (state) => state.app.settings.mode
+  );
   const ref = useRef<HTMLDivElement>(null);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -86,29 +100,17 @@ function Task(props: TaskPropsType) {
       handleCloseTaskDropMenu();
     }
   };
-  // const moveTask = useCallback((dragIndex: number, hoverIndex: number) => {
-  //   if (id && boardId)
-  //     dispatch(
-  //       updateTask({
-  //         boardId: boardId,
-  //         columnId: columnId,
-  //         taskId: id,
-  //         params: {
-  //           columnId: columnId,
-  //           boardId: boardId,
-  //           title: title,
-  //           order: hoverIndex === 0 ? 1 : hoverIndex + 1,
-  //           userId: userId,
-  //           description: description,
-  //         },
-  //       })
-  //     );
-  // }, []);
-  const [{ handlerId }, drop] = useDrop<DragItem, void, { handlerId: Identifier | null }>({
+  const [{ handlerId, canDrop, isOver }, drop] = useDrop<
+    DragItem,
+    void,
+    { handlerId: Identifier | null; canDrop: boolean; isOver: boolean }
+  >({
     accept: ItemTypes.TASK,
     collect(monitor) {
       return {
         handlerId: monitor.getHandlerId(),
+        isOver: monitor.isOver(),
+        canDrop: monitor.canDrop(),
       };
     },
     hover(item: DragItem, monitor) {
@@ -117,8 +119,13 @@ function Task(props: TaskPropsType) {
       }
       const dragIndex = item.index;
       const hoverIndex = index;
-      if (dragIndex === hoverIndex) {
+      const sourceColumnId = monitor.getItem().columnId;
+      const dragTaskId = monitor.getItem().id;
+      if (sourceColumnId === columnId && dragIndex === hoverIndex) {
         return;
+      }
+      if (sourceColumnId !== columnId) {
+        reorderTasksBetweenColumn(dragIndex, hoverIndex, sourceColumnId, columnId, dragTaskId);
       }
       const hoverBoundingRect = ref.current?.getBoundingClientRect();
       const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
@@ -130,22 +137,29 @@ function Task(props: TaskPropsType) {
       if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
         return;
       }
-      moveTaskOnHover(dragIndex, hoverIndex);
+      if (sourceColumnId === columnId) {
+        reorderTaskOnHover(dragIndex, hoverIndex);
+      }
       item.index = hoverIndex;
     },
-    drop(item: DragItem) {
+    drop(item: DragItem, monitor) {
+      // const sourceColumnId = monitor.getItem().columnId;
+      // const dragTaskId = monitor.getItem().id;
+      // const hoverIndex = index;
       const dragIndex = item.index;
       moveTaskOnDrop(dragIndex, index, id);
+      // if (sourceColumnId !== columnId) {
+      //   reorderTasksBetweenColumn(dragIndex, hoverIndex, sourceColumnId, columnId, dragTaskId);
+      // }
     },
   });
-
   const [{ isDragging }, drag] = useDrag({
     type: ItemTypes.TASK,
     item: () => {
-      return { id, index, order };
+      return { id, index, order, columnId };
     },
     collect: (
-      monitor: DragSourceMonitor<{ id: string; index: number; order: number }, unknown>
+      monitor: DragSourceMonitor<{ id: string; index: number; order: number; columnId: string }>
     ) => ({
       isDragging: monitor.isDragging(),
     }),
@@ -154,8 +168,8 @@ function Task(props: TaskPropsType) {
 
   return (
     <RootContainer
-      elevation={8}
-      variant={'outlined'}
+      elevation={isDarkMode === 'dark' ? 0 : 24}
+      variant={'elevation'}
       ref={ref}
       style={isDragging ? { opacity: 0 } : { opacity: 1 }}
       data-handler-id={handlerId}

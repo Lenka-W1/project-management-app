@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import {
   CreateTaskParamsType,
   TaskResponseType,
@@ -8,7 +8,6 @@ import {
 import { setAppError, setAppStatus } from './app-reducer';
 import { toast } from 'react-toastify';
 import { AppStateType } from '../store';
-import update from 'immutability-helper';
 
 export type TasksInitialStateType = {
   [key: string]: Array<TaskResponseType>;
@@ -68,7 +67,7 @@ export const removeTask = createAsyncThunk<
       await tasksAPI.deleteTask(boardId, columnId, taskId);
       dispatch(setAppStatus({ status: 'successed' }));
       if (task) {
-        toast.success(`Column ${task.title.toUpperCase()} successfully deleted!`);
+        toast.success(`Task ${task.title.toUpperCase()} successfully deleted!`);
       }
       return { columnId: columnId, boardId: boardId, taskId: taskId };
     } catch (error) {

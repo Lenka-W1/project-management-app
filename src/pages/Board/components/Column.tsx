@@ -1,13 +1,13 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { Button, IconButton, InputAdornment, OutlinedInput, Paper, Tooltip } from '@mui/material';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import ClearIcon from '@mui/icons-material/Clear';
 import DoneIcon from '@mui/icons-material/Done';
 import Task from './Task';
-import { ColumnResponseType, TaskType } from '../../../API/API';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatchType, AppStateType } from '../../../BLL/store';
+import { ColumnResponseType, TaskResponseType, TaskType } from '../../../API/API';
+import { useDispatch } from 'react-redux';
+import { AppDispatchType } from '../../../BLL/store';
 import { updateColumn } from '../../../BLL/reducers/column-reducer';
 import { useParams } from 'react-router-dom';
 import {
@@ -16,26 +16,48 @@ import {
   updateTask,
 } from '../../../BLL/reducers/tasks-reducers';
 import FormModal from '../../../components/ModalWindows/FormModal';
-import { DndProvider } from 'react-dnd';
+import { DndProvider, DragSourceMonitor, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import update from 'immutability-helper';
+import { Identifier, XYCoord } from 'dnd-core';
+import { ItemTypes } from './ItemTypes';
 
 type ColumnPropsType = {
+  index: number;
   columnId: string;
   title: string;
   order: number;
+  allTasks: TasksInitialStateType;
+  setAllTasksLocal: Dispatch<SetStateAction<TasksInitialStateType>>;
+  reorderColumnOnHover: (dragIndex: number, hoverIndex: number) => void;
+  moveColumnOnDrop: (dragIndex: number, hoverIndex: number, columnId: string) => void;
   setOpenConfirmModal: (column: ColumnResponseType) => void;
 };
+interface DragItem {
+  index: number;
+  columnId: string;
+  type: string;
+}
 
 function Column(props: ColumnPropsType) {
   const { id } = useParams();
-  const { columnId, title, order, setOpenConfirmModal } = props;
-  const allTasks = useSelector<AppStateType, TasksInitialStateType>((state) => state.tasks);
+  const {
+    columnId,
+    title,
+    order,
+    setOpenConfirmModal,
+    index,
+    moveColumnOnDrop,
+    reorderColumnOnHover,
+    allTasks,
+    setAllTasksLocal,
+  } = props;
   const dispatch = useDispatch<AppDispatchType>();
   const [editMode, setEditMode] = useState(false);
   const [columnName, setColumnName] = useState(title);
   const [openFormModal, setOpenFormModal] = useState(false);
   const [tasks, setTasks] = useState([] as TaskType[]);
+  const ref = useRef<HTMLDivElement>(null);
   const deleteColumn = () => {
     setOpenConfirmModal({ id: columnId, title: title, order: order });
   };
@@ -51,10 +73,9 @@ function Column(props: ColumnPropsType) {
   const columnNameHandler = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setColumnName(e.currentTarget.value);
   };
-
   useEffect(() => {
     setTasks(allTasks[columnId]);
-  }, [allTasks]);
+  }, [allTasks, columnId]);
   useEffect(() => {
     if (id) dispatch(fetchAllTasks({ boardId: id, columnId: columnId }));
   }, [dispatch, columnId, id, order]);
@@ -62,7 +83,8 @@ function Column(props: ColumnPropsType) {
   const addTask = () => {
     setOpenFormModal(true);
   };
-  const moveTaskOnHover = (dragIndex: number, hoverIndex: number) => {
+  console.log(tasks);
+  const reorderTaskOnHover = (dragIndex: number, hoverIndex: number) => {
     setTasks((prevTasks: TaskType[]) =>
       update(prevTasks, {
         $splice: [
@@ -74,6 +96,7 @@ function Column(props: ColumnPropsType) {
   };
   const moveTaskOnDrop = (dragIndex: number, hoverIndex: number, taskId: string) => {
     const task = tasks.find((t) => t.id === taskId);
+    if (task && (hoverIndex === 0 ? 1 : hoverIndex + 1) === task.order) return;
     if (id && task)
       dispatch(
         updateTask({
@@ -91,6 +114,105 @@ function Column(props: ColumnPropsType) {
         })
       );
   };
+  const reorderTasksBetweenColumn = (
+    dragIndex: number,
+    hoverIndex: number,
+    sourceColumnId: string,
+    hoverColumnId: string,
+    taskId: string
+  ) => {
+    const task = allTasks[sourceColumnId].find((t) => t.id === taskId);
+    // if (task) {
+    //   // debugger;
+    //   setAllTasksLocal((prevState) =>
+    //     update(prevState, {
+    //       hoverIndex: {
+    //         $splice: [[hoverIndex, 0, task]],
+    //       },
+    //       // sourceColumnId: {
+    //       //   $apply: function (tasks = prevState[sourceColumnId]) {
+    //       //     update(tasks, {
+    //       //       $splice: [[hoverIndex, 1]],
+    //       //     });
+    //       //     return tasks;
+    //       //   },
+    //       // },
+    //     })
+    //   );
+    // }
+    // work bugs
+    if (task) {
+      setAllTasksLocal((prevState) => {
+        return {
+          ...prevState,
+          [sourceColumnId]: [...allTasks[sourceColumnId].filter((t) => t.id !== taskId)],
+          [hoverColumnId]: [
+            ...allTasks[hoverColumnId].slice(0, hoverIndex + 1),
+            task,
+            ...allTasks[hoverColumnId].slice(hoverIndex + 1),
+          ],
+        };
+      });
+    }
+    //work
+    // if (task)
+    //   setAllTasksLocal({
+    //     ...allTasks,
+    //     [sourceColumnId]: allTasks[sourceColumnId].filter((t) => t.id !== taskId),
+    //     [hoverColumnId]: [
+    //       ...allTasks[hoverColumnId].slice(0, hoverIndex + 1),
+    //       task,
+    //       ...allTasks[hoverColumnId].slice(hoverIndex + 1),
+    //     ],
+    //   });
+    // console.log('qqqq');
+  };
+  const [{ handlerId }, drop] = useDrop<DragItem, void, { handlerId: Identifier | null }>({
+    accept: ItemTypes.COLUMN,
+    collect(monitor) {
+      return {
+        handlerId: monitor.getHandlerId(),
+        isOver: monitor.isOver(),
+        canDrop: monitor.canDrop(),
+      };
+    },
+    hover(item: DragItem, monitor) {
+      if (!ref.current) {
+        return;
+      }
+      const dragIndex = item.index;
+      const hoverIndex = index;
+      if (dragIndex === hoverIndex) {
+        return;
+      }
+      const hoverBoundingRect = ref.current?.getBoundingClientRect();
+      const hoverMiddleY = (hoverBoundingRect.right - hoverBoundingRect.left) / 2;
+      const clientOffset = monitor.getClientOffset();
+      const hoverClientY = (clientOffset as XYCoord).x - hoverBoundingRect.left;
+      if (dragIndex < hoverIndex && hoverClientY > hoverMiddleY) {
+        return;
+      }
+      if (dragIndex > hoverIndex && hoverClientY < hoverMiddleY) {
+        return;
+      }
+      reorderColumnOnHover(dragIndex, hoverIndex);
+      item.index = hoverIndex;
+    },
+    drop(item: DragItem) {
+      const dragIndex = item.index;
+      moveColumnOnDrop(dragIndex, index, columnId);
+    },
+  });
+  const [{ isDragging }, drag] = useDrag({
+    type: ItemTypes.COLUMN,
+    item: () => {
+      return { columnId, index, order };
+    },
+    collect: (monitor: DragSourceMonitor<{ columnId: string; index: number; order: number }>) => ({
+      isDragging: monitor.isDragging(),
+    }),
+  });
+  drag(drop(ref));
   const taskElements =
     tasks &&
     tasks.map((t, index) => {
@@ -105,63 +227,70 @@ function Column(props: ColumnPropsType) {
           userId={t.userId}
           columnId={columnId}
           columnName={title}
-          moveTaskOnHover={moveTaskOnHover}
+          reorderTaskOnHover={reorderTaskOnHover}
           moveTaskOnDrop={moveTaskOnDrop}
+          reorderTasksBetweenColumn={reorderTasksBetweenColumn}
           index={index}
           boardId={id}
         />
       );
     });
   return (
-    <DndProvider backend={HTML5Backend}>
-      <RootColumnContainer elevation={6}>
-        <ColumnHeader>
-          {!editMode ? (
-            <Tooltip title={'Click to change column name'} placement={'top-start'}>
-              <h2 onClick={toggleEditMode}>{title}</h2>
-            </Tooltip>
-          ) : (
-            <OutlinedInput
-              id="outlined-adornment-password"
-              size={'small'}
-              onChange={(e) => columnNameHandler(e)}
-              value={columnName}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton onClick={changeColumnTitle} color={'success'} edge="end">
-                    <DoneIcon />
-                  </IconButton>
-                  <IconButton onClick={toggleEditMode} color={'error'} edge="end">
-                    <ClearIcon />
-                  </IconButton>
-                </InputAdornment>
-              }
-              label="Password"
-            />
-          )}
-
-          <Tooltip title="Delete column" placement={'top-start'}>
-            <IconButton color={'error'} size={'small'} disabled={editMode} onClick={deleteColumn}>
-              <DeleteOutlineOutlinedIcon />
-            </IconButton>
+    <RootColumnContainer
+      elevation={6}
+      ref={ref}
+      style={isDragging ? { opacity: 0 } : { opacity: 1 }}
+      draggable={!editMode}
+      data-handler-id={handlerId}
+    >
+      <ColumnHeader>
+        {!editMode ? (
+          <Tooltip title={'Click to change column name'} placement={'top-start'}>
+            <h2 onClick={toggleEditMode}>
+              {title} - order - {order}
+            </h2>
           </Tooltip>
-        </ColumnHeader>
-        <TaskContainer>
-          {taskElements}
-          <Button variant={'contained'} color={'success'} onClick={addTask}>
-            Add task
-          </Button>
-        </TaskContainer>
-        {openFormModal && (
-          <FormModal
-            open={openFormModal}
-            setOpen={setOpenFormModal}
-            type={'task'}
-            columnId={columnId}
+        ) : (
+          <OutlinedInput
+            id="outlined-adornment-password"
+            size={'small'}
+            onChange={(e) => columnNameHandler(e)}
+            value={columnName}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton onClick={changeColumnTitle} color={'success'} edge="end">
+                  <DoneIcon />
+                </IconButton>
+                <IconButton onClick={toggleEditMode} color={'error'} edge="end">
+                  <ClearIcon />
+                </IconButton>
+              </InputAdornment>
+            }
+            label="Password"
           />
         )}
-      </RootColumnContainer>
-    </DndProvider>
+
+        <Tooltip title="Delete column" placement={'top-start'}>
+          <IconButton color={'error'} size={'small'} disabled={editMode} onClick={deleteColumn}>
+            <DeleteOutlineOutlinedIcon />
+          </IconButton>
+        </Tooltip>
+      </ColumnHeader>
+      <TaskContainer>
+        {taskElements}
+        <Button variant={'contained'} color={'success'} onClick={addTask}>
+          Add task
+        </Button>
+      </TaskContainer>
+      {openFormModal && (
+        <FormModal
+          open={openFormModal}
+          setOpen={setOpenFormModal}
+          type={'task'}
+          columnId={columnId}
+        />
+      )}
+    </RootColumnContainer>
   );
 }
 
@@ -172,6 +301,7 @@ const RootColumnContainer = styled(Paper)`
   min-width: 300px;
   max-width: 300px;
   margin-right: 17px;
+  cursor: move;
   h2 {
     padding-left: 10px;
     font-weight: 400;

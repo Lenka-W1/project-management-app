@@ -93,7 +93,7 @@ export const updateColumn = createAsyncThunk<
       param.order
     );
     dispatch(setAppStatus({ status: 'successed' }));
-    if (updColumn) {
+    if (updColumn && updColumn.title !== param.title) {
       toast.success(`Column ${param.title.toUpperCase()} successfully updated!`);
     }
     return { column: res.data };
@@ -118,6 +118,7 @@ export const slice = createSlice({
     });
     builder.addCase(fetchBoard.fulfilled, (state, action) => {
       state.columns = action.payload.board.columns;
+      // state.columns.sort((a, b) => a.order - b.order);
     });
     builder.addCase(removeColumn.fulfilled, (state, action) => {
       const index = state.columns.findIndex((b) => b.id === action.payload.columnId);
@@ -131,6 +132,7 @@ export const slice = createSlice({
         column.title = action.payload.column.title;
         column.order = action.payload.column.order;
       }
+      state.columns.sort((a, b) => a.order - b.order);
     });
   },
 });
