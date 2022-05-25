@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { AppStateType } from '../../BLL/store';
+import { useTranslation } from 'react-i18next';
 import { PATH } from '../AppRoutes';
 
 function WelcomePage() {
@@ -10,6 +11,8 @@ function WelcomePage() {
     (state) => state.app.settings.mode
   );
   const link = useNavigate();
+  const { t } = useTranslation();
+
   return (
     <RootWelcomeContainer
       style={{
@@ -21,72 +24,70 @@ function WelcomePage() {
     >
       <WelcomePageWrapper>
         <TitleBlock>
-          <Title>Project managment app</Title>
+          <Title>{t('welcome_page.title')}</Title>
           <Stack spacing={2} direction={'row'}>
             <Button
               variant={'outlined'}
               style={{ fontWeight: '600' }}
               onClick={() => link(PATH.SIGN_IN)}
             >
-              Sign In
+              {t('welcome_page.sign_in')}
             </Button>
             <Button
               variant={'contained'}
               style={{ color: 'white' }}
               onClick={() => link(PATH.SIGN_UP)}
             >
-              Sign Up
+              {t('welcome_page.sign_up')}
             </Button>
             <Button
               variant={'contained'}
               style={{ color: 'white', display: 'none' }}
               onClick={() => link(PATH.MAIN)}
             >
-              Go to Main Page
+              {t('welcome_page.go_to_main')}
             </Button>
           </Stack>
         </TitleBlock>
         <Section>
           <Description>
             <strong style={{ color: isDarkMode === 'light' ? '' : '#3f51b5' }}>
-              A project management system
-            </strong>{' '}
-            is an application that helps an individual in a team or group of developers achieve
-            their goals.
+              {t('welcome_page.description_1.strong')}
+            </strong>
+            {t('welcome_page.description_1.continuation')}
           </Description>
           <WelcomeImage />
         </Section>
         <Section>
           <BoardImage />
           <DescriptionBoard>
-            <strong style={{ color: isDarkMode === 'light' ? '' : '#3f51b5' }}>Board</strong> use
-            columns and cards to create tasks, track and organize them. And also assign tasks to
-            team members. Manage projects.
+            <strong style={{ color: isDarkMode === 'light' ? '' : '#3f51b5' }}>
+              {t('welcome_page.description_2.strong')}
+            </strong>
+            {t('welcome_page.description_2.continuation')}
           </DescriptionBoard>
         </Section>
         <TeamBlock
-          style={{ borderTop: isDarkMode === 'light' ? '1px solid #42a5f5' : '1px solid #ffffff' }}
+          style={{ borderTop: isDarkMode === 'light' ? '1px solid #1976d2' : '1px solid #ffffff' }}
         >
-          <TitleTeamBlock>Application development team</TitleTeamBlock>
+          <TitleTeamBlock>{t('welcome_page.team.development_team')}</TitleTeamBlock>
           <TeamMembers
             style={{
               boxShadow:
                 isDarkMode === 'light'
                   ? '0px 5px 10px 2px rgba(25, 118, 210, 0.2)'
-                  : '0px 5px 10px 2px rgba(255, 255, 255, 0.425)',
+                  : '0px 5px 10px 2px white',
             }}
           >
             <div className="developer-info">
               <img src="photo_2022-02-19_13-11-57.jpg" className="photo two" alt="Elena" />
-              <h2>Elena Khovavko</h2>
-              <h3>Frontend developer, Team lead</h3>
-              <p></p>
+              <h2>{t('welcome_page.team.name_1')}</h2>
+              <h3>{t('welcome_page.team.developer_1')}</h3>
             </div>
             <div className="developer-info">
               <img src="photo_2022-01-06_17-44-22.jpg" className="photo one" alt="Alexander" />
-              <h2>Alexander Demidovich</h2>
-              <h3>Frontend developer</h3>
-              <p></p>
+              <h2>{t('welcome_page.team.name_2')}</h2>
+              <h3>{t('welcome_page.team.developer_2')}</h3>
             </div>
           </TeamMembers>
         </TeamBlock>
@@ -99,6 +100,8 @@ export default WelcomePage;
 
 const RootWelcomeContainer = styled.div`
   min-height: calc(100vh - 134px);
+  background: rgb(129, 200, 240);
+  background: linear-gradient(180deg, rgba(129, 200, 240, 1) 0%, rgba(234, 239, 245, 1) 69%);
 `;
 
 const WelcomePageWrapper = styled.div`
@@ -168,6 +171,7 @@ const TeamBlock = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
+  border-top: 1px solid #1976d2;
   padding: 80px 0;
   margin-top: 100px;
 `;

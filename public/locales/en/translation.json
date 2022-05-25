@@ -1,0 +1,33 @@
+{  
+  "header": {
+    "edit_profile": "Edit profile",
+    "create_new_board": "Create new board",
+    "rus": "RU",
+    "eng": "EN",
+    "sign_out": "Sign out"
+  },
+  "welcome_page": {
+    "title": "Project managment app",
+    "sign_in": "Sign in",
+    "sign_up": "Sign up",
+    "go_to_main": "Go to Main Page",
+    "description_1": {
+      "strong": "A project management system",
+      "continuation": "is an application that helps an individual in a team or group of developers achieve their goals."
+    },    
+    "description_2": {
+      "strong": "Board",
+      "continuation": "use columns and cards to create tasks, track and organize them. And also assign tasks to team members. Manage projects."
+    },
+    "team": {
+      "development_team": "Application development team",
+      "name_1": "Elena Khovavko",
+      "name_2": "Alexander Demidovich",
+      "developer_1": "Frontend developer, Team lead",
+      "developer_2": "Frontend developer"
+    }
+  },
+  "footer": {
+    "all_rights_reserved": "©All rights reserved, 2022"
+  }
+}

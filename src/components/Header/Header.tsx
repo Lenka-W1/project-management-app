@@ -17,14 +17,23 @@ import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatchType, AppStateType } from '../../BLL/store';
 import { setAppMode } from '../../BLL/reducers/app-reducer';
+import { useTranslation } from 'react-i18next';
+import { ChangeEvent, useState } from 'react';
 
 const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
 function Header() {
+  const { t, i18n } = useTranslation();
+  const [checked, setSwitch] = useState<boolean>(i18n.language === 'ru' ? false : true);
   const isDarkMode = useSelector<AppStateType, 'dark' | 'light'>(
     (state) => state.app.settings.mode
   );
   const dispatch = useDispatch<AppDispatchType>();
+
+  const switchHandler = (event: ChangeEvent<HTMLInputElement>) => {
+    checked ? i18n.changeLanguage('ru') : i18n.changeLanguage('en');
+    setSwitch(event.target.checked);
+  };
 
   const toggleAppMode = () => {
     dispatch(setAppMode({ mode: isDarkMode === 'dark' ? 'light' : 'dark' }));
@@ -44,12 +53,12 @@ function Header() {
             <Box>
               <NavLink to={PATH.EDIT_PROFILE}>
                 <Button variant={'text'} style={{ color: 'white' }}>
-                  Edit profile
+                  {t('header.edit_profile')}
                 </Button>
               </NavLink>
               <NavLink to={PATH.MAIN}>
                 <Button variant={'text'} style={{ color: 'white' }}>
-                  Create new board
+                  {t('header.create_new_board')}
                 </Button>
               </NavLink>
             </Box>
@@ -67,16 +76,12 @@ function Header() {
                 </ModeButton>
               </Tooltip>
               <Stack direction="row" spacing={1} alignItems="center">
-                <Typography>RU</Typography>
-                <Switch {...label} defaultChecked color="default" />
-                <Typography>EN</Typography>
+                <Typography>{t('header.rus')}</Typography>
+                <Switch {...label} color="default" checked={checked} onChange={switchHandler} />
+                <Typography>{t('header.eng')}</Typography>
               </Stack>
-              <SignOutButton
-                variant={'outlined'}
-                size={'small'}
-                style={{ border: isDarkMode === 'light' ? '1px solid #ffffff' : '' }}
-              >
-                Sign Out
+              <SignOutButton variant={'outlined'} size={'small'}>
+                {t('header.sign_out')}
               </SignOutButton>
             </Box>
           </Toolbar>
@@ -98,6 +103,7 @@ const StyledHeader = styled(AppBar)`
 const SignOutButton = styled(Button)({
   color: '#ffffff',
   marginLeft: '20px',
+  border: '1px solid #ffffff',
   '&:hover': {
     backgroundColor: '#2591cf79',
   },
@@ -106,10 +112,7 @@ const SignOutButton = styled(Button)({
 const ModeButton = styled(Button)({
   color: '#ffffff',
   marginRight: '20px',
-  minWidth: '20px',
-  height: '30px',
-  padding: '0 5px',
-  alignSelf: 'center',
+  width: '20px',
   border: '1px solid #ffffff',
   '&:hover': {
     borderColor: '#ffffff',
