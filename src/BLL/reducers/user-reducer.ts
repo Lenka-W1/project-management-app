@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
 import { userAPI } from '../../API/API';
 import { setAppError, setAppStatus } from './app-reducer';
-import { signUp } from './auth-reducer';
+import { signIn, signUp } from './auth-reducer';
 import { fetchBoard } from './board-reducer';
 
 type InitialStateType = {
@@ -74,10 +74,12 @@ export const slice = createSlice({
         state.name = action.payload.name;
       }
     });
-    // builder.addCase(fetchBoard.fulfilled, (state, action) => {
-    //   const userId = action.payload.board.columns[0].tasks[0].userId;
-    //   if (userId) state.userId = userId;
-    // });
+    builder.addCase(signIn.fulfilled, (state, action) => {
+      if (action.payload.login) {
+        state.userId = action.payload.userId;
+        state.login = action.payload.login;
+      }
+    });
   },
 });
 

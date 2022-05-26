@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import AppRoutes from './pages/AppRoutes';
 import TempHeader from './components/Header/TempHeader';
@@ -11,6 +11,7 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { useSelector } from 'react-redux';
 import { AppStateType } from './BLL/store';
 import { darkTheme, lightTheme } from './config/AppMode';
+import FormModal from './components/ModalWindows/FormModal';
 
 interface Props {
   window?: () => Window;
@@ -53,14 +54,18 @@ function ScrollTop(props: Props) {
 }
 
 function App(props: Props) {
+  const [openFormModal, setOpenFormModal] = useState(false);
   const isDarkMode = useSelector<AppStateType, 'dark' | 'light'>(
     (state) => state.app.settings.mode
   );
+  const handleOpenModal = (isOpen: boolean) => {
+    setOpenFormModal(isOpen);
+  };
   return (
     <ThemeProvider theme={isDarkMode === 'dark' ? darkTheme : lightTheme}>
       <CssBaseline />
       <div className="App">
-        <Header />
+        <Header handleOpenModal={handleOpenModal} />
         <AppRoutes />
         <Footer />
         <ScrollTop {...props}>
@@ -84,6 +89,9 @@ function App(props: Props) {
           pauseOnHover
           transition={Slide}
         />
+        {openFormModal && (
+          <FormModal open={openFormModal} setOpen={handleOpenModal} type={'board'} />
+        )}
       </div>
     </ThemeProvider>
   );

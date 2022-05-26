@@ -9,6 +9,7 @@ function WelcomePage() {
   const isDarkMode = useSelector<AppStateType, 'dark' | 'light'>(
     (state) => state.app.settings.mode
   );
+  const isLoggedIn = useSelector<AppStateType, boolean>((state) => state.auth.isLoggedIn);
   const link = useNavigate();
   return (
     <RootWelcomeContainer
@@ -37,13 +38,15 @@ function WelcomePage() {
             >
               Sign Up
             </Button>
-            <Button
-              variant={'contained'}
-              style={{ color: 'white', display: 'none' }}
-              onClick={() => link(PATH.MAIN)}
-            >
-              Go to Main Page
-            </Button>
+            {isLoggedIn && (
+              <Button
+                variant={'contained'}
+                style={{ color: 'white' }}
+                onClick={() => link(PATH.MAIN)}
+              >
+                Go to Main Page
+              </Button>
+            )}
           </Stack>
         </TitleBlock>
         <Section>

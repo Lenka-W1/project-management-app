@@ -20,7 +20,10 @@ import { setAppMode } from '../../BLL/reducers/app-reducer';
 
 const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
-function Header() {
+type HeaderPropsType = {
+  handleOpenModal: (isOpen: boolean) => void;
+};
+function Header(props: HeaderPropsType) {
   const isDarkMode = useSelector<AppStateType, 'dark' | 'light'>(
     (state) => state.app.settings.mode
   );
@@ -47,18 +50,25 @@ function Header() {
                   Edit profile
                 </Button>
               </NavLink>
-              <NavLink to={PATH.MAIN}>
-                <Button variant={'text'} style={{ color: 'white' }}>
-                  Create new board
-                </Button>
-              </NavLink>
+              <Button
+                variant={'text'}
+                style={{ color: 'white' }}
+                onClick={() => props.handleOpenModal(true)}
+              >
+                Create new board
+              </Button>
             </Box>
             <Box sx={{ display: 'flex' }}>
               <Tooltip
                 title={isDarkMode == 'light' ? 'Switch to dark theme' : 'Switch to light theme'}
                 placement="bottom"
               >
-                <ModeButton variant="outlined" onClick={toggleAppMode}>
+                <ModeButton
+                  variant="outlined"
+                  color={'primary'}
+                  style={{ border: isDarkMode === 'light' ? '1px solid #ffffff' : '' }}
+                  onClick={toggleAppMode}
+                >
                   {isDarkMode === 'light' ? (
                     <NightlightOutlinedIcon fontSize={'small'} style={{ color: 'grey' }} />
                   ) : (
@@ -100,17 +110,17 @@ const SignOutButton = styled(Button)({
   marginLeft: '20px',
   '&:hover': {
     backgroundColor: '#2591cf79',
+    borderColor: '#3f51b5',
   },
 });
 
 const ModeButton = styled(Button)({
-  color: '#ffffff',
   marginRight: '20px',
   minWidth: '20px',
   height: '30px',
   padding: '0 5px',
   alignSelf: 'center',
-  border: '1px solid #ffffff',
+  // border: '1px solid #ffffff',
   '&:hover': {
     borderColor: '#ffffff',
   },

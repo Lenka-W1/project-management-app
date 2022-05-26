@@ -1,8 +1,9 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { authAPI, SignUpParamsType } from '../../API/API';
+import { authAPI, SignUpParamsType, TokenType } from '../../API/API';
 import { setAppError, setAppStatus } from './app-reducer';
 import { deleteUser } from './user-reducer';
 import { toast } from 'react-toastify';
+import jwt_decode from 'jwt-decode';
 
 type InitialStateType = {
   isLoggedIn: boolean;
@@ -35,9 +36,10 @@ export const signIn = createAsyncThunk(
     try {
       const res = await authAPI.signIn(param);
       localStorage.setItem('token', res.data.token);
+      const decodedToken: TokenType = jwt_decode(res.data.token);
       dispatch(setAppStatus({ status: 'successed' }));
       toast.success('Welcome!');
-      return { isLoggedIn: true, login: param.login };
+      return { isLoggedIn: true, login: param.login, userId: decodedToken.userId };
     } catch (error) {
       dispatch(setAppError({ error: error.response.data.message }));
       dispatch(setAppStatus({ status: 'idle' }));
@@ -60,7 +62,10 @@ export const slice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(signIn.fulfilled, (state, action) => {
       state.isLoggedIn = action.payload.isLoggedIn;
-      if (action.payload.login) state.login = action.payload.login;
+      if (action.payload.login) {
+        state.login = action.payload.login;
+        state.userId = action.payload.userId;
+      }
     });
     builder.addCase(signUp.fulfilled, (state, action) => {
       if (action.payload) {
