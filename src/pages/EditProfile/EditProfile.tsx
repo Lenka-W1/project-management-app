@@ -1,6 +1,7 @@
 import { Box, Button, Paper, styled, TextField } from '@mui/material';
 import { useFormik } from 'formik';
 import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { BoardResponseType, ColumnResponseType, UserResponseType } from '../../API/API';
@@ -12,6 +13,7 @@ import { PATH } from '../AppRoutes';
 import { FormikErrorType } from '../SignUp/SignUpPage';
 
 function EditProfile() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatchType>();
   const appStatus = useSelector<AppStateType, AppStatusType>((state) => state.app.status);
@@ -33,13 +35,13 @@ function EditProfile() {
     validate: (values) => {
       const errors: FormikErrorType = {};
       if (!values.name) {
-        errors.name = 'Required';
+        errors.name = `${t('edit_profile_page.form.required')}`;
       }
       if (!values.login) {
-        errors.login = 'Required';
+        errors.login = `${t('edit_profile_page.form.required')}`;
       }
       if (!values.password) {
-        errors.password = 'Required';
+        errors.password = `${t('edit_profile_page.form.required')}`;
       }
       return errors;
     },
@@ -68,11 +70,11 @@ function EditProfile() {
 
   return (
     <EditContainer elevation={8}>
-      <h1>Edit Profile</h1>
+      <h1>{t('edit_profile_page.profile_edit_page_title')}</h1>
       <EditForm onSubmit={formik.handleSubmit}>
         <EditField
           variant={'outlined'}
-          label={'Name'}
+          label={t('edit_profile_page.form.name_field')}
           required
           name="name"
           value={formik.values.name}
@@ -82,7 +84,7 @@ function EditProfile() {
         />
         <EditField
           variant={'outlined'}
-          label={'Login'}
+          label={t('edit_profile_page.form.login_field')}
           required
           name="login"
           value={formik.values.login}
@@ -92,7 +94,7 @@ function EditProfile() {
         />
         <EditField
           variant={'outlined'}
-          label={'Password'}
+          label={t('edit_profile_page.form.password_field')}
           required
           autoComplete={'off'}
           type={'password'}
@@ -104,10 +106,10 @@ function EditProfile() {
         />
         <Box>
           <SaveButton variant={'contained'} color={'success'} type={'submit'}>
-            Save changes
+            {t('edit_profile_page.form.save_changes')}
           </SaveButton>
           <DeleteButton variant={'contained'} color={'error'} onClick={removeUser}>
-            Delete user
+            {t('edit_profile_page.form.delete_user')}
           </DeleteButton>
         </Box>
       </EditForm>
@@ -117,7 +119,7 @@ function EditProfile() {
           type={'user'}
           deleteValueId={openConfirmModal.id}
           deleteValueName={(openConfirmModal as UserResponseType).name}
-          alertTitle={'Delete User?'}
+          alertTitle={t('edit_profile_page.modal_window.delete_user')}
           setOpenConfirmModal={setOpenConfirmModal}
         />
       )}

@@ -2,6 +2,7 @@ import { ArrowBack } from '@mui/icons-material';
 import { Alert, Button, IconButton, Paper, styled, TextField, Tooltip } from '@mui/material';
 import { useFormik } from 'formik';
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { AppStatusType, setAppStatus } from '../../BLL/reducers/app-reducer';
@@ -17,6 +18,7 @@ export type FormikErrorType = {
 };
 
 function SignUpPage() {
+  const { t } = useTranslation();
   const appStatus = useSelector<AppStateType, AppStatusType>((state) => state.app.status);
   const isLoggedIn = useSelector<AppStateType, boolean>((state) => state.auth.isLoggedIn);
   const err = useSelector<AppStateType, string | null>((state) => state.app.error);
@@ -33,13 +35,13 @@ function SignUpPage() {
     validate: (values) => {
       const errors: FormikErrorType = {};
       if (!values.name) {
-        errors.name = 'Required';
+        errors.name = t('sign_up_page.form.required');
       }
       if (!values.login) {
-        errors.login = 'Required';
+        errors.login = t('sign_up_page.form.required');
       }
       if (!values.password) {
-        errors.password = 'Required';
+        errors.password = t('sign_up_page.form.required');
       }
       return errors;
     },
@@ -70,17 +72,17 @@ function SignUpPage() {
   return (
     <SignUPContainer elevation={8}>
       <SignUPHeader>
-        <Tooltip title={'Back to login'}>
+        <Tooltip title={t('sign_up_page.form.back_button')}>
           <IconButton onClick={() => navigate(PATH.SIGN_IN)} size={'small'}>
             <ArrowBack fontSize={'small'} />
           </IconButton>
         </Tooltip>
-        <h1>Create a new account</h1>
+        <h1>{t('sign_up_page.sign_up_page_title')}</h1>
       </SignUPHeader>
       <StyledForm onSubmit={formik.handleSubmit}>
         <SignUPInput
           variant={'outlined'}
-          label={'Name'}
+          label={t('sign_up_page.form.name_field')}
           required
           name="name"
           value={formik.values.name}
@@ -90,7 +92,7 @@ function SignUpPage() {
         />
         <SignUPInput
           variant={'outlined'}
-          label={'Login'}
+          label={t('sign_up_page.form.login_field')}
           required
           name="login"
           value={formik.values.login}
@@ -100,7 +102,7 @@ function SignUpPage() {
         />
         <SignUPInput
           variant={'outlined'}
-          label={'Password'}
+          label={t('sign_up_page.form.password_field')}
           required
           autoComplete={'off'}
           type={'password'}
@@ -110,14 +112,14 @@ function SignUpPage() {
           error={!!formik.errors.password}
           helperText={formik.errors.password}
         />
-        {err && <ErrorAlert severity="error">{err}</ErrorAlert>}
+        {err && <ErrorAlert severity="error">{t('sign_up_page.form.error_message')}</ErrorAlert>}
         <SignUPButton
           type="submit"
           disabled={appStatus === 'loading'}
           variant={'contained'}
           color={'success'}
         >
-          Sign UP
+          {t('sign_up_page.form.button_login')}
         </SignUPButton>
       </StyledForm>
       {appStatus === 'loading' && <Preloader />}

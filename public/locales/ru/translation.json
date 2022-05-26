@@ -27,6 +27,51 @@
       "developer_2": "Фронтенд-разработчик, зам банды"
     }
   },
+  "edit_profile_page": {
+    "profile_edit_page_title": "Редактировать профиль",
+    "form": {
+      "name_field": "Имя",
+      "login_field": "Логин",
+      "password_field": "Пароль",
+      "save_changes": "Сохранить изменения",
+      "delete_user": "Удалить пользователя",
+      "required": "Обязательный"
+    },
+    "modal_window": {
+      "delete_user": "Удалить пользователя?"
+    }
+  },
+  "sign_in_page": {
+    "sign_in_page_title": "Войти",
+    "form": {
+      "login_field": "Логин",
+      "password_field": "Пароль",
+      "button_login": "Авторизоваться",
+      "or": "или",
+      "green_text": "Зарегистрируйтесь",
+      "continuation": "если у вас ещё нет учётной записи.",
+      "required": "Обязательный",
+      "error_message": "Пользователь не зарегистрирован!"
+    }
+  },
+  "sign_up_page": {
+    "sign_up_page_title": "Создать новый аккаунт",
+    "form": {
+      "back_button": "Вернуться на страницу входа",
+      "name_field": "Имя",
+      "login_field": "Логин",
+      "password_field": "Пароль",
+      "button_login": "Зарегистрироваться",
+      "required": "Обязательный",
+      "error_message": "Логин пользователя уже существует!"
+    }
+  },
+  "confirm_modal": {
+    "remove": "Вы действительно хотите удалить",
+    "cancel": "Отмена",
+    "delete": "Удалить",
+    "remove_user": "пользователя"
+  },
   "footer": {
     "all_rights_reserved": "©Все права защищены, 2022"
   }

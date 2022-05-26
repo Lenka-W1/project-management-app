@@ -27,6 +27,51 @@
       "developer_2": "Frontend developer"
     }
   },
+  "edit_profile_page": {
+    "profile_edit_page_title": "Edit Profile",
+    "form": {
+      "name_field": "Name",
+      "login_field": "Login",
+      "password_field": "Password",
+      "save_changes": "Save changes",
+      "delete_user": "Delete user",
+      "required": "Required"
+    },
+    "modal_window": {
+      "delete_user": "Delete User?"
+    }
+  },
+  "sign_in_page": {
+    "sign_in_page_title": "Sign In",
+    "form": {
+      "login_field": "Login",
+      "password_field": "Password",
+      "button_login": "Login",
+      "or": "or",
+      "green_text": "Sign Up",
+      "continuation": "if you don't have an account yet.",
+      "required": "Required",
+      "error_message": "User was not founded!"
+    }
+  },
+  "sign_up_page": {
+    "sign_up_page_title": "Create a new account",
+    "form": {
+      "back_button": "Back to login",
+      "name_field": "Name",
+      "login_field": "Login",
+      "password_field": "Password",
+      "button_login": "Sign up",
+      "required": "Required",
+      "error_message": "User login already exists!"
+    }
+  },
+  "confirm_modal": {
+    "remove": "Do you really want to remove",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "remove_user": "user"
+  },
   "footer": {
     "all_rights_reserved": "©All rights reserved, 2022"
   }
