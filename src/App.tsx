@@ -1,7 +1,6 @@
 import React from 'react';
 import './App.css';
 import AppRoutes from './pages/AppRoutes';
-import TempHeader from './components/Header/TempHeader';
 import Footer from './components/Footer/Footer';
 import { Slide, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';

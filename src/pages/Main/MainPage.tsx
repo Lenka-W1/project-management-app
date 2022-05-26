@@ -12,8 +12,10 @@ import { useNavigate } from 'react-router-dom';
 import { PATH } from '../AppRoutes';
 import ConfirmationModal from '../../components/ModalWindows/ConfirmationModal';
 import AddIcon from '@mui/icons-material/Add';
+import { useTranslation } from 'react-i18next';
 
 function MainPage() {
+  const { t } = useTranslation();
   const boards = useSelector<AppStateType, Array<BoardResponseType>>(
     (state) => state.boards.boards
   );
@@ -53,19 +55,19 @@ function MainPage() {
     <RootContainer>
       <MainHeader>
         <h3>
-          Boards shown:{' '}
+          {t('main_page.boards_shown')}{' '}
           {
             boards.filter((b) => b.title.toLowerCase().includes(searchBoardName.toLowerCase()))
               .length
           }{' '}
-          of {boards.length}
+          {t('main_page.of')} {boards.length}
         </h3>
         <div>
           <TextField
             id="input-with-icon-textfield"
-            label="Search"
+            label={t('main_page.search')}
             size={'small'}
-            placeholder={'Search board'}
+            placeholder={t('main_page.search_board')}
             value={searchBoardName}
             onChange={(e) => {
               searchBoardHandler(e);
@@ -87,7 +89,7 @@ function MainPage() {
           startIcon={<AddIcon />}
           onClick={() => handleOpenModal(true)}
         >
-          Create a new Board
+          {t('main_page.create_new_board')}
         </CreateBoardsButton>
         {boardElements}
       </BoardsContainer>
@@ -98,7 +100,7 @@ function MainPage() {
           type={'board'}
           deleteValueId={openConfirmModal.id}
           deleteValueName={(openConfirmModal as BoardResponseType).title}
-          alertTitle={'Delete Board?'}
+          alertTitle={t('main_page.modal_window.alert_title')}
           setOpenConfirmModal={setOpenConfirmModal}
         />
       )}

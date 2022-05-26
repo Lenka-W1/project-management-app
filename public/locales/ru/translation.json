@@ -66,11 +66,46 @@
       "error_message": "Логин пользователя уже существует!"
     }
   },
+  "main_page": {
+    "boards_shown": "Показанные доски:",
+    "of": "из",
+    "search": "Поиск",
+    "search_board": "Поиск доски",
+    "create_new_board": "Создать новую доску",
+    "modal_window": {
+      "alert_title": "Удалить доску?"
+    },
+    "tooltip": {
+      "delete_board": "Удалить доску",
+      "edit_board": "Редактировать доску"
+    },
+    "board": {
+      "required": "Обязательный",
+      "button_cancel": "Отмена",
+      "button_update": "Обновить"
+    }
+  },
   "confirm_modal": {
     "remove": "Вы действительно хотите удалить",
     "cancel": "Отмена",
     "delete": "Удалить",
-    "remove_user": "пользователя"
+    "remove_user": "пользователя",
+    "remove_board": "доску"
+  },
+  "form_modal": {
+    "board": {
+      "create_board": "Создать новую доску",
+      "note": "Чтобы создать новую доску, введите здесь название и описание."
+    },
+    "column": {
+      "create_column": "Создать новую колонку",
+      "note": "Чтобы создать новую колонку, введите свой заголовок и порядок здесь."
+    },
+    "title": "Заголовок",
+    "description": "Описание",
+    "button_cancel": "Отмена",
+    "button_create": "Создать",
+    "required": "Обязательный"
   },
   "footer": {
     "all_rights_reserved": "©Все права защищены, 2022"

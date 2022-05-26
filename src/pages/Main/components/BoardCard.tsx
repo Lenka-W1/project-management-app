@@ -5,11 +5,13 @@ import EditIcon from '@mui/icons-material/Edit';
 import { BoardResponseType } from '../../../API/API';
 import BoardUpdForm from './BoardUpdForm';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 type BoardCardPropsType = {
   setOpenConfirmModal: (deleteValue: BoardResponseType | null) => void;
 };
 function BoardCard(props: BoardResponseType & BoardCardPropsType) {
+  const { t } = useTranslation();
   const { id, title, description } = props;
   const navigate = useNavigate();
   const [editMode, setEditMode] = useState(false);
@@ -34,12 +36,12 @@ function BoardCard(props: BoardResponseType & BoardCardPropsType) {
     <StyledBoardCard>
       <Typography variant="h6">{title}</Typography>
       <Typography variant="body2">{description}</Typography>
-      <Tooltip title="Delete board">
+      <Tooltip title={t('main_page.tooltip.delete_board')}>
         <IconButton aria-label="delete" color={'error'} onClick={deleteBoard}>
           <DeleteForeverIcon />
         </IconButton>
       </Tooltip>
-      <Tooltip title="Edit board" onClick={toggleEditMode}>
+      <Tooltip title={t('main_page.tooltip.edit_board')} onClick={toggleEditMode}>
         <IconButton aria-label="delete" color={'success'}>
           <EditIcon />
         </IconButton>

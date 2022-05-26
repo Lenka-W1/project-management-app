@@ -1,4 +1,4 @@
-{  
+{
   "header": {
     "edit_profile": "Edit profile",
     "create_new_board": "Create new board",
@@ -14,7 +14,7 @@
     "description_1": {
       "strong": "A project management system",
       "continuation": "is an application that helps an individual in a team or group of developers achieve their goals."
-    },    
+    },
     "description_2": {
       "strong": "Board",
       "continuation": "use columns and cards to create tasks, track and organize them. And also assign tasks to team members. Manage projects."
@@ -66,11 +66,46 @@
       "error_message": "User login already exists!"
     }
   },
+  "main_page": {
+    "boards_shown": "Boards shown:",
+    "of": "of",
+    "search": "Search",
+    "search_board": "Search board",
+    "create_new_board": "Create a new Board",
+    "modal_window": {
+      "alert_title": "Delete Board?"
+    },
+    "tooltip": {
+      "delete_board": "Delete board",
+      "edit_board": "Edit board"
+    },
+    "board": {
+      "required": "Required",
+      "button_cancel": "Cancel",
+      "button_update": "Update"
+    }
+  },
   "confirm_modal": {
     "remove": "Do you really want to remove",
     "cancel": "Cancel",
     "delete": "Delete",
-    "remove_user": "user"
+    "remove_user": "user",
+    "remove_board": "board"
+  },
+  "form_modal": {
+    "board": {
+      "create_board": "Create a new Board",
+      "note": "To create a new board, please enter your title and description here."
+    },
+    "column": {
+      "create_column": "Create a new Column",
+      "note": "To create a new column, please enter your title and order here."
+    },
+    "title": "Title",
+    "description": "Description",
+    "button_cancel": "Cancel",
+    "button_create": "Create",
+    "required": "Required"
   },
   "footer": {
     "all_rights_reserved": "©All rights reserved, 2022"

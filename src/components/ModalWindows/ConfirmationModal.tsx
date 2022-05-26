@@ -74,7 +74,7 @@ function ConfirmationModal(props: AlertDialogForDeletePackPropsType) {
             {props.type === 'board' && (
               <span>
                 {t('confirm_modal.remove')} <strong>{props.deleteValueName} </strong>
-                {props.type}?
+                {t('confirm_modal.remove_board')}?
               </span>
             )}
             {props.type === 'column' && (

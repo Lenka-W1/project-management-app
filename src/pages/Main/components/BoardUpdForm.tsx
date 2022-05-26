@@ -1,16 +1,17 @@
-import React from 'react';
 import { Button, Card, styled, TextField } from '@mui/material';
 import { useFormik } from 'formik';
 import { BoardResponseType } from '../../../API/API';
 import { useDispatch } from 'react-redux';
 import { AppDispatchType } from '../../../BLL/store';
 import { updateBoard } from '../../../BLL/reducers/board-reducer';
+import { useTranslation } from 'react-i18next';
 
 type FormikErrorType = {
   title?: string;
   description?: string;
 };
 function BoardUpdForm(props: BoardResponseType & { toggleEditMode: () => void }) {
+  const { t } = useTranslation();
   const { id, title, description, toggleEditMode } = props;
   const dispatch = useDispatch<AppDispatchType>();
   const formik = useFormik({
@@ -21,10 +22,10 @@ function BoardUpdForm(props: BoardResponseType & { toggleEditMode: () => void })
     validate: (values) => {
       const errors: FormikErrorType = {};
       if (!values.title) {
-        errors.title = 'Required';
+        errors.title = t('main_page.board.required');
       }
       if (!values.description) {
-        errors.description = 'Required';
+        errors.description = t('main_page.board.required');
       }
       return errors;
     },
@@ -61,10 +62,10 @@ function BoardUpdForm(props: BoardResponseType & { toggleEditMode: () => void })
         />
         <FormButtonsContainer>
           <Button onClick={closeEditMode} size={'small'} color={'error'} variant={'contained'}>
-            Cancel
+            {t('main_page.board.button_cancel')}
           </Button>
           <Button type="submit" size={'small'} color={'success'} variant={'contained'}>
-            Update
+            {t('main_page.board.button_update')}
           </Button>
         </FormButtonsContainer>
       </StyledForm>
