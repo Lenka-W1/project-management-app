@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { Dispatch, SetStateAction, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { alpha, IconButton, Menu, MenuItem, MenuProps, Paper } from '@mui/material';
 import {
@@ -24,6 +24,7 @@ type TaskPropsType = TaskType & {
   reorderTaskOnHover: (dragIndex: number, hoverIndex: number) => void;
   moveTaskOnDrop: (dragIndex: number, hoverIndex: number, taskId: string) => void;
   moveTasksBetweenColumn: (fromColumnId: string, toColumnId: string, taskId: string) => void;
+  setHidePreviewTaskOnHover: Dispatch<SetStateAction<boolean>>;
   boardId: string | undefined;
   index: number;
 };
@@ -47,6 +48,7 @@ function Task(props: TaskPropsType) {
     index,
     reorderTaskOnHover,
     moveTaskOnDrop,
+    setHidePreviewTaskOnHover,
   } = props;
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [openConfirmModal, setOpenConfirmModal] = React.useState<
@@ -102,6 +104,9 @@ function Task(props: TaskPropsType) {
       const sourceColumnId = monitor.getItem().columnId;
       if (sourceColumnId === columnId && dragIndex === hoverIndex) {
         return;
+      }
+      if (sourceColumnId === columnId) {
+        setHidePreviewTaskOnHover(false);
       }
       if (sourceColumnId !== columnId) {
         return;

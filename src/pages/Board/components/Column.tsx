@@ -18,7 +18,6 @@ import {
 } from '../../../BLL/reducers/tasks-reducers';
 import FormModal from '../../../components/ModalWindows/FormModal';
 import { DragSourceMonitor, useDrag, useDrop } from 'react-dnd';
-import update from 'immutability-helper';
 import { Identifier, XYCoord } from 'dnd-core';
 import { ItemTypes } from './ItemTypes';
 
@@ -56,7 +55,7 @@ function Column(props: ColumnPropsType) {
   const [editMode, setEditMode] = useState(false);
   const [columnName, setColumnName] = useState(title);
   const [openFormModal, setOpenFormModal] = useState(false);
-  // const [tasks, setTasks] = useState([] as TaskType[]);
+  const [hidePreviewTaskOnHover, setHidePreviewTaskOnHover] = useState(true);
   const tasks = allTasks[columnId];
   const ref = useRef<HTMLDivElement>(null);
   const refColumn = useRef<HTMLDivElement>(null);
@@ -75,9 +74,6 @@ function Column(props: ColumnPropsType) {
   const columnNameHandler = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setColumnName(e.currentTarget.value);
   };
-  // useEffect(() => {
-  //   setTasks(allTasks[columnId]);
-  // }, [columnId, allTasks]);
   useEffect(() => {
     if (id) dispatch(fetchAllTasks({ boardId: id, columnId: columnId }));
   }, [dispatch, columnId, id, order]);
@@ -85,14 +81,6 @@ function Column(props: ColumnPropsType) {
     setOpenFormModal(true);
   };
   const reorderTaskOnHover = (dragIndex: number, hoverIndex: number) => {
-    // setTasks((prevTasks: TaskType[]) =>
-    //   update(prevTasks, {
-    //     $splice: [
-    //       [dragIndex, 1],
-    //       [hoverIndex, 0, prevTasks[dragIndex]],
-    //     ],
-    //   })
-    // );
     setAllTasksLocal((prev: TasksInitialStateType) => {
       const arr = [...prev[columnId]];
       arr.splice(dragIndex, 1);
@@ -229,6 +217,7 @@ function Column(props: ColumnPropsType) {
           reorderTaskOnHover={reorderTaskOnHover}
           moveTaskOnDrop={moveTaskOnDrop}
           moveTasksBetweenColumn={moveTasksBetweenColumn}
+          setHidePreviewTaskOnHover={setHidePreviewTaskOnHover}
           index={index}
           boardId={id}
         />
@@ -281,7 +270,7 @@ function Column(props: ColumnPropsType) {
           </Tooltip>
         </ColumnHeader>
         <TaskContainer>
-          {canDropTask && isOver && <PreviewTaskTemplate />}
+          {canDropTask && isOver && hidePreviewTaskOnHover && <PreviewTaskTemplate />}
           {taskElements}
           <Button variant={'contained'} color={'success'} onClick={addTask}>
             Add task

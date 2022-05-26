@@ -120,9 +120,7 @@ export const moveTaskBetweenColumns = createAsyncThunk(
     { dispatch, rejectWithValue, getState }
   ) => {
     const { boardId, fromColumnId, toColumnId, taskId } = param;
-    const task = (getState() as AppStateType).columns.columns
-      .find((c) => c.id === param.fromColumnId)
-      ?.tasks.find((t) => t.id === param.taskId);
+    const task = (getState() as AppStateType).tasks[fromColumnId].find((t) => t.id === taskId);
     const fromColumnTitle = (getState() as AppStateType).columns.columns.find(
       (c) => c.id === param.fromColumnId
     )?.title;
@@ -131,16 +129,8 @@ export const moveTaskBetweenColumns = createAsyncThunk(
     )?.title;
     dispatch(setAppError({ error: null }));
     dispatch(setAppStatus({ status: 'loading' }));
-    debugger;
     try {
       if (task) {
-        // await tasksAPI.deleteTask(boardId, fromColumnId, taskId).then(async () => {
-        //   await tasksAPI.createTask(boardId, toColumnId, {
-        //     title: task.title,
-        //     description: task.description,
-        //     userId: task.userId,
-        //   });
-        // });
         const res: AxiosResponse<TaskResponseType> = await tasksAPI.updateTask(
           boardId,
           fromColumnId,
@@ -154,7 +144,6 @@ export const moveTaskBetweenColumns = createAsyncThunk(
             userId: task.userId,
           }
         );
-        console.log(res.data.columnId);
         dispatch(setAppStatus({ status: 'successed' }));
         toast.success(
           `Task ${task.title.toUpperCase()} successfully moved from ${fromColumnTitle} to ${toColumnTitle}!`
@@ -209,7 +198,7 @@ export const slice = createSlice({
           if (index > -1) {
             tasks.splice(index, 1);
           }
-          state[action.payload.toColumnId].push(task);
+          state[action.payload.toColumnId].unshift(task);
         }
       }
     });
