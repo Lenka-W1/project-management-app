@@ -44,8 +44,9 @@ function BoardPage() {
     setColumns(allColumns);
   }, [allColumns]);
   useEffect(() => {
-    setAllTasksLocal(allTasks);
-  }, []);
+    // debugger;
+    setAllTasksLocal({ ...allTasks });
+  }, [allTasks, dispatch]);
   const handleOpenModal = (isOpen: boolean) => {
     setOpenFormModal(isOpen);
   };
@@ -89,7 +90,6 @@ function BoardPage() {
       />
     );
   });
-  // console.log('ren');
   return (
     <DndProvider backend={HTML5Backend}>
       <RootContainer>

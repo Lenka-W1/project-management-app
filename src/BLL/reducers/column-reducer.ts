@@ -45,6 +45,7 @@ export const createColumn = createAsyncThunk<
       return { column: res.data };
     } catch (error) {
       dispatch(setAppError({ error: error.response.data.message }));
+      toast.error(error.response.data.message);
       return rejectWithValue({ error: error.response.data.message });
     } finally {
       dispatch(setAppStatus({ status: 'idle' }));
@@ -69,6 +70,7 @@ export const removeColumn = createAsyncThunk<
     return { columnId: param.columnId };
   } catch (error) {
     dispatch(setAppError({ error: error.response.data.message }));
+    toast.error(error.response.data.message);
     return rejectWithValue({ error: error.response.data.message });
   } finally {
     dispatch(setAppStatus({ status: 'idle' }));
@@ -99,6 +101,7 @@ export const updateColumn = createAsyncThunk<
     return { column: res.data };
   } catch (error) {
     dispatch(setAppError({ error: error.response.data.message }));
+    toast.error(error.response.data.message);
     return rejectWithValue({ error: error.response.data.message });
   } finally {
     dispatch(setAppStatus({ status: 'idle' }));
@@ -118,7 +121,6 @@ export const slice = createSlice({
     });
     builder.addCase(fetchBoard.fulfilled, (state, action) => {
       state.columns = action.payload.board.columns;
-      // state.columns.sort((a, b) => a.order - b.order);
     });
     builder.addCase(removeColumn.fulfilled, (state, action) => {
       const index = state.columns.findIndex((b) => b.id === action.payload.columnId);

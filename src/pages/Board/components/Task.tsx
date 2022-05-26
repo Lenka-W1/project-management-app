@@ -1,15 +1,6 @@
 import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
-import {
-  alpha,
-  Badge,
-  BadgeProps,
-  IconButton,
-  Menu,
-  MenuItem,
-  MenuProps,
-  Paper,
-} from '@mui/material';
+import { alpha, IconButton, Menu, MenuItem, MenuProps, Paper } from '@mui/material';
 import {
   BoardResponseType,
   ColumnResponseType,
@@ -32,13 +23,7 @@ type TaskPropsType = TaskType & {
   columnName: string;
   reorderTaskOnHover: (dragIndex: number, hoverIndex: number) => void;
   moveTaskOnDrop: (dragIndex: number, hoverIndex: number, taskId: string) => void;
-  reorderTasksBetweenColumn: (
-    dragIndex: number,
-    hoverIndex: number,
-    sourceColumnId: string,
-    hoverColumnId: string,
-    taskId: string
-  ) => void;
+  moveTasksBetweenColumn: (fromColumnId: string, toColumnId: string, taskId: string) => void;
   boardId: string | undefined;
   index: number;
 };
@@ -62,7 +47,6 @@ function Task(props: TaskPropsType) {
     index,
     reorderTaskOnHover,
     moveTaskOnDrop,
-    reorderTasksBetweenColumn,
   } = props;
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [openConfirmModal, setOpenConfirmModal] = React.useState<
@@ -100,11 +84,7 @@ function Task(props: TaskPropsType) {
       handleCloseTaskDropMenu();
     }
   };
-  const [{ handlerId, canDrop, isOver }, drop] = useDrop<
-    DragItem,
-    void,
-    { handlerId: Identifier | null; canDrop: boolean; isOver: boolean }
-  >({
+  const [{ handlerId }, drop] = useDrop<DragItem, void, { handlerId: Identifier | null }>({
     accept: ItemTypes.TASK,
     collect(monitor) {
       return {
@@ -120,12 +100,11 @@ function Task(props: TaskPropsType) {
       const dragIndex = item.index;
       const hoverIndex = index;
       const sourceColumnId = monitor.getItem().columnId;
-      const dragTaskId = monitor.getItem().id;
       if (sourceColumnId === columnId && dragIndex === hoverIndex) {
         return;
       }
       if (sourceColumnId !== columnId) {
-        reorderTasksBetweenColumn(dragIndex, hoverIndex, sourceColumnId, columnId, dragTaskId);
+        return;
       }
       const hoverBoundingRect = ref.current?.getBoundingClientRect();
       const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
@@ -142,15 +121,9 @@ function Task(props: TaskPropsType) {
       }
       item.index = hoverIndex;
     },
-    drop(item: DragItem, monitor) {
-      // const sourceColumnId = monitor.getItem().columnId;
-      // const dragTaskId = monitor.getItem().id;
-      // const hoverIndex = index;
+    drop(item: DragItem) {
       const dragIndex = item.index;
       moveTaskOnDrop(dragIndex, index, id);
-      // if (sourceColumnId !== columnId) {
-      //   reorderTasksBetweenColumn(dragIndex, hoverIndex, sourceColumnId, columnId, dragTaskId);
-      // }
     },
   });
   const [{ isDragging }, drag] = useDrag({
@@ -292,11 +265,5 @@ const StyledMenu = styled((props: MenuProps) => (
         backgroundColor: alpha('#42a5f5', 0.5),
       },
     },
-  },
-}));
-const StyledBadge = styled(Badge)<BadgeProps>(({}) => ({
-  '& .MuiBadge-badge': {
-    left: 220,
-    top: -12,
   },
 }));

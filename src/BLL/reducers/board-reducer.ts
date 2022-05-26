@@ -22,6 +22,7 @@ export const fetchAllBoards = createAsyncThunk<
     return { boards: res.data };
   } catch (error) {
     dispatch(setAppError({ error: error.response.data.message }));
+    toast.error(error.response.data.message);
     return rejectWithValue({ error: error.response.data.message });
   } finally {
     dispatch(setAppStatus({ status: 'idle' }));
@@ -40,6 +41,7 @@ export const fetchBoard = createAsyncThunk<
     return { board: res.data };
   } catch (error) {
     dispatch(setAppError({ error: error.response.data.message }));
+    toast.error(error.response.data.message);
     return rejectWithValue({ error: error.response.data.message });
   } finally {
     dispatch(setAppStatus({ status: 'idle' }));
@@ -59,6 +61,7 @@ export const createBoard = createAsyncThunk<
     return { board: res.data };
   } catch (error) {
     dispatch(setAppError({ error: error.response.data.message }));
+    toast.error(error.response.data.message);
     return rejectWithValue({ error: error.response.data.message });
   } finally {
     dispatch(setAppStatus({ status: 'idle' }));
@@ -82,6 +85,7 @@ export const removeBoard = createAsyncThunk<
     return { boardId };
   } catch (error) {
     dispatch(setAppError({ error: error.response.data.message }));
+    toast.error(error.response.data.message);
     return rejectWithValue({ error: error.response.data.message });
   } finally {
     dispatch(setAppStatus({ status: 'idle' }));
@@ -110,6 +114,7 @@ export const updateBoard = createAsyncThunk<
       return { board: { ...res.data } };
     } catch (error) {
       dispatch(setAppError({ error: error.response.data.message }));
+      toast.error(error.response.data.message);
       return rejectWithValue({ error: error.response.data.message });
     } finally {
       dispatch(setAppStatus({ status: 'idle' }));
