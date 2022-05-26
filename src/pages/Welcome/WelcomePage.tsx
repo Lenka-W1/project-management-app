@@ -10,6 +10,7 @@ function WelcomePage() {
   const isDarkMode = useSelector<AppStateType, 'dark' | 'light'>(
     (state) => state.app.settings.mode
   );
+  const isLoggedIn = useSelector<AppStateType, boolean>((state) => state.auth.isLoggedIn);
   const link = useNavigate();
   const { t } = useTranslation();
 
@@ -40,13 +41,15 @@ function WelcomePage() {
             >
               {t('welcome_page.sign_up')}
             </Button>
-            <Button
-              variant={'contained'}
-              style={{ color: 'white', display: 'none' }}
-              onClick={() => link(PATH.MAIN)}
-            >
-              {t('welcome_page.go_to_main')}
-            </Button>
+            {isLoggedIn && (
+              <Button
+                variant={'contained'}
+                style={{ color: 'white' }}
+                onClick={() => link(PATH.MAIN)}
+              >
+                {t('welcome_page.go_to_main')}
+              </Button>
+            )}
           </Stack>
         </TitleBlock>
         <Section>

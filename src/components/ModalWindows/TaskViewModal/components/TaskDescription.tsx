@@ -2,8 +2,6 @@ import React from 'react';
 import AssignmentOutlinedIcon from '@mui/icons-material/AssignmentOutlined';
 import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined';
 import DynamicFeedIcon from '@mui/icons-material/DynamicFeed';
-import TaskAltOutlinedIcon from '@mui/icons-material/TaskAltOutlined';
-import RemoveCircleOutlineOutlinedIcon from '@mui/icons-material/RemoveCircleOutlineOutlined';
 import { styled } from '@mui/material';
 import { TaskType } from '../../../../API/API';
 
@@ -26,19 +24,6 @@ function TaskDescription({ task, columnName }: TaskDescriptionPropsType) {
         <DynamicFeedIcon color={'warning'} />
         {task.order} <span>(sequence number)</span>
       </h3>
-      <h3>
-        {task.done ? (
-          <>
-            <TaskAltOutlinedIcon color={'success'} />
-            Done <span>(task status)</span>
-          </>
-        ) : (
-          <>
-            <RemoveCircleOutlineOutlinedIcon color={'error'} />
-            Not Done <span>(task status)</span>
-          </>
-        )}
-      </h3>
     </TaskDescriptionContainer>
   );
 }
@@ -48,12 +33,15 @@ export default TaskDescription;
 const TaskDescriptionContainer = styled('div')`
   display: flex;
   flex-direction: column;
+  flex-wrap: nowrap;
   h3 {
-    width: 360px;
+    width: 400px;
     font-size: 21px;
     display: flex;
     flex-direction: row;
+    flex-wrap: nowrap;
     align-items: center;
+    margin-bottom: 10px;
     span {
       margin: 0 10px 0 10px;
       color: gray;

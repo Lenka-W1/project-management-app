@@ -22,7 +22,10 @@ import { ChangeEvent, useState } from 'react';
 
 const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
-function Header() {
+type HeaderPropsType = {
+  handleOpenModal: (isOpen: boolean) => void;
+};
+function Header(props: HeaderPropsType) {
   const { t, i18n } = useTranslation();
   const [checked, setSwitch] = useState<boolean>(i18n.language === 'ru' ? false : true);
   const isDarkMode = useSelector<AppStateType, 'dark' | 'light'>(
@@ -56,18 +59,25 @@ function Header() {
                   {t('header.edit_profile')}
                 </Button>
               </NavLink>
-              <NavLink to={PATH.MAIN}>
-                <Button variant={'text'} style={{ color: 'white' }}>
-                  {t('header.create_new_board')}
-                </Button>
-              </NavLink>
+              <Button
+                variant={'text'}
+                style={{ color: 'white' }}
+                onClick={() => props.handleOpenModal(true)}
+              >
+                {t('header.create_new_board')}
+              </Button>
             </Box>
             <Box sx={{ display: 'flex' }}>
               <Tooltip
                 title={isDarkMode == 'light' ? 'Switch to dark theme' : 'Switch to light theme'}
                 placement="bottom"
               >
-                <ModeButton variant="outlined" onClick={toggleAppMode}>
+                <ModeButton
+                  variant="outlined"
+                  color={'primary'}
+                  style={{ border: isDarkMode === 'light' ? '1px solid #ffffff' : '' }}
+                  onClick={toggleAppMode}
+                >
                   {isDarkMode === 'light' ? (
                     <NightlightOutlinedIcon fontSize={'small'} style={{ color: 'grey' }} />
                   ) : (
@@ -106,14 +116,17 @@ const SignOutButton = styled(Button)({
   border: '1px solid #ffffff',
   '&:hover': {
     backgroundColor: '#2591cf79',
+    borderColor: '#3f51b5',
   },
 });
 
 const ModeButton = styled(Button)({
-  color: '#ffffff',
   marginRight: '20px',
-  width: '20px',
-  border: '1px solid #ffffff',
+  minWidth: '20px',
+  height: '30px',
+  padding: '0 5px',
+  alignSelf: 'center',
+  // border: '1px solid #ffffff',
   '&:hover': {
     borderColor: '#ffffff',
   },

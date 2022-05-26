@@ -42,7 +42,6 @@ export default function TaskViewModal(props: TaskViewModalPropsType) {
       title: task.title,
       description: task.description,
       order: task.order,
-      done: task.done,
     },
     validate: (values) => {
       const errors: FormikErrorType = {};
@@ -74,7 +73,6 @@ export default function TaskViewModal(props: TaskViewModalPropsType) {
               description: values.description,
               title: values.title,
               order: values.order,
-              done: values.done,
             },
           })
         );
@@ -103,16 +101,16 @@ export default function TaskViewModal(props: TaskViewModalPropsType) {
                 color={!editMode ? 'primary' : 'error'}
                 onClick={handleEditMode}
               >
-                {!editMode ? 'Edit task' : 'Cancel'}
+                {!editMode ? 'Edit' : 'Cancel'}
               </Button>
               {!editMode && (
                 <Button variant={'text'} color={'error'} onClick={deleteTask}>
-                  Delete task
+                  Delete
                 </Button>
               )}
               {editMode && (
                 <Button variant={'text'} color={'success'} type={'submit'}>
-                  Save changes
+                  Save
                 </Button>
               )}
             </TaskButtonContainer>
@@ -125,8 +123,8 @@ export default function TaskViewModal(props: TaskViewModalPropsType) {
 
 const StyledDialog = styled(Dialog)`
   .MuiDialogContent-root {
-    min-width: 600px;
-    min-height: 200px;
+    //min-width: 600px;
+    //min-height: 200px;
     form {
       display: flex;
       flex-direction: row;

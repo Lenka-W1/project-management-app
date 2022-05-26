@@ -1,15 +1,6 @@
-import React, { useState } from 'react';
+import React, { Dispatch, SetStateAction, useRef, useState } from 'react';
 import styled from 'styled-components';
-import {
-  alpha,
-  Badge,
-  BadgeProps,
-  IconButton,
-  Menu,
-  MenuItem,
-  MenuProps,
-  Paper,
-} from '@mui/material';
+import { alpha, IconButton, Menu, MenuItem, MenuProps, Paper } from '@mui/material';
 import {
   BoardResponseType,
   ColumnResponseType,
@@ -19,15 +10,46 @@ import {
 import { Edit } from '@mui/icons-material';
 import ExpandCircleDownIcon from '@mui/icons-material/ExpandCircleDown';
 import DeleteIcon from '@mui/icons-material/Delete';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import { useSelector } from 'react-redux';
-import { AppStateType } from '../../../BLL/store';
 import ConfirmationModal from '../../../components/ModalWindows/ConfirmationModal';
 import TaskViewModal from '../../../components/ModalWindows/TaskViewModal/TaskViewModal';
-type TaskPropsType = TaskType & { columnId: string; columnName: string };
+import { DragSourceMonitor, useDrag, useDrop } from 'react-dnd';
+import { ItemTypes } from './ItemTypes';
+import { Identifier, XYCoord } from 'dnd-core';
+import { useSelector } from 'react-redux';
+import { AppStateType } from '../../../BLL/store';
+
+type TaskPropsType = TaskType & {
+  columnId: string;
+  columnName: string;
+  reorderTaskOnHover: (dragIndex: number, hoverIndex: number) => void;
+  moveTaskOnDrop: (dragIndex: number, hoverIndex: number, taskId: string) => void;
+  moveTasksBetweenColumn: (fromColumnId: string, toColumnId: string, taskId: string) => void;
+  setHidePreviewTaskOnHover: Dispatch<SetStateAction<boolean>>;
+  boardId: string | undefined;
+  index: number;
+};
+interface DragItem {
+  index: number;
+  id: string;
+  type: string;
+  columnId: string;
+}
 
 function Task(props: TaskPropsType) {
-  const { id, title, description, done, order, userId, files, columnId, columnName } = props;
+  const {
+    id,
+    title,
+    description,
+    order,
+    userId,
+    files,
+    columnId,
+    columnName,
+    index,
+    reorderTaskOnHover,
+    moveTaskOnDrop,
+    setHidePreviewTaskOnHover,
+  } = props;
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [openConfirmModal, setOpenConfirmModal] = React.useState<
     ColumnResponseType | BoardResponseType | UserResponseType | TaskType | null
@@ -36,6 +58,8 @@ function Task(props: TaskPropsType) {
   const isDarkMode = useSelector<AppStateType, 'dark' | 'light'>(
     (state) => state.app.settings.mode
   );
+  const ref = useRef<HTMLDivElement>(null);
+
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -48,7 +72,6 @@ function Task(props: TaskPropsType) {
       title: title,
       order: order,
       description: description,
-      done: done,
       userId: userId,
       files: files,
     });
@@ -63,25 +86,75 @@ function Task(props: TaskPropsType) {
       handleCloseTaskDropMenu();
     }
   };
+  const [{ handlerId }, drop] = useDrop<DragItem, void, { handlerId: Identifier | null }>({
+    accept: ItemTypes.TASK,
+    collect(monitor) {
+      return {
+        handlerId: monitor.getHandlerId(),
+        isOver: monitor.isOver(),
+        canDrop: monitor.canDrop(),
+      };
+    },
+    hover(item: DragItem, monitor) {
+      if (!ref.current) {
+        return;
+      }
+      const dragIndex = item.index;
+      const hoverIndex = index;
+      const sourceColumnId = monitor.getItem().columnId;
+      if (sourceColumnId === columnId && dragIndex === hoverIndex) {
+        return;
+      }
+      if (sourceColumnId === columnId) {
+        setHidePreviewTaskOnHover(false);
+      }
+      if (sourceColumnId !== columnId) {
+        return;
+      }
+      const hoverBoundingRect = ref.current?.getBoundingClientRect();
+      const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+      const clientOffset = monitor.getClientOffset();
+      const hoverClientY = (clientOffset as XYCoord).y - hoverBoundingRect.top;
+      if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+        return;
+      }
+      if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+        return;
+      }
+      if (sourceColumnId === columnId) {
+        reorderTaskOnHover(dragIndex, hoverIndex);
+      }
+      item.index = hoverIndex;
+    },
+    drop(item: DragItem) {
+      const dragIndex = item.index;
+      moveTaskOnDrop(dragIndex, index, id);
+    },
+  });
+  const [{ isDragging }, drag] = useDrag({
+    type: ItemTypes.TASK,
+    item: () => {
+      return { id, index, order, columnId };
+    },
+    collect: (
+      monitor: DragSourceMonitor<{ id: string; index: number; order: number; columnId: string }>
+    ) => ({
+      isDragging: monitor.isDragging(),
+    }),
+  });
+  drag(drop(ref));
 
   return (
     <RootContainer
-      elevation={8}
-      variant={'outlined'}
-      style={
-        done
-          ? { border: '1px solid green' }
-          : isDarkMode
-          ? { border: '1px solid #3f51b5' }
-          : { border: '1px solid #42a5f5' }
-      }
+      elevation={isDarkMode === 'dark' ? 0 : 24}
+      variant={'elevation'}
+      ref={ref}
+      style={isDragging ? { opacity: 0 } : { opacity: 1 }}
+      data-handler-id={handlerId}
     >
-      <StyledBadge
-        invisible={!done}
-        badgeContent={<CheckCircleIcon color={'success'} fontSize={'small'} />}
-      >
-        <h4 onClick={toggleTaskViewModal}>{title}</h4>
-      </StyledBadge>
+      <h4 onClick={toggleTaskViewModal}>
+        {title} - order {order}
+      </h4>
       <IconButton
         onClick={handleClick}
         color={'primary'}
@@ -140,12 +213,12 @@ const RootContainer = styled(Paper)`
   justify-content: space-between;
   align-items: center;
   padding: 10px;
-  margin: 0 15px 15px 15px;
-  cursor: pointer;
+  margin: 10px;
+  cursor: move;
 
   h4 {
     font-weight: 400;
-    width: 170px;
+    cursor: pointer;
   }
 
   .MuiIconButton-colorPrimary {
@@ -197,11 +270,5 @@ const StyledMenu = styled((props: MenuProps) => (
         backgroundColor: alpha('#42a5f5', 0.5),
       },
     },
-  },
-}));
-const StyledBadge = styled(Badge)<BadgeProps>(({}) => ({
-  '& .MuiBadge-badge': {
-    left: 220,
-    top: -12,
   },
 }));

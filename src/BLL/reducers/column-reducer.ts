@@ -39,13 +39,13 @@ export const createColumn = createAsyncThunk<
     try {
       const res = await columnsAPI.createColumn(param.boardId, {
         title: param.title,
-        order: param.order,
       });
       dispatch(setAppStatus({ status: 'successed' }));
       toast.success(`Column ${param.title.toUpperCase()} successfully created!`);
       return { column: res.data };
     } catch (error) {
       dispatch(setAppError({ error: error.response.data.message }));
+      toast.error(error.response.data.message);
       return rejectWithValue({ error: error.response.data.message });
     } finally {
       dispatch(setAppStatus({ status: 'idle' }));
@@ -70,6 +70,7 @@ export const removeColumn = createAsyncThunk<
     return { columnId: param.columnId };
   } catch (error) {
     dispatch(setAppError({ error: error.response.data.message }));
+    toast.error(error.response.data.message);
     return rejectWithValue({ error: error.response.data.message });
   } finally {
     dispatch(setAppStatus({ status: 'idle' }));
@@ -94,12 +95,13 @@ export const updateColumn = createAsyncThunk<
       param.order
     );
     dispatch(setAppStatus({ status: 'successed' }));
-    if (updColumn) {
+    if (updColumn && updColumn.title !== param.title) {
       toast.success(`Column ${param.title.toUpperCase()} successfully updated!`);
     }
     return { column: res.data };
   } catch (error) {
     dispatch(setAppError({ error: error.response.data.message }));
+    toast.error(error.response.data.message);
     return rejectWithValue({ error: error.response.data.message });
   } finally {
     dispatch(setAppStatus({ status: 'idle' }));
@@ -113,9 +115,6 @@ export const slice = createSlice({
   } as InitialStateType,
   reducers: {},
   extraReducers: (builder) => {
-    // builder.addCase(fetchAllColumns.fulfilled, (state, action) => {
-    //   state.columns = action.payload.columns;
-    // });
     builder.addCase(createColumn.fulfilled, (state, action) => {
       const { id, title, order } = action.payload.column;
       state.columns.push({ id: id, title: title, order: order, tasks: [] });
@@ -135,6 +134,7 @@ export const slice = createSlice({
         column.title = action.payload.column.title;
         column.order = action.payload.column.order;
       }
+      state.columns.sort((a, b) => a.order - b.order);
     });
   },
 });
