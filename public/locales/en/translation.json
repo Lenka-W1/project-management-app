@@ -2,6 +2,10 @@
   "header": {
     "edit_profile": "Edit profile",
     "create_new_board": "Create new board",
+    "switch": {
+      "dark_theme": "Switch to dark theme",
+      "light_theme": "Switch to light theme"
+    },
     "rus": "RU",
     "eng": "EN",
     "sign_out": "Sign out"
@@ -85,12 +89,39 @@
       "button_update": "Update"
     }
   },
+  "board_page": {
+    "button_back": "Back",
+    "board": "Board",
+    "create_column": "Create column",
+    "alert_title": "Delete Column?",
+    "add_task": "Add task",
+    "tooltip": {
+      "change_column": "Click to change column name",
+      "delete_column": "Delete column"
+    },
+    "task": {
+      "delete_task": "Delete Task?",
+      "in_column": "in column",
+      "description": "description",
+      "sequence_number": "sequence number",
+      "edit": "Edit",
+      "delete": "Delete",
+      "required": "Required",
+      "order_of_value": "Order of value should be more 0",
+      "button_save": "Save",
+      "button_delete": "Delete",
+      "button_edit": "Edit",
+      "button_cancel": "Cancel"
+    }
+  },
   "confirm_modal": {
     "remove": "Do you really want to remove",
     "cancel": "Cancel",
     "delete": "Delete",
     "remove_user": "user",
-    "remove_board": "board"
+    "remove_board": "board",
+    "remove_column": "column",
+    "remove_task": "task"
   },
   "form_modal": {
     "board": {
@@ -99,13 +130,25 @@
     },
     "column": {
       "create_column": "Create a new Column",
-      "note": "To create a new column, please enter your title and order here."
+      "note": "To create a new column, please enter your title here."
+    },
+    "task": {
+      "create_task": "Create a new Task",
+      "note": "To create a new task, please enter your title and description."
     },
     "title": "Title",
     "description": "Description",
     "button_cancel": "Cancel",
     "button_create": "Create",
     "required": "Required"
+  },
+  "side_modal_window": {
+    "board": "Board",
+    "successfully": {
+      "created": "successfully created!",
+      "deleted": "successfully deleted!",
+      "updated": "successfully updated!"
+    }
   },
   "footer": {
     "all_rights_reserved": "©All rights reserved, 2022"

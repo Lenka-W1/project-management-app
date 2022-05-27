@@ -2,6 +2,10 @@
   "header": {
     "edit_profile": "Редактировать профиль",
     "create_new_board": "Создать новую доску",
+    "switch": {
+      "dark_theme": "Переключиться на тёмную тему",
+      "light_theme": "Переключиться на светлую тему"
+    },
     "rus": "Рус",
     "eng": "Англ",
     "sign_out": "Выход"
@@ -85,12 +89,39 @@
       "button_update": "Обновить"
     }
   },
+  "board_page": {
+    "button_back": "Назад",
+    "board": "Доска",
+    "create_column": "Создать колонку",
+    "alert_title": "Удалить колонку?",
+    "add_task": "Добавить задачу",
+    "tooltip": {
+      "change_column": "Нажмите, чтобы изменить имя колнки",
+      "delete_column": "Удалить колонку"
+    },
+    "task": {
+      "delete_task": "Удалить задачу?",
+      "in_column": "в колонке",
+      "description": "описание",
+      "sequence_number": "порядковый номер",
+      "edit": "Редактировать",
+      "delete": "Удалить",
+      "required": "Обязательный",
+      "order_of_value": "Порядок значения должен быть больше 0",
+      "button_save": "Сохранить",
+      "button_delete": "Удалить",
+      "button_edit": "Редактировать",
+      "button_cancel": "Отмена"
+    }
+  },
   "confirm_modal": {
     "remove": "Вы действительно хотите удалить",
     "cancel": "Отмена",
     "delete": "Удалить",
     "remove_user": "пользователя",
-    "remove_board": "доску"
+    "remove_board": "доску",
+    "remove_column": "колонку",
+    "remove_task": "задачу"
   },
   "form_modal": {
     "board": {
@@ -99,13 +130,25 @@
     },
     "column": {
       "create_column": "Создать новую колонку",
-      "note": "Чтобы создать новую колонку, введите свой заголовок и порядок здесь."
+      "note": "Чтобы создать новую колонку, введите свой заголовок здесь."
+    },
+    "task": {
+      "create_task": "Создать новую задачу",
+      "note": "Чтобы создать новую задачу, введите здесь название и описание."
     },
     "title": "Заголовок",
     "description": "Описание",
     "button_cancel": "Отмена",
     "button_create": "Создать",
     "required": "Обязательный"
+  },
+  "side_modal_window": {
+    "board": "Доска",
+    "successfully": {
+      "created": "успешно создана!",
+      "deleted": "успешно удалена!",
+      "updated": "успешно обновлена!"
+    }
   },
   "footer": {
     "all_rights_reserved": "©Все права защищены, 2022"

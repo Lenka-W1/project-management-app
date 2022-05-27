@@ -9,6 +9,7 @@ import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatchType, AppStateType } from '../../../BLL/store';
 import { updateTask } from '../../../BLL/reducers/tasks-reducers';
+import { useTranslation } from 'react-i18next';
 
 type FormikErrorType = {
   title?: string;
@@ -25,6 +26,7 @@ type TaskViewModalPropsType = {
 };
 
 export default function TaskViewModal(props: TaskViewModalPropsType) {
+  const { t } = useTranslation();
   const { id } = useParams();
   const dispatch = useDispatch<AppDispatchType>();
   const userId = useSelector<AppStateType, string>((state) => state.user.userId);
@@ -46,16 +48,16 @@ export default function TaskViewModal(props: TaskViewModalPropsType) {
     validate: (values) => {
       const errors: FormikErrorType = {};
       if (!values.title) {
-        errors.title = 'Required';
+        errors.title = t('board_page.task.required');
       }
       if (!values.description) {
-        errors.description = 'Required';
+        errors.description = t('board_page.task.required');
       }
       if (!values.order) {
-        errors.order = 'Required';
+        errors.order = t('board_page.task.required');
       }
       if (values.order <= 0) {
-        errors.order = 'Value of order should be more 0';
+        errors.order = t('board_page.task.order_of_value');
       }
       return errors;
     },
@@ -101,16 +103,16 @@ export default function TaskViewModal(props: TaskViewModalPropsType) {
                 color={!editMode ? 'primary' : 'error'}
                 onClick={handleEditMode}
               >
-                {!editMode ? 'Edit' : 'Cancel'}
+                {!editMode ? t('board_page.task.button_edit') : t('board_page.task.button_cancel')}
               </Button>
               {!editMode && (
                 <Button variant={'text'} color={'error'} onClick={deleteTask}>
-                  Delete
+                  {t('board_page.task.button_delete')}
                 </Button>
               )}
               {editMode && (
                 <Button variant={'text'} color={'success'} type={'submit'}>
-                  Save
+                  {t('board_page.task.button_save')}
                 </Button>
               )}
             </TaskButtonContainer>
@@ -123,8 +125,8 @@ export default function TaskViewModal(props: TaskViewModalPropsType) {
 
 const StyledDialog = styled(Dialog)`
   .MuiDialogContent-root {
-    //min-width: 600px;
-    //min-height: 200px;
+    // min-width: 600px;
+    // min-height: 200px;
     form {
       display: flex;
       flex-direction: row;

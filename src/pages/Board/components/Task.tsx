@@ -17,6 +17,7 @@ import { ItemTypes } from './ItemTypes';
 import { Identifier, XYCoord } from 'dnd-core';
 import { useSelector } from 'react-redux';
 import { AppStateType } from '../../../BLL/store';
+import { useTranslation } from 'react-i18next';
 
 type TaskPropsType = TaskType & {
   columnId: string;
@@ -50,6 +51,7 @@ function Task(props: TaskPropsType) {
     moveTaskOnDrop,
     setHidePreviewTaskOnHover,
   } = props;
+  const { t } = useTranslation();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [openConfirmModal, setOpenConfirmModal] = React.useState<
     ColumnResponseType | BoardResponseType | UserResponseType | TaskType | null
@@ -173,11 +175,11 @@ function Task(props: TaskPropsType) {
       >
         <MenuItem onClick={toggleTaskViewModal} disableRipple>
           <Edit color={'primary'} />
-          Edit
+          {t('board_page.task.edit')}
         </MenuItem>
         <MenuItem onClick={deleteTask} disableRipple>
           <DeleteIcon color={'error'} />
-          Delete
+          {t('board_page.task.delete')}
         </MenuItem>
       </StyledMenu>
       {openConfirmModal && (
@@ -187,7 +189,7 @@ function Task(props: TaskPropsType) {
           deleteValueId={openConfirmModal.id}
           columnId={columnId}
           deleteValueName={(openConfirmModal as TaskType).title}
-          alertTitle={'Delete Task?'}
+          alertTitle={t('board_page.task.delete_task')}
           setOpenConfirmModal={setOpenConfirmModal}
         />
       )}

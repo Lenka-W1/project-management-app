@@ -69,7 +69,11 @@ function Header(props: HeaderPropsType) {
             </Box>
             <Box sx={{ display: 'flex' }}>
               <Tooltip
-                title={isDarkMode == 'light' ? 'Switch to dark theme' : 'Switch to light theme'}
+                title={
+                  isDarkMode == 'light'
+                    ? t('header.switch.dark_theme')
+                    : t('header.switch.light_theme')
+                }
                 placement="bottom"
               >
                 <ModeButton

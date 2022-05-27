@@ -105,14 +105,13 @@ function FormModal(props: FormModalPropsType) {
         <DialogTitle>
           {type === 'board' && t('form_modal.board.create_board')}
           {type === 'column' && t('form_modal.column.create_column')}
-          {type === 'task' && 'Create a new Task'}
+          {type === 'task' && t('form_modal.task.create_task')}
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
             {type === 'board' && t('form_modal.board.note')}
             {type === 'column' && t('form_modal.column.note')}
-            {type === 'task' &&
-              'To create a new task, please enter your title, description, order and status (is done?) here.'}
+            {type === 'task' && t('form_modal.task.note')}
           </DialogContentText>
           <StyledForm onSubmit={formik.handleSubmit}>
             {type === 'board' ? (

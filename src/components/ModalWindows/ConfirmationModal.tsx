@@ -80,7 +80,7 @@ function ConfirmationModal(props: AlertDialogForDeletePackPropsType) {
             {props.type === 'column' && (
               <span>
                 {t('confirm_modal.remove')} <strong>{props.deleteValueName} </strong>
-                {props.type}?
+                {t('confirm_modal.remove_column')}?
               </span>
             )}
             {props.type === 'user' && (
@@ -92,7 +92,7 @@ function ConfirmationModal(props: AlertDialogForDeletePackPropsType) {
             {props.type === 'task' && (
               <span>
                 {t('confirm_modal.remove')} <strong>{props.deleteValueName} </strong>
-                {props.type}?
+                {t('confirm_modal.remove_task')}?
               </span>
             )}
           </DialogContentText>
