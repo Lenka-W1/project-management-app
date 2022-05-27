@@ -3,8 +3,10 @@ import { Container, IconButton } from '@mui/material';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { AppStateType } from '../../BLL/store';
+import { useTranslation } from 'react-i18next';
 
 function Footer() {
+  const { t, i18n } = useTranslation();
   const isDarkMode = useSelector<AppStateType, 'dark' | 'light'>(
     (state) => state.app.settings.mode
   );
@@ -26,7 +28,7 @@ function Footer() {
           alt="rs-logo"
           onClick={() => window.open('https://rs.school/')}
         />
-        <h2>©All rights reserved, 2022</h2>
+        <h2>{t('footer.all_rights_reserved')}</h2>
         <GitHubLinks>
           <IconButton onClick={() => openLink('aleksandrdemidovich')}>
             <GitHubIcon style={{ color: 'white' }} /> <h3>aleksandrdemidovich</h3>

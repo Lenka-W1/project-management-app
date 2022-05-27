@@ -23,8 +23,10 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
 import { updateColumn } from '../../BLL/reducers/column-reducer';
 import { TasksInitialStateType } from '../../BLL/reducers/tasks-reducers';
+import { useTranslation } from 'react-i18next';
 
 function BoardPage() {
+  const { t } = useTranslation();
   const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatchType>();
@@ -44,7 +46,6 @@ function BoardPage() {
     setColumns(allColumns);
   }, [allColumns]);
   useEffect(() => {
-    // debugger;
     setAllTasksLocal({ ...allTasks });
   }, [allTasks, dispatch]);
   const handleOpenModal = (isOpen: boolean) => {
@@ -98,11 +99,11 @@ function BoardPage() {
           startIcon={<ArrowBackOutlinedIcon />}
           onClick={() => navigate(PATH.MAIN)}
         >
-          Back
+          {t('board_page.button_back')}
         </Button>
         <BoardInfo>
           <h2>
-            Board <b>{board.title}</b>
+            {t('board_page.board')} <b>{board.title}</b>
           </h2>
           <h3>{board.description}</h3>
         </BoardInfo>
@@ -116,7 +117,7 @@ function BoardPage() {
               handleOpenModal(true);
             }}
           >
-            Create column
+            {t('board_page.create_column')}
           </CreateColumnButton>
         </ColumnContainer>
         {openFormModal && (
@@ -128,7 +129,7 @@ function BoardPage() {
             type={'column'}
             deleteValueId={openConfirmModal.id}
             deleteValueName={(openConfirmModal as ColumnResponseType).title}
-            alertTitle={'Delete Column?'}
+            alertTitle={t('board_page.alert_title')}
             setOpenConfirmModal={setOpenConfirmModal}
           />
         )}

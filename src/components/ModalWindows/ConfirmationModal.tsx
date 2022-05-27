@@ -14,6 +14,7 @@ import { removeColumn } from '../../BLL/reducers/column-reducer';
 import { useParams } from 'react-router-dom';
 import { deleteUser } from '../../BLL/reducers/user-reducer';
 import { removeTask } from '../../BLL/reducers/tasks-reducers';
+import { useTranslation } from 'react-i18next';
 
 type AlertDialogForDeletePackPropsType = {
   deleteValueName: string;
@@ -28,6 +29,7 @@ type AlertDialogForDeletePackPropsType = {
 };
 
 function ConfirmationModal(props: AlertDialogForDeletePackPropsType) {
+  const { t } = useTranslation();
   const { id } = useParams();
   const dispatch = useDispatch<AppDispatchType>();
   const handleClose = () => {
@@ -71,36 +73,36 @@ function ConfirmationModal(props: AlertDialogForDeletePackPropsType) {
           <DialogContentText id="alert-dialog-description">
             {props.type === 'board' && (
               <span>
-                Do you really want to remove <strong>{props.deleteValueName} </strong>
-                {props.type}?
+                {t('confirm_modal.remove')} <strong>{props.deleteValueName} </strong>
+                {t('confirm_modal.remove_board')}?
               </span>
             )}
             {props.type === 'column' && (
               <span>
-                Do you really want to remove <strong>{props.deleteValueName} </strong>
-                {props.type}?
+                {t('confirm_modal.remove')} <strong>{props.deleteValueName} </strong>
+                {t('confirm_modal.remove_column')}?
               </span>
             )}
             {props.type === 'user' && (
               <span>
-                Do you really want delete <strong>{props.deleteValueName} </strong>
-                {props.type}?
+                {t('confirm_modal.remove')} <strong>{props.deleteValueName} </strong>
+                {t('confirm_modal.remove_user')}?
               </span>
             )}
             {props.type === 'task' && (
               <span>
-                Do you really want delete <strong>{props.deleteValueName} </strong>
-                {props.type}?
+                {t('confirm_modal.remove')} <strong>{props.deleteValueName} </strong>
+                {t('confirm_modal.remove_task')}?
               </span>
             )}
           </DialogContentText>
         </DialogContent>
         <DialogActions style={{ margin: '0 10px 10px 0' }}>
           <Button onClick={handleClose} variant={'outlined'}>
-            Cancel
+            {t('confirm_modal.cancel')}
           </Button>
           <Button color={'error'} variant={'contained'} onClick={removeHandler}>
-            Delete
+            {t('confirm_modal.delete')}
           </Button>
         </DialogActions>
       </Dialog>

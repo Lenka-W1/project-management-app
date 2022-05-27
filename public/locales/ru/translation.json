@@ -1,0 +1,156 @@
+{
+  "header": {
+    "edit_profile": "Редактировать профиль",
+    "create_new_board": "Создать новую доску",
+    "switch": {
+      "dark_theme": "Переключиться на тёмную тему",
+      "light_theme": "Переключиться на светлую тему"
+    },
+    "rus": "Рус",
+    "eng": "Англ",
+    "sign_out": "Выход"
+  },
+  "welcome_page": {
+    "title": "Приложение для управления проектами",
+    "sign_in": "Войти",
+    "sign_up": "Зарегистрироваться",
+    "go_to_main": "Перейти на главную страницу",
+    "description_1": {
+      "strong": "Система управления проектами",
+      "continuation": "это приложение, которое помогает отдельному члену команды или группе разработчиков, достигать своих целей."
+    },
+    "description_2": {
+      "strong": "Доска",
+      "continuation": "используйте колонки и карточки для создания задач, отслеживания и их организации. А также назначайте задачи членам команды. Управляйте проектами."
+    },
+    "team": {
+      "development_team": "Команда разработчиков приложения",
+      "name_1": "Елена Ховавко",
+      "name_2": "Александр Демидович",
+      "developer_1": "Фронтенд-разработчик, руководитель банды",
+      "developer_2": "Фронтенд-разработчик, зам банды"
+    }
+  },
+  "edit_profile_page": {
+    "profile_edit_page_title": "Редактировать профиль",
+    "form": {
+      "name_field": "Имя",
+      "login_field": "Логин",
+      "password_field": "Пароль",
+      "save_changes": "Сохранить изменения",
+      "delete_user": "Удалить пользователя",
+      "required": "Обязательный"
+    },
+    "modal_window": {
+      "delete_user": "Удалить пользователя?"
+    }
+  },
+  "sign_in_page": {
+    "sign_in_page_title": "Войти",
+    "form": {
+      "login_field": "Логин",
+      "password_field": "Пароль",
+      "button_login": "Авторизоваться",
+      "or": "или",
+      "green_text": "Зарегистрируйтесь",
+      "continuation": "если у вас ещё нет учётной записи.",
+      "required": "Обязательный",
+      "error_message": "Пользователь не зарегистрирован!"
+    }
+  },
+  "sign_up_page": {
+    "sign_up_page_title": "Создать новый аккаунт",
+    "form": {
+      "back_button": "Вернуться на страницу входа",
+      "name_field": "Имя",
+      "login_field": "Логин",
+      "password_field": "Пароль",
+      "button_login": "Зарегистрироваться",
+      "required": "Обязательный",
+      "error_message": "Логин пользователя уже существует!"
+    }
+  },
+  "main_page": {
+    "boards_shown": "Показанные доски:",
+    "of": "из",
+    "search": "Поиск",
+    "search_board": "Поиск доски",
+    "create_new_board": "Создать новую доску",
+    "modal_window": {
+      "alert_title": "Удалить доску?"
+    },
+    "tooltip": {
+      "delete_board": "Удалить доску",
+      "edit_board": "Редактировать доску"
+    },
+    "board": {
+      "required": "Обязательный",
+      "button_cancel": "Отмена",
+      "button_update": "Обновить"
+    }
+  },
+  "board_page": {
+    "button_back": "Назад",
+    "board": "Доска",
+    "create_column": "Создать колонку",
+    "alert_title": "Удалить колонку?",
+    "add_task": "Добавить задачу",
+    "tooltip": {
+      "change_column": "Нажмите, чтобы изменить имя колнки",
+      "delete_column": "Удалить колонку"
+    },
+    "task": {
+      "delete_task": "Удалить задачу?",
+      "in_column": "в колонке",
+      "description": "описание",
+      "sequence_number": "порядковый номер",
+      "edit": "Редактировать",
+      "delete": "Удалить",
+      "required": "Обязательный",
+      "order_of_value": "Порядок значения должен быть больше 0",
+      "button_save": "Сохранить",
+      "button_delete": "Удалить",
+      "button_edit": "Редактировать",
+      "button_cancel": "Отмена"
+    }
+  },
+  "confirm_modal": {
+    "remove": "Вы действительно хотите удалить",
+    "cancel": "Отмена",
+    "delete": "Удалить",
+    "remove_user": "пользователя",
+    "remove_board": "доску",
+    "remove_column": "колонку",
+    "remove_task": "задачу"
+  },
+  "form_modal": {
+    "board": {
+      "create_board": "Создать новую доску",
+      "note": "Чтобы создать новую доску, введите здесь название и описание."
+    },
+    "column": {
+      "create_column": "Создать новую колонку",
+      "note": "Чтобы создать новую колонку, введите свой заголовок здесь."
+    },
+    "task": {
+      "create_task": "Создать новую задачу",
+      "note": "Чтобы создать новую задачу, введите здесь название и описание."
+    },
+    "title": "Заголовок",
+    "description": "Описание",
+    "button_cancel": "Отмена",
+    "button_create": "Создать",
+    "required": "Обязательный"
+  },
+  "side_modal_window": {
+    "board": "Доска",
+    "successfully": {
+      "created": "успешно создана!",
+      "deleted": "успешно удалена!",
+      "updated": "успешно обновлена!"
+    }
+  },
+  "footer": {
+    "all_rights_reserved": "©Все права защищены, 2022"
+  }
+}

@@ -17,6 +17,8 @@ import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatchType, AppStateType } from '../../BLL/store';
 import { setAppMode } from '../../BLL/reducers/app-reducer';
+import { useTranslation } from 'react-i18next';
+import { ChangeEvent, useState } from 'react';
 
 const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
@@ -24,10 +26,17 @@ type HeaderPropsType = {
   handleOpenModal: (isOpen: boolean) => void;
 };
 function Header(props: HeaderPropsType) {
+  const { t, i18n } = useTranslation();
+  const [checked, setSwitch] = useState<boolean>(i18n.language === 'ru' ? false : true);
   const isDarkMode = useSelector<AppStateType, 'dark' | 'light'>(
     (state) => state.app.settings.mode
   );
   const dispatch = useDispatch<AppDispatchType>();
+
+  const switchHandler = (event: ChangeEvent<HTMLInputElement>) => {
+    checked ? i18n.changeLanguage('ru') : i18n.changeLanguage('en');
+    setSwitch(event.target.checked);
+  };
 
   const toggleAppMode = () => {
     dispatch(setAppMode({ mode: isDarkMode === 'dark' ? 'light' : 'dark' }));
@@ -47,7 +56,7 @@ function Header(props: HeaderPropsType) {
             <Box>
               <NavLink to={PATH.EDIT_PROFILE}>
                 <Button variant={'text'} style={{ color: 'white' }}>
-                  Edit profile
+                  {t('header.edit_profile')}
                 </Button>
               </NavLink>
               <Button
@@ -55,12 +64,16 @@ function Header(props: HeaderPropsType) {
                 style={{ color: 'white' }}
                 onClick={() => props.handleOpenModal(true)}
               >
-                Create new board
+                {t('header.create_new_board')}
               </Button>
             </Box>
             <Box sx={{ display: 'flex' }}>
               <Tooltip
-                title={isDarkMode == 'light' ? 'Switch to dark theme' : 'Switch to light theme'}
+                title={
+                  isDarkMode == 'light'
+                    ? t('header.switch.dark_theme')
+                    : t('header.switch.light_theme')
+                }
                 placement="bottom"
               >
                 <ModeButton
@@ -77,16 +90,12 @@ function Header(props: HeaderPropsType) {
                 </ModeButton>
               </Tooltip>
               <Stack direction="row" spacing={1} alignItems="center">
-                <Typography>RU</Typography>
-                <Switch {...label} defaultChecked color="default" />
-                <Typography>EN</Typography>
+                <Typography>{t('header.rus')}</Typography>
+                <Switch {...label} color="default" checked={checked} onChange={switchHandler} />
+                <Typography>{t('header.eng')}</Typography>
               </Stack>
-              <SignOutButton
-                variant={'outlined'}
-                size={'small'}
-                style={{ border: isDarkMode === 'light' ? '1px solid #ffffff' : '' }}
-              >
-                Sign Out
+              <SignOutButton variant={'outlined'} size={'small'}>
+                {t('header.sign_out')}
               </SignOutButton>
             </Box>
           </Toolbar>
@@ -108,6 +117,7 @@ const StyledHeader = styled(AppBar)`
 const SignOutButton = styled(Button)({
   color: '#ffffff',
   marginLeft: '20px',
+  border: '1px solid #ffffff',
   '&:hover': {
     backgroundColor: '#2591cf79',
     borderColor: '#3f51b5',

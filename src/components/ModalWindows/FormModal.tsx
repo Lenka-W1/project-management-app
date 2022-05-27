@@ -17,6 +17,7 @@ import { createBoard } from '../../BLL/reducers/board-reducer';
 import { createColumn } from '../../BLL/reducers/column-reducer';
 import { useParams } from 'react-router-dom';
 import { createTask } from '../../BLL/reducers/tasks-reducers';
+import { useTranslation } from 'react-i18next';
 
 type FormModalPropsType = {
   open: boolean;
@@ -31,6 +32,7 @@ type FormikErrorType = {
   done?: boolean;
 };
 function FormModal(props: FormModalPropsType) {
+  const { t } = useTranslation();
   const { open, setOpen, type, columnId } = props;
   const { id } = useParams();
   const dispatch = useDispatch<AppDispatchType>();
@@ -50,10 +52,10 @@ function FormModal(props: FormModalPropsType) {
       const errors: FormikErrorType = {};
       if (type === 'board') {
         if (!values.title) {
-          errors.title = 'Required';
+          errors.title = t('form_modal.required');
         }
         if (!values.description) {
-          errors.description = 'Required';
+          errors.description = t('form_modal.required');
         }
       }
       if (type === 'column') {
@@ -66,10 +68,10 @@ function FormModal(props: FormModalPropsType) {
       }
       if (type === 'task') {
         if (!values.title) {
-          errors.title = 'Required';
+          errors.title = t('form_modal.required');
         }
         if (!values.description) {
-          errors.description = 'Required';
+          errors.description = t('form_modal.required');
         }
       }
       return errors;
@@ -101,17 +103,15 @@ function FormModal(props: FormModalPropsType) {
     <div>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>
-          {type === 'board' && 'Create a new Board'}
-          {type === 'column' && 'Create a new Column'}
-          {type === 'task' && 'Create a new Task'}
+          {type === 'board' && t('form_modal.board.create_board')}
+          {type === 'column' && t('form_modal.column.create_column')}
+          {type === 'task' && t('form_modal.task.create_task')}
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
-            {type === 'board' &&
-              'To create a new board, please enter your title and description here.'}
-            {type === 'column' && 'To create a new column, please enter your title and order here.'}
-            {type === 'task' &&
-              'To create a new task, please enter your title, description, order and status (is done?) here.'}
+            {type === 'board' && t('form_modal.board.note')}
+            {type === 'column' && t('form_modal.column.note')}
+            {type === 'task' && t('form_modal.task.note')}
           </DialogContentText>
           <StyledForm onSubmit={formik.handleSubmit}>
             {type === 'board' ? (
@@ -119,7 +119,7 @@ function FormModal(props: FormModalPropsType) {
                 <TextField
                   margin="dense"
                   id="title"
-                  label="Title"
+                  label={t('form_modal.title')}
                   fullWidth
                   variant="standard"
                   value={formik.values.title}
@@ -130,7 +130,7 @@ function FormModal(props: FormModalPropsType) {
                 <TextField
                   margin="dense"
                   id="description"
-                  label="Description"
+                  label={t('form_modal.description')}
                   fullWidth
                   variant="standard"
                   value={formik.values.description}
@@ -144,7 +144,7 @@ function FormModal(props: FormModalPropsType) {
                 <TextField
                   margin="dense"
                   id="title"
-                  label="Title"
+                  label={t('form_modal.title')}
                   fullWidth
                   variant="standard"
                   value={formik.values.title}
@@ -159,7 +159,7 @@ function FormModal(props: FormModalPropsType) {
                 <TextField
                   margin="dense"
                   id="description"
-                  label="Description"
+                  label={t('form_modal.description')}
                   fullWidth
                   variant="standard"
                   value={formik.values.description}
@@ -170,10 +170,10 @@ function FormModal(props: FormModalPropsType) {
               </>
             )}
             <Button type="submit" color={'success'} variant={'contained'}>
-              Create
+              {t('form_modal.button_create')}
             </Button>
             <Button onClick={handleClose} color={'error'} variant={'outlined'}>
-              Cancel
+              {t('form_modal.button_cancel')}
             </Button>
           </StyledForm>
         </DialogContent>

@@ -20,6 +20,7 @@ import FormModal from '../../../components/ModalWindows/FormModal';
 import { DragSourceMonitor, useDrag, useDrop } from 'react-dnd';
 import { Identifier, XYCoord } from 'dnd-core';
 import { ItemTypes } from './ItemTypes';
+import { useTranslation } from 'react-i18next';
 
 type ColumnPropsType = {
   index: number;
@@ -39,6 +40,7 @@ interface DragItem {
   columnId: string;
 }
 function Column(props: ColumnPropsType) {
+  const { t } = useTranslation();
   const { id } = useParams();
   const {
     columnId,
@@ -238,7 +240,7 @@ function Column(props: ColumnPropsType) {
       >
         <ColumnHeader>
           {!editMode ? (
-            <Tooltip title={'Click to change column name'} placement={'top-start'}>
+            <Tooltip title={t('board_page.tooltip.change_column')} placement={'top-start'}>
               <h2 onClick={toggleEditMode}>
                 {title} - order - {order}
               </h2>
@@ -263,7 +265,7 @@ function Column(props: ColumnPropsType) {
             />
           )}
 
-          <Tooltip title="Delete column" placement={'top-start'}>
+          <Tooltip title={t('board_page.tooltip.delete_column')} placement={'top-start'}>
             <IconButton color={'error'} size={'small'} disabled={editMode} onClick={deleteColumn}>
               <DeleteOutlineOutlinedIcon />
             </IconButton>
@@ -273,7 +275,7 @@ function Column(props: ColumnPropsType) {
           {canDropTask && isOver && hidePreviewTaskOnHover && <PreviewTaskTemplate />}
           {taskElements}
           <Button variant={'contained'} color={'success'} onClick={addTask}>
-            Add task
+            {t('board_page.add_task')}
           </Button>
         </TaskContainer>
         {openFormModal && (
@@ -300,6 +302,7 @@ const RootColumnContainer = styled(Paper)`
   h2 {
     padding-left: 10px;
     font-weight: 400;
+    font-size: 20px;
   }
 
   .MuiIconButton-sizeSmall {
@@ -355,7 +358,7 @@ const ColumnHeader = styled.div`
   justify-content: space-between;
   align-items: center;
   h2 {
-    height: 40px;
+    min-height: 40px;
     margin-bottom: 5px;
   }
   .MuiOutlinedInput-root {
