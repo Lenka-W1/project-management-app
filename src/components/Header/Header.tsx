@@ -18,9 +18,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatchType, AppStateType } from '../../BLL/store';
 import { setAppMode } from '../../BLL/reducers/app-reducer';
 import { useTranslation } from 'react-i18next';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { signOut } from '../../BLL/reducers/auth-reducer';
-import { getToken } from '../../utils/utils';
 
 const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
@@ -173,7 +172,6 @@ const ModeButton = styled(Button)({
   height: '30px',
   padding: '0 5px',
   alignSelf: 'center',
-  // border: '1px solid #ffffff',
   '&:hover': {
     borderColor: '#ffffff',
   },
