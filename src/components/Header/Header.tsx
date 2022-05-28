@@ -46,14 +46,14 @@ function Header(props: HeaderPropsType) {
     <>
       <StyledHeader position="sticky">
         <Container style={{ maxWidth: '1920px' }}>
-          <Toolbar
+          <InnerContainer
             style={{
               width: '100%',
               display: 'flex',
               justifyContent: 'space-between',
             }}
           >
-            <Box>
+            <Navigation>
               <NavLink to={PATH.EDIT_PROFILE}>
                 <Button variant={'text'} style={{ color: 'white' }}>
                   {t('header.edit_profile')}
@@ -66,8 +66,8 @@ function Header(props: HeaderPropsType) {
               >
                 {t('header.create_new_board')}
               </Button>
-            </Box>
-            <Box sx={{ display: 'flex' }}>
+            </Navigation>
+            <SwitchPanel sx={{ display: 'flex' }}>
               <Tooltip
                 title={
                   isDarkMode == 'light'
@@ -97,8 +97,8 @@ function Header(props: HeaderPropsType) {
               <SignOutButton variant={'outlined'} size={'small'}>
                 {t('header.sign_out')}
               </SignOutButton>
-            </Box>
-          </Toolbar>
+            </SwitchPanel>
+          </InnerContainer>
         </Container>
       </StyledHeader>
       <Toolbar id="back-to-top-anchor" style={{ position: 'absolute', top: 0 }} />
@@ -112,7 +112,38 @@ const StyledHeader = styled(AppBar)`
   a {
     text-decoration: none;
   }
+
+  @media (max-width: 790px) {
+    padding: 10px 0;
+  }
 `;
+
+const InnerContainer = styled(Toolbar)({
+  '@media (max-width: 555px)': {
+    flexDirection: 'column',
+  },
+
+  '@media (max-width: 340px)': {
+    padding: '0',
+  },
+});
+
+const Navigation = styled(Box)({
+  '@media (max-width: 555px)': {
+    display: 'flex',
+    alignItems: 'center',
+    flexDirection: 'column',
+  },
+});
+
+const SwitchPanel = styled(Box)({
+  '@media (max-width: 555px)': {
+    order: '-1',
+    marginBottom: '15px',
+    width: '100%',
+    justifyContent: 'space-around',
+  },
+});
 
 const SignOutButton = styled(Button)({
   color: '#ffffff',

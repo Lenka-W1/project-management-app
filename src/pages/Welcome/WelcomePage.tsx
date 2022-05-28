@@ -111,16 +111,61 @@ const WelcomePageWrapper = styled.div`
   margin: 0 auto;
   max-width: 1920px;
   padding: 20px 70px 100px;
+
+  @media (max-width: 688px) {
+    padding: 20px 70px 200px;
+  }
+
+  @media (max-width: 555px) {
+    padding: 20px 50px 200px;
+  }
+
+  @media (max-width: 488px) {
+    padding: 20px 40px 200px;
+  }
+
+  @media (max-width: 488px) {
+    padding: 20px 20px 200px;
+  }
+
+  @media (max-width: 407px) {
+    padding: 20px 2px 200px;
+  }
 `;
 
 const TitleBlock = styled.div`
   display: flex;
   justify-content: space-between;
+
+  @media (max-width: 790px) {
+    flex-direction: column;
+    align-items: center;
+  }
 `;
 
 const Title = styled.h1`
   font-size: 24px;
   text-transform: uppercase;
+
+  @media (max-width: 1048px) {
+    font-size: 22px;
+  }
+
+  @media (max-width: 819px) {
+    font-size: 20px;
+  }
+
+  @media (max-width: 790px) {
+    margin-bottom: 20px;
+  }
+
+  @media (max-width: 729px) {
+    font-size: 18px;
+  }
+
+  @media (max-width: 555px) {
+    text-align: center;
+  }
 `;
 
 const Section = styled.div`
@@ -139,6 +184,30 @@ const Description = styled.p`
   font-weight: 500;
   display: flex;
   flex-direction: column;
+
+  @media (max-width: 1439px) {
+    text-align: center;
+  }
+
+  @media (max-width: 1048px) {
+    font-size: 38px;
+  }
+
+  @media (max-width: 819px) {
+    font-size: 36px;
+  }
+
+  @media (max-width: 729px) {
+    font-size: 34px;
+  }
+
+  @media (max-width: 604px) {
+    font-size: 30px;
+  }
+
+  @media (max-width: 407px) {
+    font-size: 24px;
+  }
 `;
 
 const DescriptionBoard = styled.p`
@@ -149,6 +218,31 @@ const DescriptionBoard = styled.p`
   font-weight: 500;
   display: flex;
   flex-direction: column;
+
+  @media (max-width: 1439px) {
+    text-align: center;
+    order: -1;
+  }
+
+  @media (max-width: 1048px) {
+    font-size: 38px;
+  }
+
+  @media (max-width: 819px) {
+    font-size: 36px;
+  }
+
+  @media (max-width: 729px) {
+    font-size: 34px;
+  }
+
+  @media (max-width: 604px) {
+    font-size: 30px;
+  }
+
+  @media (max-width: 407px) {
+    font-size: 24px;
+  }
 `;
 
 const WelcomeImage = styled.div`
@@ -158,6 +252,16 @@ const WelcomeImage = styled.div`
   background-position: center;
   width: 600px;
   height: 500px;
+
+  @media (max-width: 604px) {
+    font-size: 30px;
+    height: 400px;
+  }
+
+  @media (max-width: 555px) {
+    font-size: 30px;
+    height: 300px;
+  }
 `;
 
 const BoardImage = styled.div`
@@ -167,6 +271,16 @@ const BoardImage = styled.div`
   background-position: center;
   width: 600px;
   height: 500px;
+
+  @media (max-width: 604px) {
+    font-size: 30px;
+    height: 400px;
+  }
+
+  @media (max-width: 555px) {
+    font-size: 30px;
+    height: 300px;
+  }
 `;
 
 const TeamBlock = styled.div`
@@ -183,13 +297,38 @@ const TitleTeamBlock = styled.h2`
   font-size: 28px;
   text-transform: uppercase;
   margin-bottom: 20px;
+
+  @media (max-width: 729px) {
+    font-size: 26px;
+  }
+
+  @media (max-width: 688px) {
+    font-size: 24px;
+  }
+
+  @media (max-width: 646px) {
+    font-size: 22px;
+  }
+
+  @media (max-width: 604px) {
+    font-size: 20px;
+  }
+
+  @media (max-width: 566px) {
+    text-align: center;
+  }
 `;
 
 const TeamMembers = styled.div`
-  width: 700px;
+  max-width: 700px;
   min-height: 400px;
   border-radius: 10px;
   justify-content: space-around;
   display: flex;
   flex-wrap: wrap;
+  padding: 10px;
+
+  @media (max-width: 407px) {
+    box-shadow: none !important;
+  }
 `;

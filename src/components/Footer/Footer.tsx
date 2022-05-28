@@ -51,6 +51,7 @@ const RootFooterContainer = styled.div`
   align-items: center;
   max-width: 1920px;
   padding: 0 26px;
+
   img {
     width: 70px;
     height: 70px;
@@ -59,6 +60,15 @@ const RootFooterContainer = styled.div`
   h2 {
     font-size: 18px;
     font-weight: 400;
+  }
+
+  @media (max-width: 688px) {
+    flex-direction: column;
+    padding: 10px 26px;
+  }
+
+  @media (max-width: 340px) {
+    padding: 10px 0;
   }
 `;
 
@@ -70,5 +80,10 @@ const GitHubLinks = styled.div`
     font-size: 18px;
     color: white;
     margin-left: 5px;
+  }
+
+  @media (max-width: 688px) {
+    order: -1;
+    align-items: center;
   }
 `;
