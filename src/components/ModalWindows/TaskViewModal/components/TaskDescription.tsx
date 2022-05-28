@@ -37,6 +37,7 @@ const TaskDescriptionContainer = styled('div')`
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
+  justify-content: space-between;
   h3 {
     width: 400px;
     font-size: 21px;

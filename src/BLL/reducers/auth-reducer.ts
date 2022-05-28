@@ -1,9 +1,9 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { authAPI, SignUpParamsType, TokenType } from '../../API/API';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { authAPI, SignUpParamsType } from '../../API/API';
 import { setAppError, setAppStatus } from './app-reducer';
 import { deleteUser } from './user-reducer';
 import { toast } from 'react-toastify';
-import jwt_decode from 'jwt-decode';
+import { createTokenCookie, decodeToken } from '../../utils/utils';
 
 type InitialStateType = {
   isLoggedIn: boolean;
@@ -35,11 +35,15 @@ export const signIn = createAsyncThunk(
     dispatch(setAppStatus({ status: 'loading' }));
     try {
       const res = await authAPI.signIn(param);
-      localStorage.setItem('token', res.data.token);
-      const decodedToken: TokenType = jwt_decode(res.data.token);
+      const decodedToken = decodeToken(res.data.token);
+      createTokenCookie(res.data.token);
       dispatch(setAppStatus({ status: 'successed' }));
       toast.success('Welcome!');
-      return { isLoggedIn: true, login: param.login, userId: decodedToken.userId };
+      return {
+        isLoggedIn: true,
+        login: param.login,
+        userId: decodedToken.userId,
+      };
     } catch (error) {
       dispatch(setAppError({ error: error.response.data.message }));
       dispatch(setAppStatus({ status: 'idle' }));
@@ -49,6 +53,10 @@ export const signIn = createAsyncThunk(
     }
   }
 );
+export const signOut = createAsyncThunk('auth/logout', () => {
+  document.cookie = `token=; expires=Thu, 01 Jan 1970 00:00:00 GM; secure`;
+  toast.success('Bye bye!');
+});
 
 export const slice = createSlice({
   name: 'auth',
@@ -58,13 +66,20 @@ export const slice = createSlice({
     name: '',
     login: '',
   } as InitialStateType,
-  reducers: {},
+  reducers: {
+    setAuthInfo(state, action: PayloadAction<{ userId: string; login: string }>) {
+      state.userId = action.payload.userId;
+      state.login = action.payload.login;
+      state.isLoggedIn = true;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(signIn.fulfilled, (state, action) => {
       state.isLoggedIn = action.payload.isLoggedIn;
       if (action.payload.login) {
         state.login = action.payload.login;
         state.userId = action.payload.userId;
+        state.isLoggedIn = true;
       }
     });
     builder.addCase(signUp.fulfilled, (state, action) => {
@@ -80,7 +95,14 @@ export const slice = createSlice({
       state.name = '';
       state.userId = '';
     });
+    builder.addCase(signOut.fulfilled, (state) => {
+      state.isLoggedIn = false;
+      state.login = '';
+      state.name = '';
+      state.userId = '';
+    });
   },
 });
 
 export const authReducer = slice.reducer;
+export const { setAuthInfo } = slice.actions;

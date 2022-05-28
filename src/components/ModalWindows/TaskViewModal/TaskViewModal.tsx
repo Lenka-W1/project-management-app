@@ -84,7 +84,7 @@ export default function TaskViewModal(props: TaskViewModalPropsType) {
 
   return (
     <div>
-      <StyledDialog open={open} onClose={handleClose}>
+      <StyledDialog open={open} onClose={handleClose} maxWidth={'md'}>
         <DialogContent>
           <form onSubmit={formik.handleSubmit}>
             {!editMode ? (
@@ -125,8 +125,8 @@ export default function TaskViewModal(props: TaskViewModalPropsType) {
 
 const StyledDialog = styled(Dialog)`
   .MuiDialogContent-root {
-    // min-width: 600px;
-    // min-height: 200px;
+    min-width: 600px;
+    min-height: 200px;
     form {
       display: flex;
       flex-direction: row;
@@ -145,7 +145,6 @@ const StyledDialog = styled(Dialog)`
 const TaskButtonContainer = styled('div')`
   display: flex;
   flex-direction: column;
-
   button {
     margin-bottom: 5px;
   }

@@ -88,7 +88,7 @@ function SignInPage() {
           {t('sign_in_page.form.or')}
         </Divider>
         <Typography variant="caption" component="h3">
-          <Link color={'green'} underline="hover" href={PATH.SIGN_UP}>
+          <Link color={'green'} underline="hover" onClick={() => navigate(PATH.SIGN_UP)}>
             {t('sign_in_page.form.green_text')}
           </Link>
           {t('sign_in_page.form.continuation')}
@@ -112,6 +112,7 @@ const StyledForm = styled('form')`
     font-size: 16px;
     color: gray;
     a {
+      cursor: pointer;
       margin-right: 5px;
       font-weight: 600;
     }
@@ -143,6 +144,7 @@ const ErrorAlert = styled(Alert)`
   width: 90%;
 `;
 const SignInButton = styled(Button)`
+  color: white;
   width: 90%;
   margin: 25px 0 10px 0;
 `;

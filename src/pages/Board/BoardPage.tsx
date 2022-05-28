@@ -169,6 +169,7 @@ const ColumnContainer = styled.div`
   padding: 0 20px 20px 20px;
   overflow-y: hidden;
   overflow-x: auto;
+  height: 65vh;
   ::-webkit-scrollbar {
     height: 7px;
   }

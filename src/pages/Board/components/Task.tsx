@@ -154,9 +154,7 @@ function Task(props: TaskPropsType) {
       style={isDragging ? { opacity: 0 } : { opacity: 1 }}
       data-handler-id={handlerId}
     >
-      <h4 onClick={toggleTaskViewModal}>
-        {title} - order {order}
-      </h4>
+      <h4 onClick={toggleTaskViewModal}>{title}</h4>
       <IconButton
         onClick={handleClick}
         color={'primary'}

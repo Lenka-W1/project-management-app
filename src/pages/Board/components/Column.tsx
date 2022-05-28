@@ -21,6 +21,7 @@ import { DragSourceMonitor, useDrag, useDrop } from 'react-dnd';
 import { Identifier, XYCoord } from 'dnd-core';
 import { ItemTypes } from './ItemTypes';
 import { useTranslation } from 'react-i18next';
+import DynamicFeedIcon from '@mui/icons-material/DynamicFeed';
 
 type ColumnPropsType = {
   index: number;
@@ -241,9 +242,7 @@ function Column(props: ColumnPropsType) {
         <ColumnHeader>
           {!editMode ? (
             <Tooltip title={t('board_page.tooltip.change_column')} placement={'top-start'}>
-              <h2 onClick={toggleEditMode}>
-                {title} - order - {order}
-              </h2>
+              <h2 onClick={toggleEditMode}>{title}</h2>
             </Tooltip>
           ) : (
             <OutlinedInput
@@ -274,9 +273,17 @@ function Column(props: ColumnPropsType) {
         <TaskContainer>
           {canDropTask && isOver && hidePreviewTaskOnHover && <PreviewTaskTemplate />}
           {taskElements}
-          <Button variant={'contained'} color={'success'} onClick={addTask}>
-            {t('board_page.add_task')}
-          </Button>
+          <ColumnFooter>
+            <Button variant={'contained'} color={'success'} fullWidth onClick={addTask}>
+              {t('board_page.add_task')}
+            </Button>
+            <Tooltip
+              title={t('board_page.task.sequence_number') + ' ' + order}
+              placement={'top-start'}
+            >
+              <DynamicFeedIcon color={'warning'} />
+            </Tooltip>
+          </ColumnFooter>
         </TaskContainer>
         {openFormModal && (
           <FormModal
@@ -298,7 +305,6 @@ const RootColumnContainer = styled(Paper)`
   min-width: 300px;
   max-width: 300px;
   margin-right: 17px;
-  cursor: move;
   h2 {
     padding-left: 10px;
     font-weight: 400;
@@ -333,11 +339,6 @@ const TaskContainer = styled.div`
   overflow-x: hidden;
   padding-top: 10px;
 
-  button {
-    margin: 0 15px 15px;
-    color: white;
-  }
-
   ::-webkit-scrollbar {
     width: 7px;
   }
@@ -357,13 +358,24 @@ const ColumnHeader = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  cursor: move;
   h2 {
     min-height: 40px;
-    margin-bottom: 5px;
   }
   .MuiOutlinedInput-root {
     height: 40px;
     margin-bottom: 5px;
+  }
+`;
+const ColumnFooter = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  button {
+    margin-right: 15px;
+    color: white;
   }
 `;
 const PreviewTaskTemplate = styled.div`
