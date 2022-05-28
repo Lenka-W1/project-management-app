@@ -27,20 +27,24 @@ function WelcomePage() {
         <TitleBlock>
           <Title>{t('welcome_page.title')}</Title>
           <Stack spacing={2} direction={'row'}>
-            <Button
-              variant={'outlined'}
-              style={{ fontWeight: '600' }}
-              onClick={() => link(PATH.SIGN_IN)}
-            >
-              {t('welcome_page.sign_in')}
-            </Button>
-            <Button
-              variant={'contained'}
-              style={{ color: 'white' }}
-              onClick={() => link(PATH.SIGN_UP)}
-            >
-              {t('welcome_page.sign_up')}
-            </Button>
+            {!isLoggedIn && (
+              <Button
+                variant={'outlined'}
+                style={{ fontWeight: '600' }}
+                onClick={() => link(PATH.SIGN_IN)}
+              >
+                {t('welcome_page.sign_in')}
+              </Button>
+            )}
+            {!isLoggedIn && (
+              <Button
+                variant={'contained'}
+                style={{ color: 'white' }}
+                onClick={() => link(PATH.SIGN_UP)}
+              >
+                {t('welcome_page.sign_up')}
+              </Button>
+            )}
             {isLoggedIn && (
               <Button
                 variant={'contained'}

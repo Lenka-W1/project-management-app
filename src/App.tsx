@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 import AppRoutes from './pages/AppRoutes';
 import Footer from './components/Footer/Footer';
@@ -7,10 +7,13 @@ import 'react-toastify/dist/ReactToastify.css';
 import Header from './components/Header/Header';
 import { Box, CssBaseline, Fab, ThemeProvider, useScrollTrigger, Zoom } from '@mui/material';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import { useSelector } from 'react-redux';
-import { AppStateType } from './BLL/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatchType, AppStateType } from './BLL/store';
 import { darkTheme, lightTheme } from './config/AppMode';
 import FormModal from './components/ModalWindows/FormModal';
+import { decodeToken, getToken } from './utils/utils';
+import { setAuthInfo } from './BLL/reducers/auth-reducer';
+import { fetchUser } from './BLL/reducers/user-reducer';
 
 interface Props {
   window?: () => Window;
@@ -54,12 +57,25 @@ function ScrollTop(props: Props) {
 
 function App(props: Props) {
   const [openFormModal, setOpenFormModal] = useState(false);
+  const dispatch = useDispatch<AppDispatchType>();
   const isDarkMode = useSelector<AppStateType, 'dark' | 'light'>(
     (state) => state.app.settings.mode
   );
+  const user = useSelector<
+    AppStateType,
+    { userId: string; name: string; login: string; password: string }
+  >((state) => state.user);
   const handleOpenModal = (isOpen: boolean) => {
     setOpenFormModal(isOpen);
   };
+  useEffect(() => {
+    const token = getToken('token', document.cookie);
+    if (token) {
+      const { userId, login } = decodeToken(token);
+      dispatch(setAuthInfo({ userId, login }));
+      if (!user.name) dispatch(fetchUser(userId));
+    }
+  }, [dispatch, user.name]);
   return (
     <ThemeProvider theme={isDarkMode === 'dark' ? darkTheme : lightTheme}>
       <CssBaseline />

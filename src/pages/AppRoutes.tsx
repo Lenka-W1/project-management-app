@@ -6,6 +6,10 @@ import SignUpPage from './SignUp/SignUpPage';
 import BoardPage from './Board/BoardPage';
 import Error404 from './Error404/Error404';
 import EditProfile from './EditProfile/EditProfile';
+import { useSelector } from 'react-redux';
+import { AppStateType } from '../BLL/store';
+import ProtectedRoute from './ProtectedRoute';
+import { useEffect } from 'react';
 
 export const PATH = {
   WELCOME: '/',
@@ -18,14 +22,20 @@ export const PATH = {
 };
 
 function AppRoutes() {
+  const isLoggedIn = useSelector<AppStateType, boolean>((state) => state.auth.isLoggedIn);
+  // useEffect(() => {
+  //   document.cookie
+  // }, [])
   return (
     <Routes>
       <Route path={PATH.WELCOME} element={<WelcomePage />} />
-      <Route path={PATH.EDIT_PROFILE} element={<EditProfile />} />
       <Route path={PATH.SIGN_IN} element={<SignInPage />} />
       <Route path={PATH.SIGN_UP} element={<SignUpPage />} />
-      <Route path={PATH.MAIN} element={<MainPage />} />
-      <Route path={PATH.BOARD} element={<BoardPage />} />
+      <Route element={<ProtectedRoute isLoggedIn={isLoggedIn} />}>
+        <Route path={PATH.EDIT_PROFILE} element={<EditProfile />} />
+        <Route path={PATH.MAIN} element={<MainPage />} />
+        <Route path={PATH.BOARD} element={<BoardPage />} />
+      </Route>
       <Route path="*" element={<Error404 />} />
     </Routes>
   );
