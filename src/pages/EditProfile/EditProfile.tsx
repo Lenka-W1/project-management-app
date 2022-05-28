@@ -63,7 +63,6 @@ function EditProfile() {
       dispatch(setAppStatus({ status: 'idle' }));
     }
   }, [appStatus, dispatch, navigate]);
-
   const removeUser = () => {
     setOpenConfirmModal({ id: user.userId, name: user.name, login: user.login });
   };
@@ -157,6 +156,7 @@ const EditField = styled(TextField)({
 });
 
 const SaveButton = styled(Button)({
+  color: 'white',
   margin: '15px 15px 25px',
 });
 

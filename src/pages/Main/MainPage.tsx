@@ -19,7 +19,6 @@ function MainPage() {
   const boards = useSelector<AppStateType, Array<BoardResponseType>>(
     (state) => state.boards.boards
   );
-  const isLoggedIn = useSelector<AppStateType, boolean>((state) => state.auth.isLoggedIn);
   const [openFormModal, setOpenFormModal] = useState(false);
   const [openConfirmModal, setOpenConfirmModal] = React.useState<
     BoardResponseType | ColumnResponseType | UserResponseType | null
@@ -30,9 +29,6 @@ function MainPage() {
   useEffect(() => {
     dispatch(fetchAllBoards());
   }, [dispatch, boards.length]);
-  useEffect(() => {
-    if (!isLoggedIn) navigate(PATH.SIGN_IN);
-  }, [isLoggedIn, navigate]);
   const handleOpenModal = (isOpen: boolean) => {
     setOpenFormModal(isOpen);
   };

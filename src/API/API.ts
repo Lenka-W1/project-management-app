@@ -1,11 +1,12 @@
 import axios, { AxiosResponse } from 'axios';
+import { getToken } from '../utils/utils';
 
 export const instance = axios.create({
   baseURL: 'https://lit-falls-11411.herokuapp.com/',
 });
 
 instance.interceptors.request.use(function (config) {
-  const token = localStorage.getItem('token');
+  const token = getToken('token', document.cookie);
   if (config.headers) config.headers.Authorization = `Bearer ${token}`;
   return config;
 });
@@ -20,8 +21,8 @@ export const authAPI = {
 };
 
 export const userAPI = {
-  fetchAllUsers() {
-    return instance.get<Array<UserResponseType>>('users');
+  fetchUser(id: string) {
+    return instance.get<UserResponseType>(`users/${id}`);
   },
   updateUser(id: string, name: string, login: string, password: string) {
     return instance.put<UserParamsType, AxiosResponse<UserResponseType>>(`users/${id}`, {

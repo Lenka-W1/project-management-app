@@ -18,7 +18,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatchType, AppStateType } from '../../BLL/store';
 import { setAppMode } from '../../BLL/reducers/app-reducer';
 import { useTranslation } from 'react-i18next';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
+import { signOut } from '../../BLL/reducers/auth-reducer';
+import { getToken } from '../../utils/utils';
 
 const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
@@ -27,7 +29,8 @@ type HeaderPropsType = {
 };
 function Header(props: HeaderPropsType) {
   const { t, i18n } = useTranslation();
-  const [checked, setSwitch] = useState<boolean>(i18n.language === 'ru' ? false : true);
+  const [checked, setSwitch] = useState<boolean>(i18n.language !== 'ru');
+  const isLoggedIn = useSelector<AppStateType, boolean>((state) => state.auth.isLoggedIn);
   const isDarkMode = useSelector<AppStateType, 'dark' | 'light'>(
     (state) => state.app.settings.mode
   );
@@ -37,37 +40,43 @@ function Header(props: HeaderPropsType) {
     checked ? i18n.changeLanguage('ru') : i18n.changeLanguage('en');
     setSwitch(event.target.checked);
   };
-
   const toggleAppMode = () => {
     dispatch(setAppMode({ mode: isDarkMode === 'dark' ? 'light' : 'dark' }));
+  };
+  const logout = () => {
+    dispatch(signOut());
   };
 
   return (
     <>
       <StyledHeader position="sticky">
         <Container style={{ maxWidth: '1920px' }}>
-          <InnerContainer
-            style={{
-              width: '100%',
-              display: 'flex',
-              justifyContent: 'space-between',
-            }}
+          <StyledToolbar
+            style={
+              isLoggedIn
+                ? {
+                    justifyContent: 'space-between',
+                  }
+                : { justifyContent: 'flex-end' }
+            }
           >
-            <Navigation>
-              <NavLink to={PATH.EDIT_PROFILE}>
-                <Button variant={'text'} style={{ color: 'white' }}>
-                  {t('header.edit_profile')}
+            {isLoggedIn && (
+              <Navigation>
+                <NavLink to={PATH.EDIT_PROFILE}>
+                  <Button variant={'text'} style={{ color: 'white' }}>
+                    {t('header.edit_profile')}
+                  </Button>
+                </NavLink>
+                <Button
+                  variant={'text'}
+                  style={{ color: 'white' }}
+                  onClick={() => props.handleOpenModal(true)}
+                >
+                  {t('header.create_new_board')}
                 </Button>
-              </NavLink>
-              <Button
-                variant={'text'}
-                style={{ color: 'white' }}
-                onClick={() => props.handleOpenModal(true)}
-              >
-                {t('header.create_new_board')}
-              </Button>
-            </Navigation>
-            <SwitchPanel sx={{ display: 'flex' }}>
+              </Navigation>
+            )}
+            <SwitchPanel sx={{ display: 'flex', justifyContent: 'flex-end' }}>
               <Tooltip
                 title={
                   isDarkMode == 'light'
@@ -94,11 +103,11 @@ function Header(props: HeaderPropsType) {
                 <Switch {...label} color="default" checked={checked} onChange={switchHandler} />
                 <Typography>{t('header.eng')}</Typography>
               </Stack>
-              <SignOutButton variant={'outlined'} size={'small'}>
+              <SignOutButton variant={'outlined'} size={'small'} onClick={logout}>
                 {t('header.sign_out')}
               </SignOutButton>
             </SwitchPanel>
-          </InnerContainer>
+          </StyledToolbar>
         </Container>
       </StyledHeader>
       <Toolbar id="back-to-top-anchor" style={{ position: 'absolute', top: 0 }} />
@@ -118,15 +127,18 @@ const StyledHeader = styled(AppBar)`
   }
 `;
 
-const InnerContainer = styled(Toolbar)({
-  '@media (max-width: 555px)': {
-    flexDirection: 'column',
-  },
+const StyledToolbar = styled(Toolbar)`
+  width: 100%;
+  display: flex;
 
-  '@media (max-width: 340px)': {
-    padding: '0',
-  },
-});
+  @media (max-width: 555px) {
+    flex-direction: column;
+  }
+
+  @media (max-width: 340px) {
+    padding: 0;
+  }
+`;
 
 const Navigation = styled(Box)({
   '@media (max-width: 555px)': {

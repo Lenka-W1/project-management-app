@@ -27,20 +27,24 @@ function WelcomePage() {
         <TitleBlock>
           <Title>{t('welcome_page.title')}</Title>
           <Stack spacing={2} direction={'row'}>
-            <Button
-              variant={'outlined'}
-              style={{ fontWeight: '600' }}
-              onClick={() => link(PATH.SIGN_IN)}
-            >
-              {t('welcome_page.sign_in')}
-            </Button>
-            <Button
-              variant={'contained'}
-              style={{ color: 'white' }}
-              onClick={() => link(PATH.SIGN_UP)}
-            >
-              {t('welcome_page.sign_up')}
-            </Button>
+            {!isLoggedIn && (
+              <Button
+                variant={'outlined'}
+                style={{ fontWeight: '600' }}
+                onClick={() => link(PATH.SIGN_IN)}
+              >
+                {t('welcome_page.sign_in')}
+              </Button>
+            )}
+            {!isLoggedIn && (
+              <Button
+                variant={'contained'}
+                style={{ color: 'white' }}
+                onClick={() => link(PATH.SIGN_UP)}
+              >
+                {t('welcome_page.sign_up')}
+              </Button>
+            )}
             {isLoggedIn && (
               <Button
                 variant={'contained'}
@@ -174,6 +178,10 @@ const Section = styled.div`
   justify-content: space-around;
   flex-wrap: wrap;
   padding-top: 100px;
+
+  @media (max-width: 320px) {
+    padding-top: 70px;
+  }
 `;
 
 const Description = styled.p`
@@ -207,6 +215,10 @@ const Description = styled.p`
 
   @media (max-width: 407px) {
     font-size: 24px;
+  }
+
+  @media (max-width: 320px) {
+    font-size: 22px;
   }
 `;
 
@@ -242,6 +254,10 @@ const DescriptionBoard = styled.p`
 
   @media (max-width: 407px) {
     font-size: 24px;
+  }
+
+  @media (max-width: 320px) {
+    font-size: 22px;
   }
 `;
 

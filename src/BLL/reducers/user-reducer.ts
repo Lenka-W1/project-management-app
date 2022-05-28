@@ -1,9 +1,8 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
-import { userAPI } from '../../API/API';
+import { userAPI, UserResponseType } from '../../API/API';
 import { setAppError, setAppStatus } from './app-reducer';
 import { signIn, signUp } from './auth-reducer';
-import { fetchBoard } from './board-reducer';
 
 type InitialStateType = {
   userId: string;
@@ -44,7 +43,24 @@ export const deleteUser = createAsyncThunk(
     }
   }
 );
-
+export const fetchUser = createAsyncThunk<
+  { user: UserResponseType },
+  string,
+  { rejectValue: { error: string } }
+>('users/fetchUser', async (id, { dispatch, rejectWithValue }) => {
+  dispatch(setAppError({ error: null }));
+  dispatch(setAppStatus({ status: 'loading' }));
+  try {
+    const res = await userAPI.fetchUser(id);
+    dispatch(setAppStatus({ status: 'successed' }));
+    return { user: res.data };
+  } catch (error) {
+    dispatch(setAppError({ error: error.response.data.message }));
+    return rejectWithValue({ error: error.response.data.message });
+  } finally {
+    dispatch(setAppStatus({ status: 'idle' }));
+  }
+});
 export const slice = createSlice({
   name: 'users',
   initialState: {
@@ -79,6 +95,10 @@ export const slice = createSlice({
         state.userId = action.payload.userId;
         state.login = action.payload.login;
       }
+    });
+    builder.addCase(fetchUser.fulfilled, (state, action) => {
+      state.name = action.payload.user.name;
+      state.login = action.payload.user.login;
     });
   },
 });
