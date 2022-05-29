@@ -46,6 +46,7 @@ export default Footer;
 
 const RootFooterContainer = styled.div`
   display: flex;
+  margin: 0 auto;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
