@@ -1,4 +1,3 @@
-import React from 'react';
 import AssignmentOutlinedIcon from '@mui/icons-material/AssignmentOutlined';
 import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined';
 import DynamicFeedIcon from '@mui/icons-material/DynamicFeed';
@@ -49,6 +48,19 @@ const TaskDescriptionContainer = styled('div')`
     span {
       margin: 0 10px 0 10px;
       color: gray;
+    }
+
+    @media (max-width: 698px) {
+      width: 100%;
+      font-size: 18px;
+    }
+
+    @media (max-width: 443px) {
+      font-size: 16px;
+    }
+
+    @media (max-width: 413px) {
+      font-size: 15px;
     }
   }
 `;

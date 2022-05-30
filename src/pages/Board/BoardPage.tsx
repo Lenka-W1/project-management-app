@@ -166,7 +166,7 @@ const ColumnContainer = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
-  padding: 0 20px 20px 20px;
+  padding: 0 20px 20px;
   overflow-y: hidden;
   overflow-x: auto;
   height: 65vh;
@@ -181,11 +181,52 @@ const ColumnContainer = styled.div`
     background-color: #3f51b5;
     border-radius: 20px;
   }
+
+  @media (max-width: 797px) {
+    height: 63vh;
+  }
+
+  @media (max-width: 791px) {
+    height: 62vh;
+  }
+
+  @media (max-width: 688px) {
+    height: 45vh;
+  }
+
+  @media (max-width: 555px) {
+    height: 39vh;
+  }
+
+  @media (max-width: 555px) {
+    height: 39vh;
+    padding: 0 15px 20px;
+  }
 `;
 const CreateColumnButton = styled(Button)`
   height: 70px;
   &.MuiButton-outlined {
     margin-left: 17px;
     min-width: 300px;
+
+    @media (max-width: 719px) {
+      min-width: 290px;
+    }
+
+    @media (max-width: 687px) {
+      min-width: 280px;
+    }
+
+    @media (max-width: 665px) {
+      min-width: 270px;
+    }
+
+    @media (max-width: 643px) {
+      min-width: 260px;
+    }
+
+    @media (max-width: 321px) {
+      min-width: 258px;
+    }
   }
 `;

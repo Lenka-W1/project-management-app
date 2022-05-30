@@ -1,12 +1,9 @@
 import {
   Button,
-  Checkbox,
   Dialog,
   DialogContent,
   DialogContentText,
   DialogTitle,
-  FormControlLabel,
-  FormGroup,
   styled,
   TextField,
 } from '@mui/material';

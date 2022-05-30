@@ -76,8 +76,9 @@ const TaskDescriptionContainer = styled('div')`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  width: 400px;
   h3 {
-    width: 400px;
+    width: 100%;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -86,5 +87,25 @@ const TaskDescriptionContainer = styled('div')`
       margin: 0 10px 0 10px;
       color: gray;
     }
+  }
+
+  @media (max-width: 511px) {
+    width: 380px;
+  }
+
+  @media (max-width: 473px) {
+    width: 350px;
+  }
+
+  @media (max-width: 443px) {
+    width: 300px;
+  }
+
+  @media (max-width: 393px) {
+    width: 240px;
+  }
+
+  @media (max-width: 365px) {
+    width: 220px;
   }
 `;

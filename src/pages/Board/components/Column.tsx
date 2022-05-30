@@ -329,6 +329,31 @@ const RootColumnContainer = styled(Paper)`
   button {
     float: bottom;
   }
+
+  @media (max-width: 719px) {
+    min-width: 290px;
+    max-width: 290px;
+  }
+
+  @media (max-width: 687px) {
+    min-width: 280px;
+    max-width: 280px;
+  }
+
+  @media (max-width: 665px) {
+    min-width: 270px;
+    max-width: 270px;
+  }
+
+  @media (max-width: 643px) {
+    min-width: 260px;
+    max-width: 260px;
+  }
+
+  @media (max-width: 321px) {
+    min-width: 258px;
+    max-width: 258px;
+  }
 `;
 const TaskContainer = styled.div`
   display: flex;
@@ -351,6 +376,14 @@ const TaskContainer = styled.div`
   ::-webkit-scrollbar-thumb {
     background-color: #3f51b5;
     border-radius: 20px;
+  }
+
+  @media (max-width: 688px) {
+    height: 32vh;
+  }
+
+  @media (max-width: 555px) {
+    height: 25vh;
   }
 `;
 const ColumnHeader = styled.div`

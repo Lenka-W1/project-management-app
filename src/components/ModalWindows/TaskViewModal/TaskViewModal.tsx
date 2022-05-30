@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { useState } from 'react';
 import { TaskType } from '../../../API/API';
 import { Button, Dialog, DialogContent, Divider, styled } from '@mui/material';
@@ -125,6 +124,7 @@ export default function TaskViewModal(props: TaskViewModalPropsType) {
 
 const StyledDialog = styled(Dialog)`
   .MuiDialogContent-root {
+    display: flex;
     min-width: 600px;
     min-height: 200px;
     form {
@@ -138,7 +138,45 @@ const StyledDialog = styled(Dialog)`
         margin: 0 20px 0 20px;
         height: 145px;
         border-width: 1px;
+
+        @media (max-width: 698px) {
+          margin: 40px 0 20px;
+          height: 0;
+        }
       }
+
+      @media (max-width: 698px) {
+        flex-direction: column;
+      }
+
+      @media (max-width: 511px) {
+        max-width: 380px;
+      }
+    }
+
+    @media (max-width: 698px) {
+      justify-content: center;
+      min-width: 400px;
+    }
+
+    @media (max-width: 493px) {
+      padding: 20px 15px;
+    }
+
+    @media (max-width: 463px) {
+      min-width: 380px;
+    }
+
+    @media (max-width: 443px) {
+      min-width: 350px;
+    }
+
+    @media (max-width: 413px) {
+      min-width: 300px;
+    }
+
+    @media (max-width: 363px) {
+      min-width: 200px;
     }
   }
 `;
@@ -147,5 +185,11 @@ const TaskButtonContainer = styled('div')`
   flex-direction: column;
   button {
     margin-bottom: 5px;
+  }
+
+  @media (max-width: 698px) {
+    justify-content: center;
+    max-width: 150px;
+    align-self: center;
   }
 `;
