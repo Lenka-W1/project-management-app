@@ -103,14 +103,14 @@ function EditProfile() {
           error={!!formik.errors.password}
           helperText={formik.errors.password}
         />
-        <Box>
+        <ButtonsBlock>
           <SaveButton variant={'contained'} color={'success'} type={'submit'}>
             {t('edit_profile_page.form.save_changes')}
           </SaveButton>
           <DeleteButton variant={'contained'} color={'error'} onClick={removeUser}>
             {t('edit_profile_page.form.delete_user')}
           </DeleteButton>
-        </Box>
+        </ButtonsBlock>
       </EditForm>
       {openConfirmModal && (
         <ConfirmationModal
@@ -134,11 +134,29 @@ const EditContainer = styled(Paper)({
   alignItems: 'center',
   width: '30%',
   margin: '10% auto 20px auto',
-  '@media (min-width: 300px) and (max-width: 768px)': {
+
+  '@media (min-width: 300px) and (max-width: 680px)': {
     width: '90%',
   },
-  '@media (min-width: 769px) and (max-width: 1440px)': {
+
+  '@media (min-width: 681px) and (max-width: 880px)': {
+    width: '70%',
+  },
+
+  '@media (min-width: 881px) and (max-width: 1024px)': {
+    width: '60%',
+  },
+
+  '@media (min-width: 1025px) and (max-width: 1440px)': {
     width: '50%',
+  },
+
+  '@media (min-width: 1441px) and (max-width: 1700px)': {
+    width: '40%',
+  },
+
+  '@media (min-width: 1701px) and (max-width: 1920px)': {
+    width: '30%',
   },
 });
 
@@ -153,6 +171,14 @@ const EditForm = styled('form')({
 const EditField = styled(TextField)({
   width: '90%',
   margin: '10px 0 10px',
+});
+
+const ButtonsBlock = styled(Box)({
+  '@media (max-width: 720px)': {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+  },
 });
 
 const SaveButton = styled(Button)({

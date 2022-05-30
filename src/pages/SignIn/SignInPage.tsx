@@ -117,7 +117,22 @@ const StyledForm = styled('form')`
       font-weight: 600;
     }
   }
+
+  @media (max-width: 509px) {
+    h3 {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+
+  @media (max-width: 320px) {
+    h3 {
+      font-size: 15px;
+    }
+  }
 `;
+
 const LoginContainer = styled(Paper)`
   display: flex;
   flex-direction: column;
@@ -129,20 +144,40 @@ const LoginContainer = styled(Paper)`
     margin: 10px 0 10px 0;
   }
 
-  @media (min-width: 300px) and (max-width: 768px) {
+  @media (min-width: 300px) and (max-width: 680px) {
     width: 90%;
   }
-  @media (min-width: 769px) and (max-width: 1440px) {
+
+  @media (min-width: 681px) and (max-width: 880px) {
+    width: 70%;
+  }
+
+  @media (min-width: 881px) and (max-width: 1024px) {
+    width: 60%;
+  }
+
+  @media (min-width: 1025px) and (max-width: 1440px) {
     width: 50%;
   }
+
+  @media (min-width: 1441px) and (max-width: 1700px) {
+    width: 40%;
+  }
+
+  @media (min-width: 1701px) and (max-width: 1920px) {
+    width: 30%;
+  }
 `;
+
 const StyledInput = styled(TextField)`
   width: 90%;
   margin: 10px 0 10px 0;
 `;
+
 const ErrorAlert = styled(Alert)`
   width: 90%;
 `;
+
 const SignInButton = styled(Button)`
   color: white;
   width: 90%;

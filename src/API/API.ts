@@ -110,7 +110,6 @@ export const tasksAPI = {
   },
 };
 
-//auth
 export type SignInParamsType = {
   login: string;
   password: string;
@@ -125,7 +124,7 @@ export type SignUpResponseType = {
   name: string;
   login: string;
 };
-//boards
+
 export type BoardResponseType = {
   id: string;
   title: string;
@@ -142,7 +141,7 @@ export type BoardType = {
   columns: Array<ColumnType>;
 };
 export type UpdateBoardParamsType = BoardResponseType;
-//columns
+
 export type ColumnResponseType = {
   id: string;
   title: string;
@@ -157,7 +156,7 @@ export type ColumnType = {
   order: number;
   tasks: Array<TaskType>;
 };
-//user
+
 export type UserParamsType = {
   name: string;
   login: string;
@@ -168,7 +167,7 @@ export type UserResponseType = {
   name: string;
   login: string;
 };
-//tasks
+
 export type TaskResponseType = {
   id: string;
   title: string;
@@ -210,7 +209,7 @@ export type UpdateTaskParamsType = {
   boardId: string;
   columnId: string;
 };
-//token
+
 export type TokenType = {
   userId: string;
   login: string;

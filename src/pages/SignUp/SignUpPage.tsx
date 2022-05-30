@@ -142,11 +142,29 @@ const SignUPContainer = styled(Paper)`
   align-items: center;
   width: 30%;
   margin: 10% auto 20px auto;
-  @media (min-width: 300px) and (max-width: 768px) {
+
+  @media (min-width: 300px) and (max-width: 680px) {
     width: 90%;
   }
-  @media (min-width: 769px) and (max-width: 1440px) {
+
+  @media (min-width: 681px) and (max-width: 880px) {
+    width: 70%;
+  }
+
+  @media (min-width: 881px) and (max-width: 1024px) {
+    width: 60%;
+  }
+
+  @media (min-width: 1025px) and (max-width: 1440px) {
     width: 50%;
+  }
+
+  @media (min-width: 1441px) and (max-width: 1700px) {
+    width: 40%;
+  }
+
+  @media (min-width: 1701px) and (max-width: 1920px) {
+    width: 30%;
   }
 `;
 const SignUPHeader = styled('div')`

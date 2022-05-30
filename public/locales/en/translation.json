@@ -142,14 +142,6 @@
     "button_create": "Create",
     "required": "Required"
   },
-  "side_modal_window": {
-    "board": "Board",
-    "successfully": {
-      "created": "successfully created!",
-      "deleted": "successfully deleted!",
-      "updated": "successfully updated!"
-    }
-  },
   "footer": {
     "all_rights_reserved": "©All rights reserved, 2022"
   }

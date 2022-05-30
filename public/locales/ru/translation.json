@@ -142,14 +142,6 @@
     "button_create": "Создать",
     "required": "Обязательный"
   },
-  "side_modal_window": {
-    "board": "Доска",
-    "successfully": {
-      "created": "успешно создана!",
-      "deleted": "успешно удалена!",
-      "updated": "успешно обновлена!"
-    }
-  },
   "footer": {
     "all_rights_reserved": "©Все права защищены, 2022"
   }

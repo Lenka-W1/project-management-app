@@ -9,7 +9,6 @@ import EditProfile from './EditProfile/EditProfile';
 import { useSelector } from 'react-redux';
 import { AppStateType } from '../BLL/store';
 import ProtectedRoute from './ProtectedRoute';
-import { useEffect } from 'react';
 
 export const PATH = {
   WELCOME: '/',
@@ -23,9 +22,6 @@ export const PATH = {
 
 function AppRoutes() {
   const isLoggedIn = useSelector<AppStateType, boolean>((state) => state.auth.isLoggedIn);
-  // useEffect(() => {
-  //   document.cookie
-  // }, [])
   return (
     <Routes>
       <Route path={PATH.WELCOME} element={<WelcomePage />} />

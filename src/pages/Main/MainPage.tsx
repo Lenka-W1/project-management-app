@@ -13,6 +13,7 @@ import { PATH } from '../AppRoutes';
 import ConfirmationModal from '../../components/ModalWindows/ConfirmationModal';
 import AddIcon from '@mui/icons-material/Add';
 import { useTranslation } from 'react-i18next';
+import ArrowBackOutlinedIcon from '@mui/icons-material/ArrowBackOutlined';
 
 function MainPage() {
   const { t } = useTranslation();
@@ -50,6 +51,13 @@ function MainPage() {
   return (
     <RootContainer>
       <MainHeader>
+        <Button
+          variant={'text'}
+          startIcon={<ArrowBackOutlinedIcon />}
+          onClick={() => navigate(PATH.WELCOME)}
+        >
+          {t('board_page.button_back')}
+        </Button>
         <h3>
           {t('main_page.boards_shown')}{' '}
           {
@@ -110,21 +118,53 @@ const MainHeader = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-around;
+
+  @media (max-width: 1000px) {
+    justify-content: space-evenly;
+  }
+
+  @media (max-width: 777px) {
+    flex-direction: column;
+
+    h3 {
+      margin-bottom: 10px;
+    }
+  }
 `;
+
 const RootContainer = styled.div`
-  width: 80vw;
   margin: 0 auto;
-  padding: 15px 0 80px 0;
+  max-width: 1920px;
+  padding: 15px 0 80px;
+  position: relative;
+  .MuiButton-textPrimary {
+    position: absolute;
+    left: 5px;
+  }
+
+  @media (max-width: 688px) {
+    padding: 15px 0 200px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 45px 0 200px;
+
+    .MuiButton-textPrimary {
+      left: 5px;
+      top: 5px;
+    }
+  }
 `;
+
 const BoardsContainer = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: flex-start;
+  justify-content: center;
   width: 100%;
-  margin-left: 30px;
 `;
+
 const CreateBoardsButton = styled(Button)`
   height: 140px;
   width: 300px;

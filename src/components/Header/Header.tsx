@@ -18,9 +18,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatchType, AppStateType } from '../../BLL/store';
 import { setAppMode } from '../../BLL/reducers/app-reducer';
 import { useTranslation } from 'react-i18next';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { signOut } from '../../BLL/reducers/auth-reducer';
-import { getToken } from '../../utils/utils';
 
 const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
@@ -61,7 +60,7 @@ function Header(props: HeaderPropsType) {
             }
           >
             {isLoggedIn && (
-              <Box>
+              <Navigation>
                 <NavLink to={PATH.EDIT_PROFILE}>
                   <Button variant={'text'} style={{ color: 'white' }}>
                     {t('header.edit_profile')}
@@ -74,9 +73,9 @@ function Header(props: HeaderPropsType) {
                 >
                   {t('header.create_new_board')}
                 </Button>
-              </Box>
+              </Navigation>
             )}
-            <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <SwitchPanel sx={{ display: 'flex', justifyContent: 'flex-end' }}>
               <Tooltip
                 title={
                   isDarkMode == 'light'
@@ -106,7 +105,7 @@ function Header(props: HeaderPropsType) {
               <SignOutButton variant={'outlined'} size={'small'} onClick={logout}>
                 {t('header.sign_out')}
               </SignOutButton>
-            </Box>
+            </SwitchPanel>
           </StyledToolbar>
         </Container>
       </StyledHeader>
@@ -121,11 +120,41 @@ const StyledHeader = styled(AppBar)`
   a {
     text-decoration: none;
   }
+
+  @media (max-width: 790px) {
+    padding: 10px 0;
+  }
 `;
+
 const StyledToolbar = styled(Toolbar)`
   width: 100%;
   display: flex;
+
+  @media (max-width: 555px) {
+    flex-direction: column;
+  }
+
+  @media (max-width: 340px) {
+    padding: 0;
+  }
 `;
+
+const Navigation = styled(Box)({
+  '@media (max-width: 555px)': {
+    display: 'flex',
+    alignItems: 'center',
+    flexDirection: 'column',
+  },
+});
+
+const SwitchPanel = styled(Box)({
+  '@media (max-width: 555px)': {
+    order: '-1',
+    marginBottom: '15px',
+    width: '100%',
+    justifyContent: 'space-around',
+  },
+});
 
 const SignOutButton = styled(Button)({
   color: '#ffffff',
@@ -143,7 +172,6 @@ const ModeButton = styled(Button)({
   height: '30px',
   padding: '0 5px',
   alignSelf: 'center',
-  // border: '1px solid #ffffff',
   '&:hover': {
     borderColor: '#ffffff',
   },

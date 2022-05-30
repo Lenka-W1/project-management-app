@@ -25,7 +25,7 @@ export default Error404;
 const RootContainer = styled.div`
   background-image: url('https://i.pinimg.com/originals/21/5c/7f/215c7fdca6033092baa04b35c17466bd.gif');
   background-repeat: no-repeat;
-  background-size: 100%;
+  background-size: cover;
   height: 93vh;
 `;
 const NotFoundContainer = styled.div`
