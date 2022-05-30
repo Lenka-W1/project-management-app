@@ -181,9 +181,6 @@ const StyledHeader = styled(AppBar)`
   a {
     text-decoration: none;
   }
-  @media (max-width: 790px) {
-    padding: 10px 0;
-  }
 `;
 
 const StyledMenuItem = styled(MenuItem)`
