@@ -134,21 +134,29 @@ const EditContainer = styled(Paper)({
   alignItems: 'center',
   width: '30%',
   margin: '10% auto 20px auto',
+  h1: {
+    padding: '0 20px',
+    fontSize: '26px',
+    '@media (max-width: 430px)': {
+      fontSize: '20px',
+      padding: '10px 0',
+    },
+  },
 
   '@media (min-width: 300px) and (max-width: 680px)': {
     width: '90%',
   },
 
   '@media (min-width: 681px) and (max-width: 880px)': {
-    width: '70%',
+    width: '75%',
   },
 
   '@media (min-width: 881px) and (max-width: 1024px)': {
-    width: '60%',
+    width: '65%',
   },
 
   '@media (min-width: 1025px) and (max-width: 1440px)': {
-    width: '50%',
+    width: '55%',
   },
 
   '@media (min-width: 1441px) and (max-width: 1700px)': {
@@ -176,8 +184,10 @@ const EditField = styled(TextField)({
 const ButtonsBlock = styled(Box)({
   '@media (max-width: 720px)': {
     display: 'flex',
-    flexDirection: 'column',
     justifyContent: 'center',
+  },
+  '@media (max-width: 709px)': {
+    flexDirection: 'column',
   },
 });
 

@@ -14,6 +14,8 @@ import FormModal from './components/ModalWindows/FormModal';
 import { decodeToken, getToken } from './utils/utils';
 import { setAuthInfo } from './BLL/reducers/auth-reducer';
 import { fetchUser } from './BLL/reducers/user-reducer';
+import { AppStatusType } from './BLL/reducers/app-reducer';
+import Preloader from './components/Preloader/Preloader';
 
 interface Props {
   window?: () => Window;
@@ -58,6 +60,7 @@ function ScrollTop(props: Props) {
 function App(props: Props) {
   const [openFormModal, setOpenFormModal] = useState(false);
   const dispatch = useDispatch<AppDispatchType>();
+  const appStatus = useSelector<AppStateType, AppStatusType>((state) => state.app.status);
   const isDarkMode = useSelector<AppStateType, 'dark' | 'light'>(
     (state) => state.app.settings.mode
   );
@@ -73,12 +76,13 @@ function App(props: Props) {
     if (token) {
       const { userId, login } = decodeToken(token);
       dispatch(setAuthInfo({ userId, login }));
-      if (!user.name) dispatch(fetchUser(userId));
+      dispatch(fetchUser(userId));
     }
   }, [dispatch, user.name]);
   return (
     <ThemeProvider theme={isDarkMode === 'dark' ? darkTheme : lightTheme}>
       <CssBaseline />
+      {appStatus === 'loading' && <Preloader />}
       <div className="App">
         <Header handleOpenModal={handleOpenModal} />
         <AppRoutes />

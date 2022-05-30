@@ -3,6 +3,9 @@ import {
   Box,
   Button,
   Container,
+  IconButton,
+  Menu,
+  MenuItem,
   Stack,
   styled,
   Switch,
@@ -14,6 +17,7 @@ import { NavLink } from 'react-router-dom';
 import { PATH } from '../../pages/AppRoutes';
 import NightlightOutlinedIcon from '@mui/icons-material/NightlightOutlined';
 import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
+import MenuIcon from '@mui/icons-material/Menu';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatchType, AppStateType } from '../../BLL/store';
 import { setAppMode } from '../../BLL/reducers/app-reducer';
@@ -29,6 +33,7 @@ type HeaderPropsType = {
 function Header(props: HeaderPropsType) {
   const { t, i18n } = useTranslation();
   const [checked, setSwitch] = useState<boolean>(i18n.language !== 'ru');
+  const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const isLoggedIn = useSelector<AppStateType, boolean>((state) => state.auth.isLoggedIn);
   const isDarkMode = useSelector<AppStateType, 'dark' | 'light'>(
     (state) => state.app.settings.mode
@@ -41,6 +46,12 @@ function Header(props: HeaderPropsType) {
   };
   const toggleAppMode = () => {
     dispatch(setAppMode({ mode: isDarkMode === 'dark' ? 'light' : 'dark' }));
+  };
+  const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorElNav(event.currentTarget);
+  };
+  const handleCloseNavMenu = () => {
+    setAnchorElNav(null);
   };
   const logout = () => {
     dispatch(signOut());
@@ -75,6 +86,56 @@ function Header(props: HeaderPropsType) {
                 </Button>
               </Navigation>
             )}
+            <Box sx={{ flexGrow: 1, display: { sm: 'flex', md: 'none', lg: 'none', xl: 'none' } }}>
+              <IconButton onClick={handleOpenNavMenu} style={{ color: 'white' }}>
+                <MenuIcon />
+              </IconButton>
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorElNav}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'left',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'left',
+                }}
+                open={Boolean(anchorElNav)}
+                onClose={handleCloseNavMenu}
+                sx={{
+                  display: { sm: 'flex', md: 'none', lg: 'none', xl: 'none' },
+                }}
+              >
+                <StyledMenuItem onClick={handleCloseNavMenu} divider>
+                  <NavLink to={PATH.EDIT_PROFILE}>
+                    <Button
+                      variant={'text'}
+                      style={isDarkMode === 'dark' ? { color: 'white' } : { color: 'black' }}
+                    >
+                      {t('header.edit_profile')}
+                    </Button>
+                  </NavLink>
+                </StyledMenuItem>
+                <MenuItem divider>
+                  <Button
+                    variant={'text'}
+                    style={isDarkMode === 'dark' ? { color: 'white' } : { color: 'black' }}
+                    onClick={() => props.handleOpenModal(true)}
+                  >
+                    {t('header.create_new_board')}
+                  </Button>
+                </MenuItem>
+                <MenuItem style={{ marginLeft: '6px' }}>
+                  <Stack direction="row" spacing={1} alignItems="center">
+                    <Typography>{t('header.rus')}</Typography>
+                    <Switch {...label} color="default" checked={checked} onChange={switchHandler} />
+                    <Typography>{t('header.eng')}</Typography>
+                  </Stack>
+                </MenuItem>
+              </Menu>
+            </Box>
             <SwitchPanel sx={{ display: 'flex', justifyContent: 'flex-end' }}>
               <Tooltip
                 title={
@@ -120,39 +181,41 @@ const StyledHeader = styled(AppBar)`
   a {
     text-decoration: none;
   }
-
   @media (max-width: 790px) {
     padding: 10px 0;
+  }
+`;
+
+const StyledMenuItem = styled(MenuItem)`
+  a {
+    text-decoration: none;
   }
 `;
 
 const StyledToolbar = styled(Toolbar)`
   width: 100%;
   display: flex;
-
+  flex-direction: row;
   @media (max-width: 555px) {
-    flex-direction: column;
-  }
-
-  @media (max-width: 340px) {
     padding: 0;
   }
 `;
 
 const Navigation = styled(Box)({
-  '@media (max-width: 555px)': {
-    display: 'flex',
-    alignItems: 'center',
-    flexDirection: 'column',
+  '@media (max-width: 899px)': {
+    display: 'none',
   },
 });
 
 const SwitchPanel = styled(Box)({
   '@media (max-width: 555px)': {
-    order: '-1',
-    marginBottom: '15px',
     width: '100%',
-    justifyContent: 'space-around',
+    justifyContent: 'flex-end',
+  },
+  '@media (max-width: 899px)': {
+    div: {
+      display: 'none',
+    },
   },
 });
 
@@ -164,15 +227,23 @@ const SignOutButton = styled(Button)({
     backgroundColor: '#2591cf79',
     borderColor: '#3f51b5',
   },
+  '@media (max-width: 899px)': {
+    marginLeft: '10px',
+  },
 });
 
 const ModeButton = styled(Button)({
+  borderColor: '#ffffff',
   marginRight: '20px',
   minWidth: '20px',
   height: '30px',
   padding: '0 5px',
   alignSelf: 'center',
   '&:hover': {
-    borderColor: '#ffffff',
+    backgroundColor: '#2591cf79',
+    borderColor: '#3f51b5',
+  },
+  '@media (max-width: 899px)': {
+    marginRight: '0',
   },
 });

@@ -14,12 +14,15 @@ import ConfirmationModal from '../../components/ModalWindows/ConfirmationModal';
 import AddIcon from '@mui/icons-material/Add';
 import { useTranslation } from 'react-i18next';
 import ArrowBackOutlinedIcon from '@mui/icons-material/ArrowBackOutlined';
+import { AppStatusType } from '../../BLL/reducers/app-reducer';
+import Preloader from '../../components/Preloader/Preloader';
 
 function MainPage() {
   const { t } = useTranslation();
   const boards = useSelector<AppStateType, Array<BoardResponseType>>(
     (state) => state.boards.boards
   );
+  const appStatus = useSelector<AppStateType, AppStatusType>((state) => state.app.status);
   const [openFormModal, setOpenFormModal] = useState(false);
   const [openConfirmModal, setOpenConfirmModal] = React.useState<
     BoardResponseType | ColumnResponseType | UserResponseType | null
