@@ -377,14 +377,6 @@ const TaskContainer = styled.div`
     background-color: #3f51b5;
     border-radius: 20px;
   }
-
-  @media (max-width: 688px) {
-    height: 32vh;
-  }
-
-  @media (max-width: 555px) {
-    height: 25vh;
-  }
 `;
 const ColumnHeader = styled.div`
   display: flex;

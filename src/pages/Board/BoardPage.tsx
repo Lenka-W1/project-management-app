@@ -191,15 +191,15 @@ const ColumnContainer = styled.div`
   }
 
   @media (max-width: 688px) {
+    height: 47vh;
+  }
+
+  @media (max-width: 555px) {
     height: 45vh;
   }
 
   @media (max-width: 555px) {
-    height: 39vh;
-  }
-
-  @media (max-width: 555px) {
-    height: 39vh;
+    //height: 39vh;
     padding: 0 15px 20px;
   }
 `;

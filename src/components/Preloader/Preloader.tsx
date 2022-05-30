@@ -8,6 +8,7 @@ export default Preloader;
 
 const StyledPreloader = styled(CircularProgress)`
   position: absolute;
-  top: 45%;
-  z-index: 2;
+  margin-left: 50vw;
+  margin-top: 50vh;
+  z-index: 3;
 `;

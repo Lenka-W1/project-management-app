@@ -122,7 +122,6 @@ function SignUpPage() {
           {t('sign_up_page.form.button_login')}
         </SignUPButton>
       </StyledForm>
-      {appStatus === 'loading' && <Preloader />}
     </SignUPContainer>
   );
 }

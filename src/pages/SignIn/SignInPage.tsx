@@ -94,7 +94,7 @@ function SignInPage() {
           {t('sign_in_page.form.continuation')}
         </Typography>
       </StyledForm>
-      {appStatus === 'loading' && <Preloader />}
+      {/*{appStatus === 'loading' && <Preloader />}*/}
     </LoginContainer>
   );
 }
@@ -145,10 +145,12 @@ const LoginContainer = styled(Paper)`
   }
 
   @media (min-width: 300px) and (max-width: 680px) {
+    margin: 20% auto 20px auto;
     width: 90%;
   }
 
   @media (min-width: 681px) and (max-width: 880px) {
+    margin: 20% auto 20px auto;
     width: 70%;
   }
 

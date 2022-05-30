@@ -29,6 +29,7 @@ export const fetchAllTasks = createAsyncThunk<
   } catch (error) {
     dispatch(setAppError({ error: error.response.data.message }));
     toast.error(error.response.data.message);
+    dispatch(setAppStatus({ status: 'idle' }));
     return rejectWithValue({ error: error.response.data.message });
   } finally {
     dispatch(setAppStatus({ status: 'idle' }));
