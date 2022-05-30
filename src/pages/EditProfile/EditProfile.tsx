@@ -9,6 +9,7 @@ import { AppStatusType, setAppStatus } from '../../BLL/reducers/app-reducer';
 import { updateUser } from '../../BLL/reducers/user-reducer';
 import { AppDispatchType, AppStateType } from '../../BLL/store';
 import ConfirmationModal from '../../components/ModalWindows/ConfirmationModal';
+import ArrowBackOutlinedIcon from '@mui/icons-material/ArrowBackOutlined';
 import { PATH } from '../AppRoutes';
 import { FormikErrorType } from '../SignUp/SignUpPage';
 
@@ -69,6 +70,9 @@ function EditProfile() {
 
   return (
     <EditContainer elevation={8}>
+      <Button variant={'text'} startIcon={<ArrowBackOutlinedIcon />} onClick={() => navigate(-1)}>
+        {t('board_page.button_back')}
+      </Button>
       <h1>{t('edit_profile_page.profile_edit_page_title')}</h1>
       <EditForm onSubmit={formik.handleSubmit}>
         <EditField
@@ -143,8 +147,30 @@ const EditContainer = styled(Paper)({
     },
   },
 
+  '.MuiButton-textPrimary': {
+    position: 'absolute',
+    left: '5px',
+    top: '78px',
+
+    '@media (max-width: 600px)': {
+      top: '70px',
+    },
+
+    '@media (max-width: 400px)': {
+      top: '68px',
+    },
+  },
+
   '@media (min-width: 300px) and (max-width: 680px)': {
     width: '90%',
+  },
+
+  '@media (max-width: 600px)': {
+    margin: '12% auto 20px auto',
+  },
+
+  '@media (max-width: 400px)': {
+    margin: '15% auto 20px auto',
   },
 
   '@media (min-width: 681px) and (max-width: 880px)': {
@@ -194,8 +220,16 @@ const ButtonsBlock = styled(Box)({
 const SaveButton = styled(Button)({
   color: 'white',
   margin: '15px 15px 25px',
+
+  '@media (max-width: 709px)': {
+    margin: '15px 0 5px',
+  },
 });
 
 const DeleteButton = styled(Button)({
   margin: '15px 15px 25px',
+
+  '@media (max-width: 709px)': {
+    margin: '5px 0 25px',
+  },
 });
