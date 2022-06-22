@@ -1,0 +1,148 @@
+{
+  "header": {
+    "edit_profile": "Edit profile",
+    "create_new_board": "Create new board",
+    "switch": {
+      "dark_theme": "Switch to dark theme",
+      "light_theme": "Switch to light theme"
+    },
+    "rus": "RU",
+    "eng": "EN",
+    "sign_out": "Sign out"
+  },
+  "welcome_page": {
+    "title": "Project managment app",
+    "sign_in": "Sign in",
+    "sign_up": "Sign up",
+    "go_to_main": "Go to Main Page",
+    "description_1": {
+      "strong": "A project management system",
+      "continuation": "is an application that helps an individual in a team or group of developers achieve their goals."
+    },
+    "description_2": {
+      "strong": "Board",
+      "continuation": "use columns and cards to create tasks, track and organize them. And also assign tasks to team members. Manage projects."
+    },
+    "team": {
+      "development_team": "Application development team",
+      "name_1": "Elena Khovavko",
+      "name_2": "Alexander Demidovich",
+      "developer_1": "Frontend developer, Team lead",
+      "developer_2": "Frontend developer"
+    }
+  },
+  "edit_profile_page": {
+    "profile_edit_page_title": "Edit Profile",
+    "form": {
+      "name_field": "Name",
+      "login_field": "Login",
+      "password_field": "Password",
+      "save_changes": "Save changes",
+      "delete_user": "Delete user",
+      "required": "Required"
+    },
+    "modal_window": {
+      "delete_user": "Delete User?"
+    }
+  },
+  "sign_in_page": {
+    "sign_in_page_title": "Sign In",
+    "form": {
+      "login_field": "Login",
+      "password_field": "Password",
+      "button_login": "Login",
+      "or": "or",
+      "green_text": "Sign Up",
+      "continuation": "if you don't have an account yet.",
+      "required": "Required",
+      "error_message": "User was not founded!"
+    }
+  },
+  "sign_up_page": {
+    "sign_up_page_title": "Create a new account",
+    "form": {
+      "back_button": "Back to login",
+      "name_field": "Name",
+      "login_field": "Login",
+      "password_field": "Password",
+      "button_login": "Sign up",
+      "required": "Required",
+      "error_message": "User login already exists!"
+    }
+  },
+  "main_page": {
+    "boards_shown": "Boards shown:",
+    "of": "of",
+    "search": "Search",
+    "search_board": "Search board",
+    "create_new_board": "Create a new Board",
+    "modal_window": {
+      "alert_title": "Delete Board?"
+    },
+    "tooltip": {
+      "delete_board": "Delete board",
+      "edit_board": "Edit board"
+    },
+    "board": {
+      "required": "Required",
+      "button_cancel": "Cancel",
+      "button_update": "Update"
+    }
+  },
+  "board_page": {
+    "button_back": "Back",
+    "board": "Board",
+    "create_column": "Create column",
+    "alert_title": "Delete Column?",
+    "add_task": "Add task",
+    "tooltip": {
+      "change_column": "Click to change column name",
+      "delete_column": "Delete column"
+    },
+    "task": {
+      "delete_task": "Delete Task?",
+      "in_column": "in column",
+      "description": "description",
+      "sequence_number": "sequence number",
+      "edit": "Edit",
+      "delete": "Delete",
+      "required": "Required",
+      "order_of_value": "Order of value should be more 0",
+      "button_save": "Save",
+      "button_delete": "Delete",
+      "button_edit": "Edit",
+      "button_cancel": "Cancel"
+    }
+  },
+  "confirm_modal": {
+    "remove": "Do you really want to remove",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "remove_user": "user",
+    "remove_board": "board",
+    "remove_column": "column",
+    "remove_task": "task"
+  },
+  "form_modal": {
+    "board": {
+      "create_board": "Create a new Board",
+      "note": "To create a new board, please enter your title and description here."
+    },
+    "column": {
+      "create_column": "Create a new Column",
+      "note": "To create a new column, please enter your title here."
+    },
+    "task": {
+      "create_task": "Create a new Task",
+      "note": "To create a new task, please enter your title and description."
+    },
+    "title": "Title",
+    "description": "Description",
+    "button_cancel": "Cancel",
+    "button_create": "Create",
+    "required": "Required"
+  },
+  "footer": {
+    "all_rights_reserved": "©All rights reserved, 2022"
+  }
+}
